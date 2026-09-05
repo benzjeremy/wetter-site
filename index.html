@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wetter-Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="https://benzjeremy.github.io/" class="home-link">← benzjeremy.github.io</a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <h1>Wetter-Site</h1>
+            <p>Erhalte aktuelle Wetterdaten für deinen Standort oder einen Ort deiner Wahl.</p>
+            <button id="startButton">Wetter abrufen</button>
+        </section>
+        <section id="weatherApp" class="weather-app" style="display: none;">
+            <h2>Wetter abrufen</h2>
+            <div class="input-group">
+                <label for="locationInput">Ort:</label>
+                <input type="text" id="locationInput" placeholder="Zum Beispiel: Berlin, New York, Tokio">
+                <button id="useLocation">Standort verwenden</button>
+            </div>
+            <div class="input-group">
+                <label for="unitSelect">Einheit:</label>
+                <select id="unitSelect">
+                    <option value="celsius">Celsius (°C)</option>
+                    <option value="fahrenheit">Fahrenheit (°F)</option>
+                    <option value="kelvin">Kelvin (K)</option>
+                </select>
+            </div>
+            <button id="fetchWeather">Wetter laden</button>
+            <div id="weatherResult" class="weather-result"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; <span id="year"></span> Jeremy Benz. Lizenz: <a href="https://github.com/benzjeremy/wetter-site/blob/main/LICENSE" target="_blank">GNU GPL v3.0</a></p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
