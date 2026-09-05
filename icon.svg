@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="sunGrad" x1="12" y1="12" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="20" y1="26" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.1" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0e1422" />
+  <rect width="62" height="62" x="1" y="1" rx="15" stroke="url(#glowGrad)" stroke-width="2" />
+  <!-- Sun -->
+  <circle cx="27" cy="25" r="12" fill="url(#sunGrad)" />
+  <!-- Sun rays -->
+  <path d="M27 7v4M27 39v4M9 25h4M41 25h4M14.3 12.3l2.8 2.8M36.9 34.9l2.8 2.8M14.3 37.7l2.8-2.8M36.9 15.1l2.8-2.8" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Cloud -->
+  <path d="M46 48H22a10 10 0 0 1-2.4-19.7 13 13 0 0 1 24.8-3.3A9 9 0 0 1 46 48z" fill="url(#cloudGrad)" />
+</svg>
