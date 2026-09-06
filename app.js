@@ -703,9 +703,40 @@
     });
   }
 
+  function initMobileNav() {
+    const toggleBtn = document.getElementById('mobile-toggle');
+    const nav = document.getElementById('main-nav');
+    if (!toggleBtn || !nav) return;
+
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggleBtn.setAttribute('aria-expanded', isOpen);
+      toggleBtn.innerHTML = isOpen ? '✕' : '☰';
+    });
+
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          toggleBtn.innerHTML = '☰';
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !toggleBtn.contains(e.target)) {
+        nav.classList.remove('open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.innerHTML = '☰';
+      }
+    });
+  }
+
   // --- Initial Launch ---
   document.addEventListener('DOMContentLoaded', () => {
     initEvents();
+    initMobileNav();
     // Default load Berlin so user immediately sees full dashboard
     loadWeather('Berlin');
   });
