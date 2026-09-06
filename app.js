@@ -585,7 +585,7 @@
       state.weatherData = weather;
 
       setStatus('');
-      el.weatherDisplay.style.display = 'block';
+      el.weatherDisplay.style.display = 'flex';
       renderCurrentWeather();
 
     } catch (err) {
