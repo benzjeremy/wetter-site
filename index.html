@@ -3,89 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wetter-site · Hyperlokale Wetterdaten & Interaktive Telemetrie · Jeremy Benz</title>
-  <meta name="description" content="Blitzschnelle, datenschutzfreundliche Wetter-Station von Jeremy Benz. Live-Wetterdaten, 24h-Temperaturgraphen (°C, °F, K), 7-Tage-Trend und weltweites Geocoding via Open-Meteo.">
-  <meta name="theme-color" content="#080a0f">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="wetter-site · Moderne Wetter-Station & Telemetrie">
-  <meta property="og:description" content="Präzise Wettervorhersagen, dynamische 24h Canvas-Graphen (°C, °F, K) und weltweite Telemetrie ohne Tracking.">
+  <title>wetter-site · Moderne Wetter-Station &amp; Interaktive Telemetrie · v1.0</title>
+  <meta name="description" content="Moderne Wetter-Station & interaktive Telemetrie von Jeremy Benz. Live-Wetterdaten, 24h-Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend via Open-Meteo. 100% Trackingfrei.">
   <meta property="og:type" content="website">
+  <meta property="og:title" content="wetter-site · Moderne Wetter-Station &amp; Interaktive Telemetrie">
+  <meta property="og:description" content="Live-Wetterstation, 24h Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend. 100% Client-Side.">
   <meta property="og:url" content="https://benzjeremy.github.io/wetter-site/">
-  <meta property="og:image" content="icon.svg">
-
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="wetter-site · Weather Dashboard">
+  <meta name="twitter:description" content="Hyperlokale Wetterdaten & Canvas-Telemetrie ohne Tracking.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.2.0">
 </head>
 <body>
 
-  <!-- Background Atmosphere -->
-  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
-
-  <!-- Header / Navbar -->
+  <!-- Site Navigation -->
   <header class="site-header">
-    <div class="container header-content">
-      <div class="brand-group">
-        <a href="https://benzjeremy.github.io/" class="breadcrumb-link" title="Zurück zur Startseite benzjeremy.github.io">
-          <span>←</span> benzjeremy.github.io
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="https://benzjeremy.github.io/" class="back-root-btn">
+          <span>← benzjeremy.github.io</span>
         </a>
-        <div class="brand-divider" aria-hidden="true">/</div>
-        <a href="#" class="brand-title" aria-label="wetter-site Startseite">
-          <span class="brand-icon">☀️</span>
-          <span class="brand-text">wetter-site</span>
+        <a href="#" class="brand-link">
+          <div class="brand-logo" aria-hidden="true">☀️</div>
+          <div class="brand-info">
+            <span class="brand-name">wetter-site</span>
+            <span class="brand-ver">v1.0 · Open-Meteo</span>
+          </div>
         </a>
-        <span class="badge-pill header-pill">v1.0 · Open-Meteo</span>
       </div>
-      
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü öffnen" aria-expanded="false">☰</button>
-      
-      <nav class="nav-links" id="main-nav" aria-label="Hauptnavigation">
-        <a href="#app-station" class="nav-highlight">⚡ Wetter-Station</a>
-        <a href="#features">Features</a>
-        <a href="#about">Mitwirkende</a>
-        <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="gh-link">
-          <svg class="gh-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-          </svg>
-          GitHub
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü öffnen/schließen" aria-expanded="false">☰</button>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="#app-station" class="nav-highlight">
+          <span class="lang-de">⚡ Wetter-Station</span>
+          <span class="lang-en" style="display:none;">⚡ Weather Station</span>
+        </a>
+        <a href="#features">
+          <span class="lang-de">Features</span>
+          <span class="lang-en" style="display:none;">Features</span>
+        </a>
+        <a href="#about">
+          <span class="lang-de">Mitwirkende</span>
+          <span class="lang-en" style="display:none;">Contributors</span>
+        </a>
+
+        <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+          <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">DE</button>
+          <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        </div>
+
+        <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-card highlight">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>GitHub</span>
         </a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
   <main>
-    <section class="hero-section">
-      <div class="container hero-container">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          <span>☁️ Hyperlokale Wetterdaten · Client-Side Only · 100% Trackingfrei</span>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-container">
+        
+        <div class="hero-badges">
+          <span class="hero-badge release-badge">🚀 Release v1.0 [Live Engine]</span>
+          <span class="hero-badge perf-badge">⚡ 100% Client-Side · § 25 TDDDG</span>
+          <span class="hero-badge open-badge">🌍 Weltweites Geocoding</span>
+          <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge license-pill">GNU GPL-3.0</a>
         </div>
 
-        <h1 class="hero-heading">
-          Moderne Wetter-Station &<br>
-          <span class="text-gradient">Interaktive Telemetrie</span>
-        </h1>
+        <div data-lang="de" class="visible">
+          <h1 class="hero-title">
+            Moderne Wetter-Station &amp;<br>
+            <span class="gradient-text">Interaktive Telemetrie.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Präzise Vorhersagen, dynamische 24-Stunden Canvas-Graphen für alle Maßeinheiten 
+            (<strong>°C Celsius</strong>, <strong>°F Fahrenheit</strong>, <strong>K Kelvin</strong>), 
+            stündliche Niederschlagskurven und ein 7-Tage-Trend – blitzschnell, werbefrei und ohne Datenspeicherung.
+          </p>
+        </div>
 
-        <p class="hero-lead">
-          Präzise Wettervorhersagen, dynamische 24-Stunden Temperatur-Graphen für alle Maßeinheiten 
-          (<strong>°C Celsius</strong>, <strong>°F Fahrenheit</strong>, <strong>K Kelvin</strong>), 
-          stündliche Niederschlagskurven sowie ein lückenloser 7-Tage-Trend – blitzschnell und ohne Datenspeicherung.
-        </p>
+        <div data-lang="en">
+          <h1 class="hero-title">
+            Modern Weather Station &amp;<br>
+            <span class="gradient-text">Interactive Telemetry.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Precise forecasts, dynamic 24-hour Canvas telemetry for all temperature units 
+            (<strong>°C Celsius</strong>, <strong>°F Fahrenheit</strong>, <strong>K Kelvin</strong>), 
+            hourly precipitation curves, and 7-day outlook – ultra fast, ad-free, and privacy-first.
+          </p>
+        </div>
 
-        <div class="hero-actions">
-          <a href="#app-station" class="btn btn-primary" id="launchHeroBtn">
-            <span class="btn-icon">⚡</span>
-            <span>Wetter-Station starten</span>
-          </a>
-          <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-            <span class="btn-icon">💻</span>
-            <span>Quellcode auf GitHub</span>
+        <!-- Call to Action CTAs -->
+        <div class="hero-cta-group">
+          <button type="button" class="btn-primary" id="launchHeroBtn">
+            <span style="font-size: 20px;">⚡</span>
+            <div>
+              <span class="btn-main-text">Wetter-Station starten</span>
+              <span class="btn-sub-text">Live Telemetrie &amp; Messdaten</span>
+            </div>
+          </button>
+          <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <span style="font-size: 20px;">💻</span>
+            <div>
+              <span class="btn-main-text">Quellcode auf GitHub</span>
+              <span class="btn-sub-text">GPL-3.0 Open Source</span>
+            </div>
           </a>
         </div>
 
-        <!-- Quick Telemetry Stats Bar -->
+        <!-- Telemetry Stats Bar -->
         <div class="telemetry-bar">
           <div class="telemetry-item">
             <span class="tel-icon">🌍</span>
@@ -116,21 +148,24 @@
             </div>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Interactive Weather Station App -->
+    <!-- INTERACTIVE WEATHER STATION -->
     <section class="station-section" id="app-station">
-      <div class="container">
+      <div class="section-container">
         
-        <div class="station-header-box">
-          <div class="station-meta">
-            <span class="badge-pill">⚡ Live-Engine</span>
-            <h2>Wetter-Dashboard & Messdaten</h2>
-            <p>Wähle einen beliebigen Ort oder nutze deinen aktuellen Standort. Alle Berechnungen erfolgen clientseitig.</p>
-          </div>
+        <div class="section-header">
+          <span class="section-tag">⚡ Live-Engine</span>
+          <h2 class="section-title">Wetter-Dashboard &amp; Messdaten</h2>
+          <p class="section-sub">Wähle einen beliebigen Ort oder nutze deinen aktuellen Standort. Alle Daten werden in Echtzeit lokal in deinem Browser berechnet.</p>
+        </div>
 
-          <!-- Temperature Unit Segmented Control -->
+        <div class="station-top-bar">
+          <div class="badge-pill" style="font-weight:700; color:var(--accent-primary);">Live Open-Meteo API v1</div>
+          
+          <!-- Temperature Unit Selector -->
           <div class="unit-selector" role="group" aria-label="Temperatureinheit auswählen">
             <span class="unit-label">Skala:</span>
             <button type="button" class="unit-btn active" data-unit="celsius" id="unitC">°C Celsius</button>
@@ -139,7 +174,7 @@
           </div>
         </div>
 
-        <!-- Controls & Search -->
+        <!-- Controls Card -->
         <div class="station-controls-card">
           <form id="searchForm" class="search-form" onsubmit="return false;">
             <div class="search-input-wrapper">
@@ -154,10 +189,10 @@
               >
               <button type="button" class="clear-input-btn" id="clearBtn" title="Eingabe leeren" style="display:none;" aria-label="Eingabe leeren">✕</button>
             </div>
-            <button type="submit" class="btn btn-primary" id="searchSubmitBtn">
+            <button type="submit" class="btn-primary" id="searchSubmitBtn" style="padding: 12px 22px;">
               <span>Wetter abrufen</span>
             </button>
-            <button type="button" class="btn btn-geo" id="geoBtn" title="Aktuellen Standort via GPS ermitteln">
+            <button type="button" class="btn-geo" id="geoBtn" title="Aktuellen Standort via GPS ermitteln">
               <span class="geo-icon">📍</span>
               <span>Mein Standort</span>
             </button>
@@ -179,7 +214,7 @@
           </div>
         </div>
 
-        <!-- Live Loading / Error Banner -->
+        <!-- Status Banner -->
         <div id="statusBanner" class="status-banner" style="display:none;" role="status">
           <div class="spinner" id="statusSpinner"></div>
           <span id="statusMessage">Wetterdaten werden geladen...</span>
@@ -188,7 +223,7 @@
         <!-- Weather Display Area -->
         <div id="weatherDisplay" class="weather-display" style="display:none;">
           
-          <!-- Current Hero Weather Card -->
+          <!-- Current Weather Hero Card -->
           <div class="current-weather-card">
             <div class="current-main-info">
               <div class="location-badge">
@@ -285,7 +320,7 @@
             <div class="chart-header">
               <div>
                 <div class="chart-badge">Telemetrie-Kurve</div>
-                <h3>24-Stunden Verlauf & Trend</h3>
+                <h3>24-Stunden Verlauf &amp; Trend</h3>
               </div>
               <div class="chart-modes" role="group" aria-label="Diagramm Modus">
                 <button type="button" class="chart-mode-btn active" id="modeTempBtn">🌡️ Temperatur</button>
@@ -304,7 +339,7 @@
           <!-- 7-Day Forecast Matrix -->
           <div class="forecast-section">
             <div class="forecast-header">
-              <span class="badge-pill">📅 Trend</span>
+              <span class="section-tag" style="margin-bottom:0;">📅 Trend</span>
               <h3>7-Tage-Wettervorhersage</h3>
             </div>
             <div class="forecast-grid" id="forecastGrid">
@@ -317,48 +352,48 @@
       </div>
     </section>
 
-    <!-- Feature Grid Section -->
+    <!-- FEATURES SECTION -->
     <section class="features-section" id="features">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="badge-pill">Architektur & Vorteile</span>
-          <h2>Modernes Engineering & Volle Transparenz</h2>
-          <p>Entwickelt nach den strengen Standards von Jeremy Benz: native Performance, echte Privatsphäre und null Bloatware.</p>
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">Architektur &amp; Vorteile</span>
+          <h2 class="section-title">Modernes Engineering &amp; Volle Transparenz</h2>
+          <p class="section-sub">Entwickelt nach den strengen Standards von Jeremy Benz: native Performance, echte Privatsphäre und null Bloatware.</p>
         </div>
 
-        <div class="features-grid">
+        <div class="feature-grid">
           <div class="feature-card">
-            <div class="feature-icon">⚡</div>
+            <div class="f-card-icon">⚡</div>
             <h3>Reines Vanilla JavaScript</h3>
-            <p>Keine schweren Frameworks wie React, Angular oder riesige CSS-Bundles. 100% native Webtechnologie lädt in wenigen Millisekunden und schont Geräteressourcen.</p>
+            <p>Keine schweren Frameworks wie React oder Angular. 100% native Webtechnologie lädt in wenigen Millisekunden und schont Geräteressourcen.</p>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">📈</div>
+            <div class="f-card-icon">📈</div>
             <h3>Interaktive Canvas-Graphen</h3>
-            <p>Maßgeschneiderte HTML5-Canvas-Routinen zeichnen butterweiche Temperatur- und Regenkurven – inklusive dynamischer Achsenskalierung für Celsius, Fahrenheit und Kelvin.</p>
+            <p>Maßgeschneiderte HTML5-Canvas-Routinen zeichnen butterweiche Temperatur- und Regenkurven inklusive dynamischer Skalierung für Celsius, Fahrenheit und Kelvin.</p>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">🌍</div>
+            <div class="f-card-icon">🌍</div>
             <h3>Weltweites Geocoding</h3>
             <p>Modernste Open-Meteo Geocoding-Schnittstelle findet weltweit Metropolen, Kleinstädte und Dörfer in Sekundenschnelle inklusive Koordinaten-Auflösung.</p>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">🔒</div>
+            <div class="f-card-icon">🔒</div>
             <h3>100% Privacy by Design</h3>
-            <p>Deine Geodaten werden niemals auf externen Servern gespeichert oder für Werbeprofile missbraucht. Die Standortabfrage erfolgt rein lokal in deinem Browser (§ 25 TDDDG).</p>
+            <p>Deine Geodaten werden niemals auf externen Servern gespeichert oder für Werbeprofile missbraucht. Die Standortabfrage erfolgt rein lokal im Browser (§ 25 TDDDG).</p>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">📱</div>
-            <h3>Fully Responsive & Touch-optimiert</h3>
+            <div class="f-card-icon">📱</div>
+            <h3>Fully Responsive &amp; Touch-optimiert</h3>
             <p>Egal ob Desktop-Monitor, Laptop, Tablet oder Smartphone: Das Layout passt sich fluid an jeden Bildschirm an und unterstützt intuitive Touch-Gesten.</p>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">⚖️</div>
+            <div class="f-card-icon">⚖️</div>
             <h3>Freie Software unter GPL-3.0</h3>
             <p>Vollständig quelloffen unter der GNU General Public License v3.0. Der Code ist öffentlich einsehbar, auditierbar und frei modifizierbar.</p>
           </div>
@@ -366,20 +401,20 @@
       </div>
     </section>
 
-    <!-- About / Authors Section (Verbindlich nach Projekt-Blueprint) -->
+    <!-- ABOUT SECTION -->
     <section class="about-section" id="about">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="badge-pill">👥 Mitwirkende & Credits</span>
-          <h2>Projekt-Informationen & Team</h2>
-          <p>Transparente Autoren- und Lizenz-Nennung gemäß den Software-Standards.</p>
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">👥 Mitwirkende &amp; Credits</span>
+          <h2 class="section-title">Projekt-Informationen &amp; Team</h2>
+          <p class="section-sub">Transparente Autoren- und Lizenz-Nennung gemäß den Software-Standards.</p>
         </div>
 
         <div class="about-grid">
-          <div class="about-card lead-card">
+          <div class="about-card">
             <div class="about-avatar">JB</div>
             <div class="about-info">
-              <span class="role-badge">Lead Developer & Gründer</span>
+              <span class="role-badge">Lead Developer &amp; Gründer</span>
               <h3>Jeremy Benz</h3>
               <p>17 Jahre alter Software-Entwickler aus Nordrhein-Westfalen (NRW). Fokus auf Go, native Desktop-Entwicklung, Systemarchitektur und kompromisslose Privatsphäre.</p>
               <div class="author-links">
@@ -392,11 +427,11 @@
           <div class="about-card">
             <div class="about-avatar ai-avatar">🤖</div>
             <div class="about-info">
-              <span class="role-badge ai-badge">Pair Programming & AI</span>
-              <h3>Google Antigravity & Claude Code</h3>
+              <span class="role-badge ai-badge">Pair Programming &amp; AI</span>
+              <h3>Google Antigravity &amp; Claude Code</h3>
               <p>Unterstützung bei interaktiver Canvas-Telemetrie, Geocoding-Integration, responsiver UI-Architektur und DSGVO-Audits.</p>
               <div class="author-links">
-                <span class="text-muted">Agentic AI Coding Assistant</span>
+                <span style="color:var(--text-muted);">Agentic AI Coding Assistant</span>
               </div>
             </div>
           </div>
@@ -406,10 +441,10 @@
         <div class="license-box">
           <div class="license-icon">📄</div>
           <div class="license-text">
-            <h4>Freie Software & Lizenz</h4>
+            <h4>Freie Software &amp; Lizenz</h4>
             <p>Dieses Projekt ist freie Software und lizenziert unter der <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>. Quellcode, Modifikationen und Weiterverbreitung sind ausdrücklich gestattet.</p>
           </div>
-          <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="btn btn-secondary license-btn">
+          <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="btn-card highlight" style="padding:10px 18px; font-size:13px;">
             <span>Offizielle Lizenz (GPL-3.0)</span>
           </a>
         </div>
@@ -419,7 +454,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <div class="container footer-content">
+    <div class="footer-content">
       <div class="footer-left">
         <div><strong>wetter-site</strong> · Ein Projekt von <a href="https://github.com/benzjeremy" target="_blank" rel="noopener noreferrer">Jeremy Benz (@benzjeremy)</a></div>
         <div class="footer-sub">Open Source unter der GNU General Public License v3.0 (GPL-3.0) · © 2026</div>
@@ -434,6 +469,32 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script>
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        if (el.getAttribute('data-lang') === lang) {
+          el.classList.add('visible');
+        } else {
+          el.classList.remove('visible');
+        }
+      });
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = lang === 'de' ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = lang === 'en' ? '' : 'none');
+      
+      const btnDe = document.getElementById('btn-lang-de');
+      const btnEn = document.getElementById('btn-lang-en');
+      if (btnDe && btnEn) {
+        btnDe.classList.toggle('active', lang === 'de');
+        btnEn.classList.toggle('active', lang === 'en');
+      }
+      try { localStorage.setItem('site_lang', lang); } catch (e) {}
+    }
+
+    try {
+      const saved = localStorage.getItem('site_lang');
+      if (saved === 'en' || saved === 'de') setLang(saved);
+    } catch (e) {}
+  </script>
+  <script src="app.js?v=2.2.0"></script>
 </body>
 </html>
