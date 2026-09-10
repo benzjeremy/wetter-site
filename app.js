@@ -82,6 +82,21 @@
     return directions[index] || 'N';
   }
 
+  // --- Solar & Photovoltaic (PV) Calculation Model ---
+  // Calculates estimated electrical power output (kW) for a standard 5.0 kWp residential installation
+  function calcPVPower(radiationWm2, tempC) {
+    if (!radiationWm2 || radiationWm2 <= 5) return 0;
+    const kwp = 5.0; // 5 kWp Standard Dachanlage (~25 m² Module, ~20% Wirkungsgrad)
+    const rawKw = (radiationWm2 / 1000) * kwp;
+    // Modultemperatur-Kompensation: Zellen erwärmen sich über Umgebungstemperatur
+    const cellTemp = (tempC !== undefined && tempC !== null ? tempC : 20) + (radiationWm2 / 800) * 25;
+    // Temperaturkoeffizient für monokristalline Silizium-Zellen (-0.4%/°C oberhalb von 25°C)
+    const tempFactor = cellTemp > 25 ? Math.max(0.7, 1 - 0.004 * (cellTemp - 25)) : 1.0;
+    const performanceRatio = 0.85; // Systemwirkungsgrad (Wechselrichter, Leitungsverluste, Schrägwinkel)
+    const power = rawKw * tempFactor * performanceRatio;
+    return Math.min(5.5, Math.max(0, power));
+  }
+
   // --- DOM Elements ---
   const el = {
     launchHeroBtn: document.getElementById('launchHeroBtn'),
@@ -121,11 +136,20 @@
     subPressure: document.getElementById('subPressure'),
     valSunTimes: document.getElementById('valSunTimes'),
 
+    // PV Solar Metrics
+    valPVPower: document.getElementById('valPVPower'),
+    subPVPower: document.getElementById('subPVPower'),
+    valPVEnergy: document.getElementById('valPVEnergy'),
+    subPVEnergy: document.getElementById('subPVEnergy'),
+    valSolarRad: document.getElementById('valSolarRad'),
+    subSolarRad: document.getElementById('subSolarRad'),
+
     // Chart
     canvas: document.getElementById('weatherCanvas'),
     chartTooltip: document.getElementById('chartTooltip'),
     modeTempBtn: document.getElementById('modeTempBtn'),
     modeRainBtn: document.getElementById('modeRainBtn'),
+    modePVBtn: document.getElementById('modePVBtn'),
 
     // Forecast
     forecastGrid: document.getElementById('forecastGrid'),
@@ -182,7 +206,8 @@
         'weather_code',
         'wind_speed_10m',
         'wind_direction_10m',
-        'surface_pressure'
+        'surface_pressure',
+        'cloud_cover'
       ].join(','),
       hourly: [
         'temperature_2m',
@@ -190,7 +215,9 @@
         'precipitation_probability',
         'precipitation',
         'weather_code',
-        'wind_speed_10m'
+        'wind_speed_10m',
+        'shortwave_radiation_instant',
+        'cloud_cover'
       ].join(','),
       daily: [
         'weather_code',
@@ -202,7 +229,8 @@
         'sunset',
         'uv_index_max',
         'precipitation_sum',
-        'precipitation_probability_max'
+        'precipitation_probability_max',
+        'sunshine_duration'
       ].join(','),
       timezone: 'auto'
     });
@@ -286,6 +314,52 @@
     const sunset = new Date(daily.sunset[0]).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     el.valSunTimes.textContent = `${sunrise} / ${sunset}`;
 
+    // 7. PV Solar Power (Live 5 kWp Reference)
+    const hourly = data.hourly;
+    const curIsoHour = (cur.time || new Date().toISOString()).slice(0, 13);
+    let curHourIdx = 0;
+    for (let i = 0; i < hourly.time.length; i++) {
+      if (hourly.time[i].startsWith(curIsoHour)) {
+        curHourIdx = i;
+        break;
+      }
+    }
+    const curRad = (hourly.shortwave_radiation_instant && hourly.shortwave_radiation_instant[curHourIdx]) || 0;
+    const curPvKw = cur.is_day ? calcPVPower(curRad, cur.temperature_2m) : 0;
+    el.valPVPower.textContent = `${curPvKw.toFixed(2)} kW`;
+    if (!cur.is_day || curPvKw <= 0.05) {
+      el.subPVPower.textContent = cur.is_day ? 'Geringe Strahlung (Dämmerung)' : 'Nachtbetrieb (0.0 kW)';
+    } else if (curPvKw < 2.0) {
+      el.subPVPower.textContent = 'Mäßige Solarerzeugung (5 kWp)';
+    } else {
+      el.subPVPower.textContent = 'Hoher Ertrag (5 kWp Referenz)';
+    }
+
+    // 8. PV Energy Today (Total kWh Integral)
+    const todayDatePrefix = (cur.time || new Date().toISOString()).slice(0, 10);
+    let todayKwh = 0;
+    for (let i = 0; i < hourly.time.length; i++) {
+      if (hourly.time[i].startsWith(todayDatePrefix)) {
+        const hRad = (hourly.shortwave_radiation_instant && hourly.shortwave_radiation_instant[i]) || 0;
+        const hTemp = hourly.temperature_2m[i];
+        todayKwh += calcPVPower(hRad, hTemp); // 1-hour interval = kWh
+      }
+    }
+    el.valPVEnergy.textContent = `${todayKwh.toFixed(1)} kWh`;
+    if (todayKwh >= 15) {
+      el.subPVEnergy.textContent = 'Hervorragender Sonnentag';
+    } else if (todayKwh >= 6) {
+      el.subPVEnergy.textContent = 'Solider Tagesertrag';
+    } else {
+      el.subPVEnergy.textContent = 'Geringer Ertrag (starke Bewölkung)';
+    }
+
+    // 9. Solar Radiation & Sunshine Hours
+    const sunSecs = (daily.sunshine_duration && daily.sunshine_duration[0]) || 0;
+    const sunHours = (sunSecs / 3600).toFixed(1);
+    el.valSolarRad.textContent = `${Math.round(curRad)} W/m²`;
+    el.subSolarRad.textContent = `${sunHours} h Sonnenschein heute`;
+
     // Render 7-day forecast
     renderForecast();
 
@@ -351,6 +425,8 @@
       const rainProb = hourly.precipitation_probability[i] || 0;
       const rainMm = hourly.precipitation[i] || 0;
       const wCode = hourly.weather_code[i];
+      const rad = (hourly.shortwave_radiation_instant && hourly.shortwave_radiation_instant[i]) || 0;
+      const pvKw = calcPVPower(rad, tempC);
 
       points.push({
         time: hourStr,
@@ -359,6 +435,8 @@
         rainProb,
         rainMm,
         wCode,
+        solarRad: rad,
+        pvKw,
         wmo: WMO_MAP[wCode] || { desc: 'Heiter', icon: '🌤️' }
       });
     }
@@ -388,9 +466,19 @@
     const chartH = H - padding.top - padding.bottom;
 
     const isTemp = state.chartMode === 'temp';
+    const isRain = state.chartMode === 'rain';
+    const isPV = state.chartMode === 'pv';
 
     // Min & Max range
-    let values = points.map(p => isTemp ? p.tempConverted : p.rainProb);
+    let values;
+    if (isTemp) {
+      values = points.map(p => p.tempConverted);
+    } else if (isRain) {
+      values = points.map(p => p.rainProb);
+    } else {
+      values = points.map(p => p.pvKw);
+    }
+
     let minVal = Math.min(...values);
     let maxVal = Math.max(...values);
 
@@ -398,9 +486,12 @@
       const margin = (maxVal - minVal) * 0.15 || 2;
       minVal = Math.floor(minVal - margin);
       maxVal = Math.ceil(maxVal + margin);
-    } else {
+    } else if (isRain) {
       minVal = 0;
       maxVal = 100;
+    } else {
+      minVal = 0;
+      maxVal = Math.max(3.0, Math.ceil((maxVal || 1.0) * 1.25 * 2) / 2);
     }
 
     const valRange = maxVal - minVal || 1;
@@ -425,9 +516,14 @@
       ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      const label = isTemp 
-        ? `${Math.round(stepVal)} ${getUnitSymbol(state.unit)}`
-        : `${Math.round(stepVal)}%`;
+      let label;
+      if (isTemp) {
+        label = `${Math.round(stepVal)} ${getUnitSymbol(state.unit)}`;
+      } else if (isRain) {
+        label = `${Math.round(stepVal)}%`;
+      } else {
+        label = `${stepVal.toFixed(1)} kW`;
+      }
       ctx.fillText(label, padding.left - 8, y);
     }
 
@@ -450,7 +546,13 @@
     }
 
     // Stroke the curve
-    ctx.strokeStyle = isTemp ? '#38bdf8' : '#60a5fa';
+    if (isTemp) {
+      ctx.strokeStyle = '#38bdf8';
+    } else if (isRain) {
+      ctx.strokeStyle = '#60a5fa';
+    } else {
+      ctx.strokeStyle = '#f59e0b';
+    }
     ctx.lineWidth = 3;
     ctx.stroke();
 
@@ -463,9 +565,12 @@
     if (isTemp) {
       grad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
       grad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
-    } else {
+    } else if (isRain) {
       grad.addColorStop(0, 'rgba(96, 165, 250, 0.35)');
       grad.addColorStop(1, 'rgba(96, 165, 250, 0.0)');
+    } else {
+      grad.addColorStop(0, 'rgba(245, 158, 11, 0.40)');
+      grad.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
     }
     ctx.fillStyle = grad;
     ctx.fill();
@@ -486,10 +591,11 @@
       const i = state.hoveredIndex;
       const x = getX(i);
       const y = getY(values[i]);
+      const themeColor = isTemp ? '#38bdf8' : (isRain ? '#60a5fa' : '#f59e0b');
 
       // Vertical line
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+      ctx.strokeStyle = isTemp ? 'rgba(56, 189, 248, 0.6)' : (isRain ? 'rgba(96, 165, 250, 0.6)' : 'rgba(245, 158, 11, 0.6)');
       ctx.setLineDash([3, 3]);
       ctx.moveTo(x, padding.top);
       ctx.lineTo(x, padding.top + chartH);
@@ -499,7 +605,7 @@
       // Point dot
       ctx.beginPath();
       ctx.arc(x, y, 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#38bdf8';
+      ctx.fillStyle = themeColor;
       ctx.fill();
       ctx.lineWidth = 2;
       ctx.strokeStyle = '#ffffff';
@@ -528,14 +634,30 @@
 
     const p = points[closestIdx];
     const isTemp = state.chartMode === 'temp';
+    const isRain = state.chartMode === 'rain';
 
-    const valDisplay = isTemp
-      ? `${p.tempConverted.toFixed(1)} ${getUnitSymbol(state.unit)}`
-      : `${p.rainProb}% (${p.rainMm.toFixed(1)} mm)`;
+    let valDisplay;
+    let modeColor;
+    let modeTitle;
+
+    if (isTemp) {
+      valDisplay = `${p.tempConverted.toFixed(1)} ${getUnitSymbol(state.unit)}`;
+      modeColor = '#38bdf8';
+      modeTitle = 'Temperatur';
+    } else if (isRain) {
+      valDisplay = `${p.rainProb}% (${p.rainMm.toFixed(1)} mm)`;
+      modeColor = '#60a5fa';
+      modeTitle = 'Niederschlag';
+    } else {
+      valDisplay = `${p.pvKw.toFixed(2)} kW (${Math.round(p.solarRad)} W/m²)`;
+      modeColor = '#f59e0b';
+      modeTitle = 'PV-Leistung (5 kWp)';
+    }
 
     el.chartTooltip.innerHTML = `
       <strong>${p.time} Uhr</strong> · ${p.wmo.icon} ${p.wmo.desc}<br>
-      <span style="color:${isTemp ? '#38bdf8' : '#60a5fa'}; font-weight:700;">${valDisplay}</span>
+      <span style="color:${modeColor}; font-weight:700;">${valDisplay}</span>
+      <span style="font-size:10px; color:#94a3b8; margin-left:4px;">[${modeTitle}]</span>
     `;
     el.chartTooltip.style.display = 'block';
 
@@ -665,10 +787,11 @@
       });
     });
 
-    // Chart Mode Buttons (Temp vs Rain)
+    // Chart Mode Buttons (Temp vs Rain vs PV)
     el.modeTempBtn.addEventListener('click', () => {
       el.modeTempBtn.classList.add('active');
       el.modeRainBtn.classList.remove('active');
+      el.modePVBtn.classList.remove('active');
       state.chartMode = 'temp';
       drawChart();
     });
@@ -676,7 +799,16 @@
     el.modeRainBtn.addEventListener('click', () => {
       el.modeRainBtn.classList.add('active');
       el.modeTempBtn.classList.remove('active');
+      el.modePVBtn.classList.remove('active');
       state.chartMode = 'rain';
+      drawChart();
+    });
+
+    el.modePVBtn.addEventListener('click', () => {
+      el.modePVBtn.classList.add('active');
+      el.modeTempBtn.classList.remove('active');
+      el.modeRainBtn.classList.remove('active');
+      state.chartMode = 'pv';
       drawChart();
     });
 

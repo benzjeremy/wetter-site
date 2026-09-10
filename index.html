@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wetter-site · Moderne Wetter-Station &amp; Interaktive Telemetrie · v1.0</title>
-  <meta name="description" content="Moderne Wetter-Station & interaktive Telemetrie von Jeremy Benz. Live-Wetterdaten, 24h-Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend via Open-Meteo. 100% Trackingfrei.">
+  <title>wetter-site · Moderne Wetter-Station &amp; Solar-Telemetrie · v1.1</title>
+  <meta name="description" content="Moderne Wetter-Station & interaktive Telemetrie von Jeremy Benz. Live-Wetterdaten, PV-Solarprognose (kW/kWh), 24h-Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend via Open-Meteo. 100% Trackingfrei.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="wetter-site · Moderne Wetter-Station &amp; Interaktive Telemetrie">
-  <meta property="og:description" content="Live-Wetterstation, 24h Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend. 100% Client-Side.">
+  <meta property="og:title" content="wetter-site · Moderne Wetter-Station &amp; Solar-Telemetrie">
+  <meta property="og:description" content="Live-Wetterstation, PV-Solarprognose, 24h Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend. 100% Client-Side.">
   <meta property="og:url" content="https://benzjeremy.github.io/wetter-site/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="wetter-site · Weather Dashboard">
-  <meta name="twitter:description" content="Hyperlokale Wetterdaten & Canvas-Telemetrie ohne Tracking.">
+  <meta name="twitter:title" content="wetter-site · Weather &amp; Solar Dashboard">
+  <meta name="twitter:description" content="Hyperlokale Wetterdaten, PV-Prognose &amp; Canvas-Telemetrie ohne Tracking.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css?v=2.4.0">
+  <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
           <div class="brand-logo" aria-hidden="true">☀️</div>
           <div class="brand-info">
             <span class="brand-name">wetter-site</span>
-            <span class="brand-ver">v1.0 · Open-Meteo</span>
+            <span class="brand-ver">v1.1 · Solar &amp; PV</span>
           </div>
         </a>
       </div>
@@ -73,7 +73,7 @@
       <div class="hero-container">
         
         <div class="hero-badges">
-          <span class="hero-badge release-badge">🚀 Release v1.0 [Live Engine]</span>
+          <span class="hero-badge release-badge">🚀 Release v1.1 [Solar &amp; PV-Prognose]</span>
           <span class="hero-badge perf-badge">⚡ 100% Client-Side · § 25 TDDDG</span>
           <span class="hero-badge open-badge">🌍 Weltweites Geocoding</span>
           <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge license-pill">GNU GPL-3.0</a>
@@ -259,7 +259,7 @@
             </div>
           </div>
 
-          <!-- Telemetry Grid (6 Metrics) -->
+          <!-- Telemetry Grid (9 Metrics including PV Solar Engine) -->
           <div class="metrics-grid">
             <div class="metric-card">
               <div class="metric-header">
@@ -317,6 +317,33 @@
               <div class="metric-value" id="valSunTimes">06:24 / 19:48</div>
               <div class="metric-sub">Aufgang / Untergang</div>
             </div>
+
+            <div class="metric-card metric-card-pv">
+              <div class="metric-header">
+                <span class="metric-icon">⚡</span>
+                <span class="metric-title">PV-Solarleistung</span>
+              </div>
+              <div class="metric-value" id="valPVPower">0.00 kW</div>
+              <div class="metric-sub" id="subPVPower">5 kWp Referenzanlage</div>
+            </div>
+
+            <div class="metric-card metric-card-pv">
+              <div class="metric-header">
+                <span class="metric-icon">🔋</span>
+                <span class="metric-title">PV-Tagesertrag</span>
+              </div>
+              <div class="metric-value" id="valPVEnergy">0.0 kWh</div>
+              <div class="metric-sub" id="subPVEnergy">Erwarteter Ertrag heute</div>
+            </div>
+
+            <div class="metric-card metric-card-pv">
+              <div class="metric-header">
+                <span class="metric-icon">☀️</span>
+                <span class="metric-title">Sonne &amp; Strahlung</span>
+              </div>
+              <div class="metric-value" id="valSolarRad">0 W/m²</div>
+              <div class="metric-sub" id="subSolarRad">0.0 h Sonnenschein heute</div>
+            </div>
           </div>
 
           <!-- 24-Hour Interactive Canvas Graph -->
@@ -329,6 +356,7 @@
               <div class="chart-modes" role="group" aria-label="Diagramm Modus">
                 <button type="button" class="chart-mode-btn active" id="modeTempBtn">🌡️ Temperatur</button>
                 <button type="button" class="chart-mode-btn" id="modeRainBtn">🌧️ Niederschlag (%)</button>
+                <button type="button" class="chart-mode-btn" id="modePVBtn">⚡ PV-Ertrag (kW)</button>
               </div>
             </div>
             <div class="chart-canvas-wrapper">
