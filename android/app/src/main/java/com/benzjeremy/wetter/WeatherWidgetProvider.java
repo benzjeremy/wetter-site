@@ -21,6 +21,10 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+        int interval = WeatherRepository.getAutoRefreshInterval(context);
+        if (interval > 0) {
+            WeatherRepository.scheduleAutoRefresh(context, interval);
+        }
     }
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
@@ -82,7 +86,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (ACTION_REFRESH.equals(intent.getAction())) {
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            int interval = WeatherRepository.getAutoRefreshInterval(context);
+            if (interval > 0) {
+                WeatherRepository.scheduleAutoRefresh(context, interval);
+            }
+        } else if (ACTION_REFRESH.equals(intent.getAction())) {
             WeatherRepository.LocationInfo loc = WeatherRepository.loadLocation(context);
             WeatherRepository.fetchWeather(context, loc.latitude, loc.longitude, loc.name, new WidgetUpdateCallback(context));
         }

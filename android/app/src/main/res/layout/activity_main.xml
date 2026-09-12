@@ -68,6 +68,16 @@
             android:contentDescription="@string/search_title"
             android:src="@android:drawable/ic_menu_search" />
 
+        <!-- Settings button (Auto-refresh interval) -->
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/btn_bg"
+            android:contentDescription="@string/settings"
+            android:src="@android:drawable/ic_menu_preferences" />
+
         <!-- Refresh button -->
         <ImageButton
             android:id="@+id/btn_refresh"

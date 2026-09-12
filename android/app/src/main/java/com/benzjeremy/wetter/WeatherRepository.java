@@ -1,6 +1,9 @@
 package com.benzjeremy.wetter;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +29,7 @@ public class WeatherRepository {
     private static final String KEY_LOC_LAT = "loc_lat";
     private static final String KEY_LOC_LON = "loc_lon";
     private static final String KEY_UNIT = "temp_unit";
+    private static final String KEY_AUTO_REFRESH = "auto_refresh_interval";
 
     private static final ExecutorService executor = Executors.newCachedThreadPool();
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -86,6 +90,37 @@ public class WeatherRepository {
     public static void setUnit(Context context, String unit) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(KEY_UNIT, unit).apply();
+    }
+
+    public static int getAutoRefreshInterval(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_AUTO_REFRESH, 60); // Default: 60 minutes
+    }
+
+    public static void setAutoRefreshInterval(Context context, int intervalMinutes) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putInt(KEY_AUTO_REFRESH, intervalMinutes).apply();
+    }
+
+    public static void scheduleAutoRefresh(Context context, int intervalMinutes) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, WeatherWidgetProvider.class);
+        intent.setAction(WeatherWidgetProvider.ACTION_REFRESH);
+        PendingIntent pi = PendingIntent.getBroadcast(
+                context, 1001, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        if (am == null) return;
+
+        if (intervalMinutes <= 0) {
+            am.cancel(pi);
+            return;
+        }
+
+        long intervalMillis = intervalMinutes * 60 * 1000L;
+        long triggerAtMillis = System.currentTimeMillis() + intervalMillis;
+        am.setInexactRepeating(AlarmManager.RTC, triggerAtMillis, intervalMillis, pi);
     }
 
     public static void saveCache(Context context, WeatherData data) {

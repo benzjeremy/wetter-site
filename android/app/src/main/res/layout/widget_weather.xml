@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <!-- Top Bar: Location + Time + Refresh Button -->
+    <!-- Top Bar: Location + Live TextClock + Last Update + Refresh Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +26,18 @@
             android:textSize="13sp"
             android:textStyle="bold" />
 
+        <!-- Current Live System Time -->
+        <TextClock
+            android:id="@+id/widget_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="hh:mm"
+            android:format24Hour="HH:mm"
+            android:textColor="@color/accent_sky"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="6dp" />
+
         <TextView
             android:id="@+id/widget_updated"
             android:layout_width="wrap_content"
@@ -33,7 +45,7 @@
             android:layout_marginEnd="6dp"
             android:text="11:00"
             android:textColor="@color/text_muted"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
 
         <ImageButton
             android:id="@+id/widget_refresh_btn"

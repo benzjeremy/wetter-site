@@ -23,4 +23,11 @@
     <string name="search_title">Select Location</string>
     <string name="no_results">No locations found.</string>
     <string name="open_source_info">100% Free &amp; Open-Source Software (GPL-3.0) • No trackers, no ads, no relay servers.</string>
+    <string name="settings">Settings</string>
+    <string name="auto_refresh">Auto-Refresh Interval</string>
+    <string name="refresh_15m">Every 15 Minutes</string>
+    <string name="refresh_30m">Every 30 Minutes</string>
+    <string name="refresh_60m">Every 1 Hour</string>
+    <string name="refresh_off">Off (Manual only)</string>
+    <string name="auto_refresh_set">Refresh interval set to: </string>
 </resources>

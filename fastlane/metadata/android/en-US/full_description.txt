@@ -5,7 +5,8 @@ Features:
 • Accurate Weather Metrics: Real-time temperature, apparent temperature, relative humidity, wind speed, and atmospheric surface pressure.
 • Solar PV Forecast: Physically modeled rooftop and balcony photovoltaic output estimation (based on a 5 kWp reference system).
 • 24-Hour and 7-Day Forecast: Clean overview of upcoming hourly conditions and multi-day trends.
-• Interactive Home Screen Widget: Live weather conditions, min/max temperatures, and solar PV status on your home screen with a one-tap refresh button.
+• Interactive Home Screen Widget: Live system clock (TextClock), live weather conditions, min/max temperatures, and solar PV status on your home screen.
+• Configurable Auto-Refresh: Choose your preferred update interval in settings (15 minutes, 30 minutes, 1 hour, or manual only).
 • Global Location Search: Worldwide geocoding via Open-Meteo with local persistence.
 • Unit Switching: Support for Celsius (°C), Fahrenheit (°F), and Kelvin (K).
 • 100% Free & Open Source: Licensed under the GNU General Public License v3.0.

@@ -1,6 +1,7 @@
 package com.benzjeremy.wetter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
     private TextView tvLocationName;
     private Button btnUnitToggle;
     private ImageButton btnSearch;
+    private ImageButton btnSettings;
     private ImageButton btnRefresh;
 
     private LinearLayout searchBarLayout;
@@ -87,6 +89,7 @@ public class MainActivity extends Activity {
         tvLocationName = findViewById(R.id.tv_location_name);
         btnUnitToggle = findViewById(R.id.btn_unit_toggle);
         btnSearch = findViewById(R.id.btn_search);
+        btnSettings = findViewById(R.id.btn_settings);
         btnRefresh = findViewById(R.id.btn_refresh);
 
         searchBarLayout = findViewById(R.id.search_bar_layout);
@@ -166,12 +169,55 @@ public class MainActivity extends Activity {
         // Manual Refresh
         btnRefresh.setOnClickListener(v -> refreshWeather());
 
+        // Auto-refresh interval settings
+        btnSettings.setOnClickListener(v -> showAutoRefreshDialog());
+
         // Location header click also triggers search
         findViewById(R.id.btn_location_header).setOnClickListener(v -> {
             searchBarLayout.setVisibility(View.VISIBLE);
             etSearchQuery.requestFocus();
             showKeyboard();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WeatherData cached = WeatherRepository.loadCache(this);
+        if (cached != null) {
+            renderWeather(cached);
+        }
+    }
+
+    private void showAutoRefreshDialog() {
+        final int[] intervals = new int[]{15, 30, 60, 0};
+        final String[] options = new String[]{
+                getString(R.string.refresh_15m),
+                getString(R.string.refresh_30m),
+                getString(R.string.refresh_60m),
+                getString(R.string.refresh_off)
+        };
+
+        int currentInterval = WeatherRepository.getAutoRefreshInterval(this);
+        int selectedIndex = 2; // Default: 60m
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i] == currentInterval) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                .setTitle(R.string.auto_refresh)
+                .setSingleChoiceItems(options, selectedIndex, (dialog, which) -> {
+                    int chosenInterval = intervals[which];
+                    WeatherRepository.setAutoRefreshInterval(MainActivity.this, chosenInterval);
+                    WeatherRepository.scheduleAutoRefresh(MainActivity.this, chosenInterval);
+                    Toast.makeText(MainActivity.this, getString(R.string.auto_refresh_set) + options[which], Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void refreshWeather() {
