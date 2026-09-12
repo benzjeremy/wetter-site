@@ -3,8 +3,14 @@
 [![F-Droid](https://img.shields.io/badge/F--Droid-myfdroid-blue?style=for-the-badge&logo=fdroid)](https://benzjeremy.github.io/myfdroid/)
 [![Android](https://img.shields.io/badge/Android-SDK%2021--34-brightgreen?style=for-the-badge&logo=android)](https://benzjeremy.github.io/myfdroid/repo/wetter-v1.0.apk)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge)](LICENSE)
+[![Status: Pre-Release](https://img.shields.io/badge/Status-Pre--Release%20%2F%20WIP-orange.svg?style=for-the-badge)](https://benzjeremy.github.io/wetter-site/)
 [![API: Open-Meteo](https://img.shields.io/badge/API-Open--Meteo-orange?style=for-the-badge)](https://open-meteo.com)
 [![Web Live](https://img.shields.io/badge/Website-Live-38bdf8?style=for-the-badge&logo=googlechrome&logoColor=black)](https://benzjeremy.github.io/wetter-site/)
+
+> [!IMPORTANT]
+> ### 🚧 Pre-Release / Active Development Notice
+> **This software is not yet finished and is currently under active development.**  
+> All versions, Android APKs, and web deployments are **Pre-Releases** (Work in Progress), even if released without explicit pre-release labelling. Active refinements, UI polishing, and weather modeling upgrades are ongoing.
 
 A privacy-focused, zero-telemetry weather forecasting and solar photovoltaic (PV) yield prediction ecosystem developed by **Jeremy Benz**. Designed with zero proprietary tracking, zero analytics, no advertising, and no relay server requirements.
 
