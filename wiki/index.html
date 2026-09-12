@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>wetter-site Wiki &bull; Architektur, Solar-Physik &amp; Android Widget Handbuch</title>
+  <meta name="description" content="Offizielles technisches Handbuch für wetter-site: Photovoltaik-Ertragsmodell, direkte Open-Meteo API-Anbindung, native Android App mit Homescreen-Widget und 3-Web Architektur.">
+  <link rel="stylesheet" href="wiki.css">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('site_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- WIKI HEADER -->
+  <header class="wiki-header">
+    <div class="wiki-header-container">
+      <div class="wiki-brand-group">
+        <a href="https://benzjeremy.github.io/" class="eco-back-link" title="Zurück zum zentralen Portfolio">
+          <span>← benzjeremy.github.io</span>
+        </a>
+        <a href="../" class="eco-back-link" title="Zurück zum Showcase">
+          <span>🏠 Showcase</span>
+        </a>
+        <a href="index.html" class="wiki-brand-link">
+          <span style="font-size: 1.25rem; margin-right: 0.35rem;">☀️</span>
+          <span class="wiki-brand-title">wetter-site</span>
+          <span class="wiki-brand-badge">Wiki v1.2</span>
+        </a>
+      </div>
+
+      <div class="wiki-nav-tools">
+        <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+          <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setWikiLang('de')">DE</button>
+          <button type="button" class="lang-btn" id="btn-lang-en" onclick="setWikiLang('en')">EN</button>
+        </div>
+
+        <button type="button" class="theme-toggle-btn" id="themeToggle" onclick="toggleWikiTheme()" title="Theme wechseln">🌙</button>
+
+        <a href="../app/" class="wiki-btn primary">
+          <span class="lang-de">🚀 Web-App</span>
+          <span class="lang-en" style="display:none;">🚀 Web App</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- WIKI LAYOUT -->
+  <div class="wiki-layout">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="wiki-sidebar">
+      <nav class="wiki-nav-menu">
+        <div class="wiki-menu-group">
+          <span class="wiki-menu-title">
+            <span class="lang-de">Handbuch</span>
+            <span class="lang-en" style="display:none;">Handbook</span>
+          </span>
+          <a href="#intro" class="wiki-menu-link active">
+            <span class="lang-de">1. Einführung &amp; Philosophie</span>
+            <span class="lang-en" style="display:none;">1. Introduction &amp; Philosophy</span>
+          </a>
+          <a href="#solar-physics" class="wiki-menu-link">
+            <span class="lang-de">2. PV Solar-Ertragsmodell</span>
+            <span class="lang-en" style="display:none;">2. Solar PV Physics Model</span>
+          </a>
+          <a href="#android-widget" class="wiki-menu-link">
+            <span class="lang-de">3. Android App &amp; Widget</span>
+            <span class="lang-en" style="display:none;">3. Android App &amp; Widget</span>
+          </a>
+          <a href="#api-reference" class="wiki-menu-link">
+            <span class="lang-de">4. Open-Meteo API &amp; WMO</span>
+            <span class="lang-en" style="display:none;">4. Open-Meteo API &amp; WMO</span>
+          </a>
+          <a href="#architecture" class="wiki-menu-link">
+            <span class="lang-de">5. 3-Web Ökosystem</span>
+            <span class="lang-en" style="display:none;">5. 3-Web Ecosystem</span>
+          </a>
+          <a href="#faq" class="wiki-menu-link">
+            <span class="lang-de">6. FAQ &amp; Troubleshooting</span>
+            <span class="lang-en" style="display:none;">6. FAQ &amp; Troubleshooting</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="wiki-content">
+      <article class="wiki-article">
+
+        <div class="wiki-hero-header">
+          <p class="wiki-category-tag">Documentation &bull; wetter-site</p>
+          <h1 class="wiki-title">
+            <span class="lang-de">Technisches Handbuch &amp; Spezifikation</span>
+            <span class="lang-en" style="display:none;">Technical Manual &amp; Specification</span>
+          </h1>
+          <p class="wiki-lead">
+            <span class="lang-de">Vollständige Referenz zur Wetter- und Solar-PV-Plattform: Mathematische Modellierung des Solarertrags, native Android-App mit Startbildschirm-Widget, direkte Open-Meteo REST-Anbindung und Zero-Tracking-Architektur.</span>
+            <span class="lang-en" style="display:none;">Complete engineering reference for the weather and solar PV platform: Mathematical modeling of solar yield, native Android app with home screen widget, direct Open-Meteo REST integration, and zero-tracking architecture.</span>
+          </p>
+        </div>
+
+        <!-- 1. INTRO -->
+        <section id="intro" class="wiki-section">
+          <h2>
+            <span>☀️</span>
+            <span class="lang-de">1. Einführung &amp; Philosophie</span>
+            <span class="lang-en" style="display:none;">1. Introduction &amp; Philosophy</span>
+          </h2>
+          <p>
+            <span class="lang-de"><strong>wetter-site</strong> ist ein datenschutzorientiertes Wetter- und Solar-PV-Ökosystem, entwickelt von <strong>Jeremy Benz</strong>. Das Projekt wurde nach dem Leitgedanken des <em>Zero-Bloat</em> und <em>Privacy-by-Design</em> entworfen:</span>
+            <span class="lang-en" style="display:none;"><strong>wetter-site</strong> is a privacy-first weather and solar PV ecosystem created by <strong>Jeremy Benz</strong>. Built upon the principles of <em>Zero-Bloat</em> and <em>Privacy-by-Design</em>:</span>
+          </p>
+          <ul>
+            <li><span class="lang-de"><strong>Keine Relay-Server:</strong> Alle Wetter- und Geocoding-Abfragen erfolgen direkt clientseitig gegen die freie Open-Meteo API. Kein Zwischenserver protokolliert IP-Adressen oder Standortkoordinaten.</span><span class="lang-en" style="display:none;"><strong>No Relay Servers:</strong> All weather and geocoding requests are performed directly client-side against the open Open-Meteo API. No intermediate proxy logs IP addresses or coordinates.</span></li>
+            <li><span class="lang-de"><strong>Zero Telemetry:</strong> Weder die Web-Applikation noch die native Android-App enthalten Analysetools, Werbenetzwerke oder Tracking-Pixel.</span><span class="lang-en" style="display:none;"><strong>Zero Telemetry:</strong> Neither the web application nor the native Android app contains analytics SDKs, advertising libraries, or tracking pixels.</span></li>
+            <li><span class="lang-de"><strong>Pure Performance:</strong> Die Web-App nutzt pures HTML5, modernes CSS3 und native Canvas-Grafik (sub-50ms Interaction-to-Next-Paint). Die Android-App ist in purem Java ohne WebView-Overhead realisiert.</span><span class="lang-en" style="display:none;"><strong>Pure Performance:</strong> The web app uses pure HTML5, modern CSS3, and native Canvas rendering (sub-50ms INP). The Android app is implemented in pure Java with zero WebView overhead.</span></li>
+          </ul>
+        </section>
+
+        <!-- 2. SOLAR PHYSICS -->
+        <section id="solar-physics" class="wiki-section">
+          <h2>
+            <span>⚡</span>
+            <span class="lang-de">2. Photovoltaik Solar-Ertragsmodell</span>
+            <span class="lang-en" style="display:none;">2. Solar PV Physics Model</span>
+          </h2>
+          <p>
+            <span class="lang-de">Die Ertragsberechnung schätzt die momentane Leistung $P_{pv}$ (in Watt) einer 5 kWp Photovoltaik-Referenzanlage (typische Wohngebäude-Aufdachanlage mit monokristallinen Siliziummodulen):</span>
+            <span class="lang-en" style="display:none;">The yield calculation estimates instantaneous electrical power $P_{pv}$ (in Watts) for a 5 kWp residential photovoltaic system with monocrystalline silicon modules:</span>
+          </p>
+
+          <div style="margin: 1rem 0; padding: 1rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-family: monospace; font-size: 0.95rem;">
+            P_pv = P_peak &times; (G_eff / 1000 W/m²) &times; [1 + &gamma; &times; (T_cell - 25°C)] &times; &eta;_inverter
+          </div>
+
+          <h3><span class="lang-de">Modellparameter &amp; physikalische Koeffizienten:</span><span class="lang-en" style="display:none;">Model Parameters &amp; Physical Coefficients:</span></h3>
+          <ul>
+            <li><strong>P_peak = 5000 W (5.0 kWp):</strong> <span class="lang-de">Installierte Modul-Nennleistung unter Standard-Testbedingungen (STC: 1000 W/m², 25°C Zelltemperatur, AM 1.5).</span><span class="lang-en" style="display:none;">Nominal module peak capacity under Standard Test Conditions (STC: 1000 W/m², 25°C cell temperature, AM 1.5).</span></li>
+            <li><strong>G_eff (Effektive Bestrahlungsstärke):</strong> <span class="lang-de">Wird aus dem solaren Höhenwinkel &theta; (aus geografischer Breite &amp; Tageszeit) und dem Bewölkungsgrad modelliert:</span><span class="lang-en" style="display:none;">Calculated from solar elevation &theta; and cloud cover percentage:</span><br>
+            <code>G_eff = G_clearsky &times; (1 - 0.75 &times; (cloud_cover / 100)^3.4)</code>
+            </li>
+            <li><strong>&gamma; = -0.0038 / °C (-0.38 %/°C):</strong> <span class="lang-de">Negativer Leistungstemperaturkoeffizient für monokristalline Solarzellen. Mit steigender Zelltemperatur sinkt der elektrische Wirkungsgrad.</span><span class="lang-en" style="display:none;">Negative temperature power coefficient for monocrystalline silicon cells. Higher cell temperatures diminish efficiency.</span></li>
+            <li><strong>T_cell (Modulzellentemperatur):</strong> <span class="lang-de">Berechnung nach dem NOCT-Modell (Normal Operating Cell Temperature, 45°C):</span><span class="lang-en" style="display:none;">Estimated via the NOCT model (Nominal Operating Cell Temperature, 45°C):</span><br>
+            <code>T_cell = T_ambient + ((45 - 20) / 800) &times; G_eff</code>
+            </li>
+            <li><strong>&eta;_inverter = 0.96 (96%):</strong> <span class="lang-de">Wirkungsgrad moderner transformatorloser String-Wechselrichter inklusive Leitungsverlusten.</span><span class="lang-en" style="display:none;">Conversion efficiency of modern transformerless string inverters including wiring losses.</span></li>
+          </ul>
+
+          <p>
+            <span class="lang-de">Bei Sonnenständen unterhalb des Horizonts (&theta; &le; 0°) wird die Bestrahlungsstärke strikt auf 0.0 W gesetzt. Die integrierte Tages-Energie (kWh) ergibt sich aus der stündlichen Summe: <code>E_day = &sum; (P_pv / 1000) &times; 1h</code>.</span>
+            <span class="lang-en" style="display:none;">When the sun is below the horizon (&theta; &le; 0°), irradiance is strictly clamped to 0.0 W. Daily cumulative yield (kWh) is calculated by integrating hourly outputs: <code>E_day = &sum; (P_pv / 1000) &times; 1h</code>.</span>
+          </p>
+        </section>
+
+        <!-- 3. ANDROID WIDGET -->
+        <section id="android-widget" class="wiki-section">
+          <h2>
+            <span>📱</span>
+            <span class="lang-de">3. Native Android App &amp; Startbildschirm-Widget</span>
+            <span class="lang-en" style="display:none;">3. Native Android App &amp; Home Screen Widget</span>
+          </h2>
+          <p>
+            <span class="lang-de">Die native Android-App (<code>com.benzjeremy.wetter</code>) bietet maximale Effizienz und Unabhängigkeit vom Browser:</span>
+            <span class="lang-en" style="display:none;">The native Android app (<code>com.benzjeremy.wetter</code>) provides peak performance and zero browser dependency:</span>
+          </p>
+
+          <div class="wiki-grid-2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0;">
+            <div style="padding: 1rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+              <h4 style="color: var(--accent-sky); margin-bottom: 0.5rem;">📲 Startbildschirm-Widget (4x2 / 4x1)</h4>
+              <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="lang-de">Zeigt aktuelle Temperatur, Wetter-Emoji, Min/Max-Spanne, Ort und aktuelle Solar-PV Leistung direkt auf dem Android-Homescreen an. Mit manuellem Sofort-Aktualisierungsbutton via PendingIntent Broadcast.</span>
+                <span class="lang-en" style="display:none;">Displays current temperature, weather emoji, min/max range, location, and solar PV output on the Android home screen. Includes a one-tap refresh button via PendingIntent broadcast.</span>
+              </p>
+            </div>
+            <div style="padding: 1rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+              <h4 style="color: var(--accent-sky); margin-bottom: 0.5rem;">🔋 Akku-Schonung &amp; Caching</h4>
+              <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="lang-de">Kein aggressiver Hintergrund-Polling-Dienst. Die App puffert den letzten erfolgreichen Abruf in SharedPreferences und synchronisiert das Widget bei Nutzerinteraktion oder App-Start.</span>
+                <span class="lang-en" style="display:none;">No battery-draining background wake locks. Cached data is stored in SharedPreferences and synchronized upon widget interaction or app launch.</span>
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="lang-de">Installation &amp; F-Droid Integration:</span><span class="lang-en" style="display:none;">Installation &amp; F-Droid Integration:</span></h3>
+          <p>
+            <span class="lang-de">Die App wird offiziell über das <strong>myfdroid</strong>-Repository bereitgestellt:</span>
+            <span class="lang-en" style="display:none;">The app is officially distributed through the <strong>myfdroid</strong> repository:</span>
+          </p>
+          <pre><code>https://benzjeremy.github.io/myfdroid/repo?fingerprint=A2AD027C856AE9E111B17A55DF5303BB423DBF8D447DC981BDB0E21346963CB7</code></pre>
+          <p>
+            <span class="lang-de">Direkter APK-Download: <a href="https://benzjeremy.github.io/myfdroid/repo/wetter-v1.0.apk" target="_blank" rel="noopener noreferrer">wetter-v1.0.apk (74 KB)</a></span>
+            <span class="lang-en" style="display:none;">Direct APK download: <a href="https://benzjeremy.github.io/myfdroid/repo/wetter-v1.0.apk" target="_blank" rel="noopener noreferrer">wetter-v1.0.apk (74 KB)</a></span>
+          </p>
+        </section>
+
+        <!-- 4. API REFERENCE -->
+        <section id="api-reference" class="wiki-section">
+          <h2>
+            <span>🌐</span>
+            <span class="lang-de">4. Open-Meteo API &amp; WMO-Wettercodes</span>
+            <span class="lang-en" style="display:none;">4. Open-Meteo API &amp; WMO Codes</span>
+          </h2>
+          <p>
+            <span class="lang-de">Das System nutzt standardisierte REST-Endpunkte von Open-Meteo ohne proprietäre Authentifizierung:</span>
+            <span class="lang-en" style="display:none;">The system relies on standardized public REST endpoints provided by Open-Meteo without authentication:</span>
+          </p>
+
+          <pre><code>GET https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,surface_pressure,wind_speed_10m&hourly=temperature_2m,precipitation_probability,cloud_cover&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto</code></pre>
+
+          <h3><span class="lang-de">WMO Interpretationstabelle:</span><span class="lang-en" style="display:none;">WMO Weather Interpretation Table:</span></h3>
+          <div style="overflow-x: auto; margin: 1rem 0;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border-strong); text-align: left;">
+                  <th style="padding: 0.5rem;">WMO Code</th>
+                  <th style="padding: 0.5rem;">Symbol</th>
+                  <th style="padding: 0.5rem;">Bedeutung (DE)</th>
+                  <th style="padding: 0.5rem;">Meaning (EN)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">0</td><td style="padding: 0.5rem;">☀️</td><td style="padding: 0.5rem;">Klarer Himmel</td><td style="padding: 0.5rem;">Clear sky</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">1, 2, 3</td><td style="padding: 0.5rem;">🌤️ / ☁️</td><td style="padding: 0.5rem;">Leicht bewölkt bis bedeckt</td><td style="padding: 0.5rem;">Mainly clear to overcast</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">45, 48</td><td style="padding: 0.5rem;">🌫️</td><td style="padding: 0.5rem;">Nebel / Reifnebel</td><td style="padding: 0.5rem;">Fog and depositing rime fog</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">51, 53, 55</td><td style="padding: 0.5rem;">🌦️</td><td style="padding: 0.5rem;">Sprühregen (leicht bis stark)</td><td style="padding: 0.5rem;">Drizzle (light to dense)</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">61, 63, 65</td><td style="padding: 0.5rem;">🌧️</td><td style="padding: 0.5rem;">Regen (leicht, mäßig, stark)</td><td style="padding: 0.5rem;">Rain (slight, moderate, heavy)</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">71, 73, 75</td><td style="padding: 0.5rem;">❄️</td><td style="padding: 0.5rem;">Schneefall</td><td style="padding: 0.5rem;">Snow fall</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">80, 81, 82</td><td style="padding: 0.5rem;">🌦️</td><td style="padding: 0.5rem;">Regenschauer</td><td style="padding: 0.5rem;">Rain showers</td></tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);"><td style="padding: 0.5rem;">95, 96, 99</td><td style="padding: 0.5rem;">⛈️</td><td style="padding: 0.5rem;">Gewitter (mit Hagel)</td><td style="padding: 0.5rem;">Thunderstorm (with hail)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 5. ARCHITECTURE -->
+        <section id="architecture" class="wiki-section">
+          <h2>
+            <span>🏛️</span>
+            <span class="lang-de">5. 3-Web &amp; 3-Branch Ökosystem</span>
+            <span class="lang-en" style="display:none;">5. 3-Web &amp; 3-Branch Architecture</span>
+          </h2>
+          <p>
+            <span class="lang-de">Das Projekt folgt der verbindlichen Web- und Branch-Architektur aller Jeremy Benz Repositories:</span>
+            <span class="lang-en" style="display:none;">The project implements the official Web and Branch architecture standard across Jeremy Benz repositories:</span>
+          </p>
+
+          <div style="overflow-x: auto; margin: 1rem 0;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border-strong); text-align: left;">
+                  <th style="padding: 0.5rem;">Ebene</th>
+                  <th style="padding: 0.5rem;">URL-Pfad</th>
+                  <th style="padding: 0.5rem;">Funktion &amp; Inhalt</th>
+                  <th style="padding: 0.5rem;">Sprachstandard</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.5rem;"><strong>Showcase</strong></td>
+                  <td style="padding: 0.5rem;"><code>/wetter-site/</code></td>
+                  <td style="padding: 0.5rem;">Landingpage mit Hero, Feature-Grid, Downloads &amp; Projektübersicht</td>
+                  <td style="padding: 0.5rem;">100% Bilingual (DE / EN)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.5rem;"><strong>Web-App</strong></td>
+                  <td style="padding: 0.5rem;"><code>/wetter-site/app/</code></td>
+                  <td style="padding: 0.5rem;">Vollwertige interaktive Wetter-Station mit Canvas-Engine</td>
+                  <td style="padding: 0.5rem;">100% Bilingual (DE / EN)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.5rem;"><strong>Web-Wiki</strong></td>
+                  <td style="padding: 0.5rem;"><code>/wetter-site/wiki/</code></td>
+                  <td style="padding: 0.5rem;">Technisches Handbuch, Physik-Modell, API &amp; Widget-Setup</td>
+                  <td style="padding: 0.5rem;">100% Bilingual (DE / EN)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.5rem;"><strong>Source (`main`)</strong></td>
+                  <td style="padding: 0.5rem;">Branch <code>main</code></td>
+                  <td style="padding: 0.5rem;">Natives Android-Projekt, Build-Skripte, Fastlane, CI Workflows</td>
+                  <td style="padding: 0.5rem;">100% Englisch</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 6. FAQ -->
+        <section id="faq" class="wiki-section">
+          <h2>
+            <span>❓</span>
+            <span class="lang-de">6. FAQ &amp; Troubleshooting</span>
+            <span class="lang-en" style="display:none;">6. FAQ &amp; Troubleshooting</span>
+          </h2>
+
+          <h3><span class="lang-de">Warum aktualisiert sich das Android-Widget manchmal verzögert?</span><span class="lang-en" style="display:none;">Why does the Android widget sometimes update with a delay?</span></h3>
+          <p>
+            <span class="lang-de">Android setzt strenge Energiesparmechanismen (Doze Mode &amp; App Standby) ein. Um deinen Akku zu schonen, pollt die Wetter-App das Netzwerk nicht minütlich im Hintergrund. Du kannst das Widget jederzeit per Tippen auf das Aktualisieren-Symbol (🔄) sofort auf den neuesten Stand bringen.</span>
+            <span class="lang-en" style="display:none;">Android enforces strict battery optimization (Doze Mode &amp; App Standby). To preserve battery life, the weather app does not continuously poll the network in the background. You can instantly update the widget at any time by tapping the refresh icon (🔄).</span>
+          </p>
+
+          <h3><span class="lang-de">Wie wechsle ich die Temperatureinheit?</span><span class="lang-en" style="display:none;">How do I switch the temperature unit?</span></h3>
+          <p>
+            <span class="lang-de">In der Web-Applikation kannst du in der Kopfzeile zwischen °C, °F und Kelvin wählen. In der Android-App befindet sich die Umschaltung direkt in den Schnelleinstellungen der Dashboard-Kopfzeile.</span>
+            <span class="lang-en" style="display:none;">In the web application, select your preferred unit (°C, °F, or Kelvin) in the header. In the Android app, use the unit switch located directly in the dashboard header.</span>
+          </p>
+
+          <h3><span class="lang-de">Wie präzise ist die Photovoltaik-Prognose?</span><span class="lang-en" style="display:none;">How accurate is the solar PV forecast?</span></h3>
+          <p>
+            <span class="lang-de">Die Prognose basiert auf einem physikalischen Modell für unverschattete Südausrichtung (35° Dachneigung). Lokale Verschattungen durch Bäume oder Nachbargebäude sowie Schneeauflagen können den realen Ertrag verringern.</span>
+            <span class="lang-en" style="display:none;">The calculation assumes an unshaded south-facing installation with 35° roof pitch. Local shading from trees or surrounding buildings as well as snow cover can diminish real-world yields.</span>
+          </p>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="wiki-footer">
+          <div>© 2026 Jeremy Benz &bull; wetter-site &bull; GNU GPL-3.0</div>
+          <div style="display: flex; gap: 1rem;">
+            <a href="../">Showcase</a>
+            <a href="../app/">Web-App</a>
+            <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://benzjeremy.github.io/impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
+            <a href="https://benzjeremy.github.io/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+          </div>
+        </footer>
+
+      </article>
+    </main>
+  </div>
+
+  <script>
+    function setWikiLang(lang) {
+      const isDe = lang === 'de';
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = isDe ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = isDe ? 'none' : '');
+      document.getElementById('btn-lang-de').classList.toggle('active', isDe);
+      document.getElementById('btn-lang-en').classList.toggle('active', !isDe);
+      try { localStorage.setItem('wetter_wiki_lang', lang); } catch(e) {}
+    }
+
+    function toggleWikiTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('site_theme', next); } catch(e) {}
+      document.getElementById('themeToggle').textContent = next === 'dark' ? '🌙' : '☀️';
+    }
+
+    (function() {
+      const savedLang = localStorage.getItem('wetter_wiki_lang') || 'de';
+      setWikiLang(savedLang);
+      const savedTheme = localStorage.getItem('site_theme') || 'dark';
+      document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    })();
+  </script>
+</body>
+</html>

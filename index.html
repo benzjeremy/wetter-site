@@ -1,383 +1,215 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wetter-site · Moderne Wetter-Station &amp; Solar-Telemetrie · v1.1</title>
-  <meta name="description" content="Moderne Wetter-Station & interaktive Telemetrie von Jeremy Benz. Live-Wetterdaten, PV-Solarprognose (kW/kWh), 24h-Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend via Open-Meteo. 100% Trackingfrei.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>wetter-site – Hyperlokale Wetter-Station, Solar-PV Prognose &amp; Native Android App mit Widget</title>
+  <meta name="description" content="Offizielle Wetter- und Solar-PV Plattform von Jeremy Benz: Direkte Open-Meteo REST-Anbindung, physikalische Solarertrags-Modellierung (5 kWp), native Android-App mit Startbildschirm-Widget und ultra-schnelle Web-App. 100% Trackingfrei.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="wetter-site · Moderne Wetter-Station &amp; Solar-Telemetrie">
-  <meta property="og:description" content="Live-Wetterstation, PV-Solarprognose, 24h Canvas-Graphen (°C, °F, K), weltweites Geocoding und 7-Tage-Trend. 100% Client-Side.">
+  <meta property="og:title" content="wetter-site – Wetter &amp; Solar-PV Plattform mit Android Widget">
+  <meta property="og:description" content="Live-Wetterstation, PV-Solarprognose, native Android-App mit Startbildschirm-Widget und Canvas-Telemetrie. 100% Open Source.">
   <meta property="og:url" content="https://benzjeremy.github.io/wetter-site/">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="wetter-site · Weather &amp; Solar Dashboard">
-  <meta name="twitter:description" content="Hyperlokale Wetterdaten, PV-Prognose &amp; Canvas-Telemetrie ohne Tracking.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css?v=1.1">
+  <link rel="stylesheet" href="style.css?v=1.2">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('site_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 </head>
 <body>
 
-  <!-- Site Navigation -->
+  <!-- HEADER -->
   <header class="site-header">
-    <div class="nav-container">
-      <div class="nav-left">
-        <a href="https://benzjeremy.github.io/" class="back-root-btn">
+    <div class="container header-container">
+      <div class="brand-area">
+        <a href="https://benzjeremy.github.io/" class="ecosystem-back" title="Zurück zum zentralen Portfolio">
           <span>← benzjeremy.github.io</span>
         </a>
-        <a href="#" class="brand-link">
-          <div class="brand-logo" aria-hidden="true">☀️</div>
+        <a href="index.html" class="brand-link">
+          <span class="brand-icon" aria-hidden="true">☀️</span>
           <div class="brand-info">
             <span class="brand-name">wetter-site</span>
-            <span class="brand-ver">v1.1 · Solar &amp; PV</span>
+            <span class="brand-ver">v1.2 · Ecosystem</span>
           </div>
         </a>
       </div>
 
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü öffnen/schließen" aria-expanded="false">☰</button>
-
-      <nav class="main-nav" id="main-nav">
-        <a href="#app-station" class="nav-highlight">
-          <span class="lang-de">⚡ Wetter-Station</span>
-          <span class="lang-en" style="display:none;">⚡ Weather Station</span>
-        </a>
+      <nav class="main-nav">
         <a href="#features">
           <span class="lang-de">Features</span>
           <span class="lang-en" style="display:none;">Features</span>
         </a>
-        <a href="#about">
-          <span class="lang-de">Mitwirkende</span>
-          <span class="lang-en" style="display:none;">Contributors</span>
+        <a href="#architecture">
+          <span class="lang-de">3-Web System</span>
+          <span class="lang-en" style="display:none;">3-Web System</span>
         </a>
-        <a href="https://benzjeremy.github.io/status/" target="_blank" rel="noopener noreferrer">
-          <span class="lang-de">Status</span>
-          <span class="lang-en" style="display:none;">Status</span>
+        <a href="#download">
+          <span class="lang-de">Downloads</span>
+          <span class="lang-en" style="display:none;">Downloads</span>
         </a>
+        <a href="wiki/">
+          <span class="lang-de">📖 Wiki &amp; Handbuch</span>
+          <span class="lang-en" style="display:none;">📖 Wiki &amp; Manual</span>
+        </a>
+        <a href="app/" class="btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8125rem;">
+          <span class="lang-de">🚀 Web-App</span>
+          <span class="lang-en" style="display:none;">🚀 Web App</span>
+        </a>
+      </nav>
 
+      <div class="nav-actions">
         <div class="lang-switch" role="group" aria-label="Sprachauswahl">
           <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">DE</button>
           <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">EN</button>
         </div>
-
-        <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-card highlight">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          <span>GitHub</span>
-        </a>
-      </nav>
+        <button type="button" class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Theme wechseln">🌙</button>
+      </div>
     </div>
   </header>
 
   <main>
     <!-- HERO SECTION -->
-    <section class="hero-section" id="hero">
+    <section class="hero-section">
       <div class="hero-glow"></div>
-      <div class="hero-container">
+      <div class="container hero-container">
         
         <div class="hero-badges">
-          <span class="hero-badge release-badge">🚀 Release v1.1 [Solar &amp; PV-Prognose]</span>
-          <span class="hero-badge perf-badge">⚡ 100% Client-Side · § 25 TDDDG</span>
-          <span class="hero-badge open-badge">🌍 Weltweites Geocoding</span>
-          <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge license-pill">GNU GPL-3.0</a>
+          <span class="hero-badge badge-amber">☀️ PV-Ertragsprognose (5 kWp Modell)</span>
+          <a href="https://benzjeremy.github.io/myfdroid/" class="hero-badge badge-sky">📱 Android App &amp; Widget v1.0</a>
+          <span class="hero-badge">🌐 Direkte Open-Meteo API</span>
+          <span class="hero-badge">🔒 Zero-Telemetry &amp; DSGVO</span>
+          <a href="https://github.com/benzjeremy/wetter-site/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge">GNU GPL-3.0</a>
         </div>
 
-        <div data-lang="de" class="visible">
+        <div class="lang-de">
           <h1 class="hero-title">
-            Moderne Wetter-Station &amp;<br>
-            <span class="gradient-text">Interaktive Telemetrie.</span>
+            Hyperlokale Wetterdaten &amp; präzise Solar-PV Prognose.<br>
+            <span class="gradient-text">100% Werbefrei. Nativ für Android &amp; Web. Ohne Relay-Server.</span>
           </h1>
           <p class="hero-subtitle">
-            Präzise Vorhersagen, dynamische 24-Stunden Canvas-Graphen für alle Maßeinheiten 
-            (<strong>°C Celsius</strong>, <strong>°F Fahrenheit</strong>, <strong>K Kelvin</strong>), 
-            stündliche Niederschlagskurven und ein 7-Tage-Trend – blitzschnell, werbefrei und ohne Datenspeicherung.
+            <strong>wetter-site</strong> liefert blitzschnelle Wetter-Telemetrie und physikalisch modellierte Solar-Ertragsprognosen für Balkonkraftwerke und Aufdachanlagen. Vollkommen unabhängig von Datensammlern: als interaktive Canvas-Web-Applikation und als ressourcenschonende native Android-App mit Startbildschirm-Widget.
           </p>
         </div>
 
-        <div data-lang="en">
+        <div class="lang-en" style="display:none;">
           <h1 class="hero-title">
-            Modern Weather Station &amp;<br>
-            <span class="gradient-text">Interactive Telemetry.</span>
+            Hyperlocal Weather Data &amp; Precise Solar PV Yield Modeling.<br>
+            <span class="gradient-text">100% Ad-Free. Native for Android &amp; Web. Zero Relay Servers.</span>
           </h1>
           <p class="hero-subtitle">
-            Precise forecasts, dynamic 24-hour Canvas telemetry for all temperature units 
-            (<strong>°C Celsius</strong>, <strong>°F Fahrenheit</strong>, <strong>K Kelvin</strong>), 
-            hourly precipitation curves, and 7-day outlook – ultra fast, ad-free, and privacy-first.
+            <strong>wetter-site</strong> delivers instant weather telemetry and physically modeled solar yield predictions for residential rooftop and balcony photovoltaic installations. Completely private and tracking-free: accessible as an interactive Canvas web app and a lightweight native Android app with home screen widget.
           </p>
         </div>
 
-        <!-- Call to Action CTAs -->
+        <!-- HERO CTA -->
         <div class="hero-cta-group">
-          <button type="button" class="btn-primary" id="launchHeroBtn">
-            <span style="font-size: 20px;">⚡</span>
-            <div>
-              <span class="btn-main-text">Wetter-Station starten</span>
-              <span class="btn-sub-text">Live Telemetrie &amp; Messdaten</span>
-            </div>
-          </button>
-          <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-secondary">
-            <span style="font-size: 20px;">💻</span>
-            <div>
-              <span class="btn-main-text">Quellcode auf GitHub</span>
-              <span class="btn-sub-text">GPL-3.0 Open Source</span>
-            </div>
+          <a href="app/" class="btn-primary">
+            <span class="lang-de">🚀 Web-App starten (/app/)</span>
+            <span class="lang-en" style="display:none;">🚀 Launch Web App (/app/)</span>
           </a>
-        </div>
-
-        <!-- Telemetry Stats Bar -->
-        <div class="telemetry-bar">
-          <div class="telemetry-item">
-            <span class="tel-icon">🌍</span>
-            <div class="tel-text">
-              <span class="tel-val">Weltweit</span>
-              <span class="tel-sub">Open-Meteo Geocoding</span>
-            </div>
-          </div>
-          <div class="telemetry-item">
-            <span class="tel-icon">🌡️</span>
-            <div class="tel-text">
-              <span class="tel-val">°C / °F / K</span>
-              <span class="tel-sub">Alle Skalen live</span>
-            </div>
-          </div>
-          <div class="telemetry-item">
-            <span class="tel-icon">📈</span>
-            <div class="tel-text">
-              <span class="tel-val">24h Graphen</span>
-              <span class="tel-sub">Canvas Telemetrie</span>
-            </div>
-          </div>
-          <div class="telemetry-item">
-            <span class="tel-icon">🔒</span>
-            <div class="tel-text">
-              <span class="tel-val">GPL-3.0</span>
-              <span class="tel-sub">Freie Software</span>
-            </div>
-          </div>
+          <a href="https://benzjeremy.github.io/myfdroid/" class="btn-secondary">
+            <span class="lang-de">📱 Android App via myfdroid</span>
+            <span class="lang-en" style="display:none;">📱 Android App via myfdroid</span>
+          </a>
+          <a href="wiki/" class="btn-secondary">
+            <span class="lang-de">📖 Web-Wiki &amp; Handbuch</span>
+            <span class="lang-en" style="display:none;">📖 Web Wiki &amp; Manual</span>
+          </a>
+          <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <span class="lang-de">🐙 GitHub Quellcode</span>
+            <span class="lang-en" style="display:none;">🐙 GitHub Source</span>
+          </a>
         </div>
 
       </div>
     </section>
 
-    <!-- INTERACTIVE WEATHER STATION -->
-    <section class="station-section" id="app-station">
-      <div class="section-container">
+    <!-- 3-WEB ECOSYSTEM ARCHITECTURE -->
+    <section id="architecture" class="section-padding" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
         
         <div class="section-header">
-          <span class="section-tag">⚡ Live-Engine</span>
-          <h2 class="section-title">Wetter-Dashboard &amp; Messdaten</h2>
-          <p class="section-sub">Wähle einen beliebigen Ort oder nutze deinen aktuellen Standort. Alle Daten werden in Echtzeit lokal in deinem Browser berechnet.</p>
+          <p class="section-tag">
+            <span class="lang-de">3-Web &amp; 3-Branch Ökosystem</span>
+            <span class="lang-en" style="display:none;">3-Web &amp; 3-Branch Ecosystem</span>
+          </p>
+          <h2 class="section-title">
+            <span class="lang-de">Drei Säulen für maximale Flexibilität</span>
+            <span class="lang-en" style="display:none;">Three Pillars for Maximum Flexibility</span>
+          </h2>
+          <p class="section-desc">
+            <span class="lang-de">Architekturstandard von Jeremy Benz: Trennung von Showcase, interaktiver Anwendungslogik und technischer Dokumentation.</span>
+            <span class="lang-en" style="display:none;">Jeremy Benz architecture standard: Clean separation of showcase landing page, interactive application runtime, and technical documentation.</span>
+          </p>
         </div>
 
-        <div class="station-top-bar">
-          <div class="badge-pill" style="font-weight:700; color:var(--accent-primary);">Live Open-Meteo API v1</div>
+        <div class="eco-grid">
           
-          <!-- Temperature Unit Selector -->
-          <div class="unit-selector" role="group" aria-label="Temperatureinheit auswählen">
-            <span class="unit-label">Skala:</span>
-            <button type="button" class="unit-btn active" data-unit="celsius" id="unitC">°C Celsius</button>
-            <button type="button" class="unit-btn" data-unit="fahrenheit" id="unitF">°F Fahrenheit</button>
-            <button type="button" class="unit-btn" data-unit="kelvin" id="unitK">K Kelvin</button>
-          </div>
-        </div>
-
-        <!-- Controls Card -->
-        <div class="station-controls-card">
-          <form id="searchForm" class="search-form" onsubmit="return false;">
-            <div class="search-input-wrapper">
-              <span class="search-icon" aria-hidden="true">🔍</span>
-              <input 
-                type="text" 
-                id="locationInput" 
-                placeholder="Stadt oder Ort eingeben (z. B. Düsseldorf, Köln, Berlin, Zürich, Tokio...)" 
-                autocomplete="off"
-                spellcheck="false"
-                aria-label="Ort suchen"
-              >
-              <button type="button" class="clear-input-btn" id="clearBtn" title="Eingabe leeren" style="display:none;" aria-label="Eingabe leeren">✕</button>
+          <!-- Pillar 1: Showcase -->
+          <article class="eco-card">
+            <div>
+              <span class="eco-badge">Tier 1 &bull; Landingpage</span>
+              <h3>
+                <span class="lang-de">🏠 Showcase (/wetter-site/)</span>
+                <span class="lang-en" style="display:none;">🏠 Showcase (/wetter-site/)</span>
+              </h3>
+              <p>
+                <span class="lang-de">Die zentrale Übersicht: Projekt-Philosophie, Feature-Katalog, physikalische Formel-Modelle und direkter Download-Hub für Android APK und F-Droid-Repository.</span>
+                <span class="lang-en" style="display:none;">The central hub: Project philosophy, feature catalog, physical calculation formulas, and distribution hub for Android APK and F-Droid repository.</span>
+              </p>
             </div>
-            <button type="submit" class="btn-primary" id="searchSubmitBtn" style="padding: 12px 22px;">
-              <span>Wetter abrufen</span>
-            </button>
-            <button type="button" class="btn-geo" id="geoBtn" title="Aktuellen Standort via GPS ermitteln">
-              <span class="geo-icon">📍</span>
-              <span>Mein Standort</span>
-            </button>
-          </form>
+            <a href="index.html" class="eco-link">
+              <span class="lang-de">Aktuelle Ansicht &rarr;</span>
+              <span class="lang-en" style="display:none;">Current View &rarr;</span>
+            </a>
+          </article>
 
-          <!-- Quick City Chips -->
-          <div class="quick-chips">
-            <span class="chips-label">Schnellauswahl:</span>
-            <button type="button" class="chip" data-city="Düsseldorf">Düsseldorf</button>
-            <button type="button" class="chip" data-city="Köln">Köln</button>
-            <button type="button" class="chip" data-city="Berlin">Berlin</button>
-            <button type="button" class="chip" data-city="München">München</button>
-            <button type="button" class="chip" data-city="Hamburg">Hamburg</button>
-            <button type="button" class="chip" data-city="Zürich">Zürich</button>
-            <button type="button" class="chip" data-city="Wien">Wien</button>
-            <button type="button" class="chip" data-city="London">London</button>
-            <button type="button" class="chip" data-city="Tokio">Tokio</button>
-            <button type="button" class="chip" data-city="New York">New York</button>
-          </div>
-        </div>
+          <!-- Pillar 2: Web App -->
+          <article class="eco-card" style="border-color: rgba(56, 189, 248, 0.4);">
+            <div>
+              <span class="eco-badge" style="background: rgba(56, 189, 248, 0.2);">Tier 2 &bull; Interactive App</span>
+              <h3>
+                <span class="lang-de">🚀 Web-App (/wetter-site/app/)</span>
+                <span class="lang-en" style="display:none;">🚀 Web App (/wetter-site/app/)</span>
+              </h3>
+              <p>
+                <span class="lang-de">Die vollständige Wetter-Station im Browser: Hyperlokale Live-Telemetrie, 24h-Canvas-Graphen, Einheitenumschaltung (°C, °F, K), weltweites Geocoding und stündliche PV-Ertragskurven.</span>
+                <span class="lang-en" style="display:none;">The complete browser-based weather station: Hyperlocal live telemetry, 24h Canvas graphs, real-time unit switching (°C, °F, K), global geocoding, and hourly solar PV yield curves.</span>
+              </p>
+            </div>
+            <a href="app/" class="eco-link" style="color: var(--accent-sky); font-weight: 700;">
+              <span class="lang-de">Zur Web-App wechseln &rarr;</span>
+              <span class="lang-en" style="display:none;">Launch Web App &rarr;</span>
+            </a>
+          </article>
 
-        <!-- Status Banner -->
-        <div id="statusBanner" class="status-banner" style="display:none;" role="status">
-          <div class="spinner" id="statusSpinner"></div>
-          <span id="statusMessage">Wetterdaten werden geladen...</span>
-        </div>
-
-        <!-- Weather Display Area -->
-        <div id="weatherDisplay" class="weather-display" style="display:none;">
-          
-          <!-- Current Weather Hero Card -->
-          <div class="current-weather-card">
-            <div class="current-main-info">
-              <div class="location-badge">
-                <span class="loc-pin" aria-hidden="true">📍</span>
-                <h3 id="displayPlace">Berlin, Deutschland</h3>
-                <span class="coords-tag" id="displayCoords">52.52° N, 13.41° E</span>
-              </div>
-              <div class="current-timestamp" id="displayTime">Stand: Gerade eben</div>
-
-              <div class="temp-condition-wrap">
-                <div class="temp-big">
-                  <span id="displayTemp">18.5</span>
-                  <span class="temp-unit-symbol" id="displayUnit">°C</span>
-                </div>
-                <div class="condition-details">
-                  <div class="condition-text" id="displayCondition">Sonnig / Klar</div>
-                  <div class="feels-like">
-                    Gefühlt: <strong id="displayFeelsLike">18.0 °C</strong> · 
-                    Min: <span id="displayMin">12 °C</span> / Max: <span id="displayMax">22 °C</span>
-                  </div>
-                </div>
-              </div>
+          <!-- Pillar 3: Wiki -->
+          <article class="eco-card">
+            <div>
+              <span class="eco-badge">Tier 3 &bull; Documentation</span>
+              <h3>
+                <span class="lang-de">📖 Web-Wiki (/wetter-site/wiki/)</span>
+                <span class="lang-en" style="display:none;">📖 Web Wiki (/wetter-site/wiki/)</span>
+              </h3>
+              <p>
+                <span class="lang-de">Technisches Handbuch: Ausführliche Herleitung der Photovoltaik-Ertragsformeln, Open-Meteo REST-API Spezifikation, Android-Widget-Setup und Fehlerbehebung.</span>
+                <span class="lang-en" style="display:none;">Technical manual: In-depth derivation of solar PV formulas, Open-Meteo REST API specification, Android home screen widget setup, and troubleshooting.</span>
+              </p>
             </div>
-
-            <div class="current-visual">
-              <div class="weather-icon-large" id="displayIcon" aria-hidden="true">
-                ☀️
-              </div>
-            </div>
-          </div>
-
-          <!-- Telemetry Grid (9 Metrics including PV Solar Engine) -->
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">💧</span>
-                <span class="metric-title">Luftfeuchtigkeit</span>
-              </div>
-              <div class="metric-value" id="valHumidity">55%</div>
-              <div class="metric-sub" id="subHumidity">Angenehmer Bereich</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">💨</span>
-                <span class="metric-title">Wind</span>
-              </div>
-              <div class="metric-value" id="valWind">14 km/h</div>
-              <div class="metric-sub" id="subWind">
-                <span class="wind-arrow" id="windArrow">↑</span> 
-                <span id="windDirText">Nord-Nordost</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">🌧️</span>
-                <span class="metric-title">Niederschlag</span>
-              </div>
-              <div class="metric-value" id="valRain">0.0 mm</div>
-              <div class="metric-sub" id="subRain">Regenrisiko: 5%</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">☀️</span>
-                <span class="metric-title">UV-Index</span>
-              </div>
-              <div class="metric-value" id="valUV">4 / 11</div>
-              <div class="metric-sub" id="subUV">Mäßige Strahlung</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">🧭</span>
-                <span class="metric-title">Luftdruck</span>
-              </div>
-              <div class="metric-value" id="valPressure">1018 hPa</div>
-              <div class="metric-sub" id="subPressure">Stabiles Hochdruckgebiet</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-icon">🌅</span>
-                <span class="metric-title">Sonne</span>
-              </div>
-              <div class="metric-value" id="valSunTimes">06:24 / 19:48</div>
-              <div class="metric-sub">Aufgang / Untergang</div>
-            </div>
-
-            <div class="metric-card metric-card-pv">
-              <div class="metric-header">
-                <span class="metric-icon">⚡</span>
-                <span class="metric-title">PV-Solarleistung</span>
-              </div>
-              <div class="metric-value" id="valPVPower">0.00 kW</div>
-              <div class="metric-sub" id="subPVPower">5 kWp Referenzanlage</div>
-            </div>
-
-            <div class="metric-card metric-card-pv">
-              <div class="metric-header">
-                <span class="metric-icon">🔋</span>
-                <span class="metric-title">PV-Tagesertrag</span>
-              </div>
-              <div class="metric-value" id="valPVEnergy">0.0 kWh</div>
-              <div class="metric-sub" id="subPVEnergy">Erwarteter Ertrag heute</div>
-            </div>
-
-            <div class="metric-card metric-card-pv">
-              <div class="metric-header">
-                <span class="metric-icon">☀️</span>
-                <span class="metric-title">Sonne &amp; Strahlung</span>
-              </div>
-              <div class="metric-value" id="valSolarRad">0 W/m²</div>
-              <div class="metric-sub" id="subSolarRad">0.0 h Sonnenschein heute</div>
-            </div>
-          </div>
-
-          <!-- 24-Hour Interactive Canvas Graph -->
-          <div class="chart-card">
-            <div class="chart-header">
-              <div>
-                <div class="chart-badge">Telemetrie-Kurve</div>
-                <h3>24-Stunden Verlauf &amp; Trend</h3>
-              </div>
-              <div class="chart-modes" role="group" aria-label="Diagramm Modus">
-                <button type="button" class="chart-mode-btn active" id="modeTempBtn">🌡️ Temperatur</button>
-                <button type="button" class="chart-mode-btn" id="modeRainBtn">🌧️ Niederschlag (%)</button>
-                <button type="button" class="chart-mode-btn" id="modePVBtn">⚡ PV-Ertrag (kW)</button>
-              </div>
-            </div>
-            <div class="chart-canvas-wrapper">
-              <canvas id="weatherCanvas" role="img" aria-label="24 Stunden Wetterverlauf Graph"></canvas>
-              <div id="chartTooltip" class="chart-tooltip" style="display:none;"></div>
-            </div>
-            <div class="chart-legend">
-              <span>Stündliche Werte für die nächsten 24 Stunden. Bewege den Mauszeiger über den Graphen für genaue Messpunkte.</span>
-            </div>
-          </div>
-
-          <!-- 7-Day Forecast Matrix -->
-          <div class="forecast-section">
-            <div class="forecast-header">
-              <span class="section-tag" style="margin-bottom:0;">📅 Trend</span>
-              <h3>7-Tage-Wettervorhersage</h3>
-            </div>
-            <div class="forecast-grid" id="forecastGrid">
-              <!-- Dynamically populated by app.js -->
-            </div>
-          </div>
+            <a href="wiki/" class="eco-link">
+              <span class="lang-de">Wiki aufschlagen &rarr;</span>
+              <span class="lang-en" style="display:none;">Open Wiki &rarr;</span>
+            </a>
+          </article>
 
         </div>
 
@@ -385,148 +217,344 @@
     </section>
 
     <!-- FEATURES SECTION -->
-    <section class="features-section" id="features">
-      <div class="section-container">
+    <section id="features" class="section-padding">
+      <div class="container">
+        
         <div class="section-header">
-          <span class="section-tag">Architektur &amp; Vorteile</span>
-          <h2 class="section-title">Modernes Engineering &amp; Volle Transparenz</h2>
-          <p class="section-sub">Entwickelt nach den strengen Standards von Jeremy Benz: native Performance, echte Privatsphäre und null Bloatware.</p>
+          <p class="section-tag">
+            <span class="lang-de">Qualität &amp; Funktionalität</span>
+            <span class="lang-en" style="display:none;">Quality &amp; Functionality</span>
+          </p>
+          <h2 class="section-title">
+            <span class="lang-de">Leistungsmerkmale auf einen Blick</span>
+            <span class="lang-en" style="display:none;">Key Platform Features</span>
+          </h2>
+          <p class="section-desc">
+            <span class="lang-de">Entwickelt nach kompromisslosen Kriterien: Maximale Performance, Zero-Bloat und absolute Datensparsamkeit.</span>
+            <span class="lang-en" style="display:none;">Built according to uncompromising standards: Peak performance, zero framework bloat, and total privacy.</span>
+          </p>
         </div>
 
-        <div class="feature-grid">
-          <div class="feature-card">
-            <div class="f-card-icon">⚡</div>
-            <h3>Reines Vanilla JavaScript</h3>
-            <p>Keine schweren Frameworks wie React oder Angular. 100% native Webtechnologie lädt in wenigen Millisekunden und schont Geräteressourcen.</p>
+        <div class="features-grid">
+          
+          <!-- Feature 1: Android Widget -->
+          <article class="feature-card">
+            <div class="feature-icon-box">📱</div>
+            <h3>
+              <span class="lang-de">Native Android-App &amp; Widget</span>
+              <span class="lang-en" style="display:none;">Native Android App &amp; Widget</span>
+            </h3>
+            <p>
+              <span class="lang-de">Reines Java ohne WebView-Ballast (74 KB APK). Das 4x2 / 4x1 Startbildschirm-Widget liefert Temperatur, Wetter-Icon, Min/Max und aktuelle Solar-PV Leistung direkt auf den Homescreen mit 1-Tap-Aktualisierung.</span>
+              <span class="lang-en" style="display:none;">Pure Java without WebView overhead (74 KB APK). The 4x2 / 4x1 home screen widget displays current temperature, weather icon, min/max range, and live solar PV yield with one-tap refresh.</span>
+            </p>
+          </article>
+
+          <!-- Feature 2: Solar PV Model -->
+          <article class="feature-card">
+            <div class="feature-icon-box">☀️</div>
+            <h3>
+              <span class="lang-de">Photovoltaik-Ertragsmodell</span>
+              <span class="lang-en" style="display:none;">Solar PV Physics Model</span>
+            </h3>
+            <p>
+              <span class="lang-de">Physikalisch fundierte Ertragsprognose (5 kWp Referenzanlage). Berechnet momentane Leistung (Watt) und Tagesertrag (kWh) aus Sonnenstand, Bewölkungsdämpfung und Zelltemperatur (-0,38%/°C Koeffizient).</span>
+              <span class="lang-en" style="display:none;">Physically accurate solar yield estimation (5 kWp reference system). Calculates live power (Watts) and daily energy (kWh) from solar angle, cloud attenuation, and cell temperature.</span>
+            </p>
+          </article>
+
+          <!-- Feature 3: Zero-Bloat Web -->
+          <article class="feature-card">
+            <div class="feature-icon-box">⚡</div>
+            <h3>
+              <span class="lang-de">Zero-Bloat Vanilla Web Engine</span>
+              <span class="lang-en" style="display:none;">Zero-Bloat Vanilla Web Engine</span>
+            </h3>
+            <p>
+              <span class="lang-de">Reines HTML5, CSS3 und Vanilla JS. Native HTML5 Canvas-Diagramme ohne schwere Chart-Bibliotheken. Unter 50ms Interaction-to-Next-Paint (INP) und 100 Lighthouse-Scores.</span>
+              <span class="lang-en" style="display:none;">Pure HTML5, CSS3, and vanilla JavaScript. Native HTML5 Canvas charts without heavyweight graphing dependencies. Sub-50ms INP and 100 Lighthouse scores.</span>
+            </p>
+          </article>
+
+          <!-- Feature 4: Direct Open-Meteo -->
+          <article class="feature-card">
+            <div class="feature-icon-box">🌍</div>
+            <h3>
+              <span class="lang-de">Direkte Open-Meteo API</span>
+              <span class="lang-en" style="display:none;">Direct Open-Meteo API</span>
+            </h3>
+            <p>
+              <span class="lang-de">Kein Relay-Server auf GitHub oder Cloudflare. Clientseitige Kommunikation direkt mit den freien Open-Meteo REST-Endpunkten für weltweites Geocoding und hochauflösende Wetterdaten.</span>
+              <span class="lang-en" style="display:none;">No relay servers on GitHub or Cloudflare. Direct client-side communication with public Open-Meteo REST endpoints for global geocoding and high-resolution weather models.</span>
+            </p>
+          </article>
+
+          <!-- Feature 5: Multi-Units -->
+          <article class="feature-card">
+            <div class="feature-icon-box">🌡️</div>
+            <h3>
+              <span class="lang-de">Einheitenauswahl (°C, °F, K)</span>
+              <span class="lang-en" style="display:none;">Multi-Unit Support (°C, °F, K)</span>
+            </h3>
+            <p>
+              <span class="lang-de">Echtzeit-Umschaltung zwischen Celsius (°C), Fahrenheit (°F) und Kelvin (K) ohne erneute Server-Anfrage. Automatische Anpassung aller Diagramme, Min/Max-Werte und Widgets.</span>
+              <span class="lang-en" style="display:none;">Real-time switching between Celsius (°C), Fahrenheit (°F), and Kelvin (K) without triggering new network requests. Dynamic updates across all graphs and widgets.</span>
+            </p>
+          </article>
+
+          <!-- Feature 6: Privacy by Design -->
+          <article class="feature-card">
+            <div class="feature-icon-box">🔒</div>
+            <h3>
+              <span class="lang-de">Privacy by Design &amp; DSGVO</span>
+              <span class="lang-en" style="display:none;">Privacy by Design &amp; GDPR</span>
+            </h3>
+            <p>
+              <span class="lang-de">Keine Cookies, keine Tracker, keine Werbenetzwerke und keine Standort-Protokollierung. 100% autark funktionsfähig auf De-Googled Mobilgeräten (GrapheneOS, CalyxOS, LineageOS).</span>
+              <span class="lang-en" style="display:none;">Zero tracking cookies, zero analytics libraries, zero ads, and no location storage. 100% operational on de-googled mobile operating systems (GrapheneOS, CalyxOS).</span>
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DOWNLOADS SECTION -->
+    <section id="download" class="section-padding" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        
+        <div class="section-header">
+          <p class="section-tag">
+            <span class="lang-de">Verfügbarkeit &amp; Installation</span>
+            <span class="lang-en" style="display:none;">Availability &amp; Installation</span>
+          </p>
+          <h2 class="section-title">
+            <span class="lang-de">Apps &amp; Downloads</span>
+            <span class="lang-en" style="display:none;">Apps &amp; Downloads</span>
+          </h2>
+          <p class="section-desc">
+            <span class="lang-de">Wähle deinen bevorzugten Zugang: Im Browser, als eigenständige native Android-App oder über den F-Droid Paketmanager.</span>
+            <span class="lang-en" style="display:none;">Choose your preferred platform: In your browser, as a standalone native Android app, or via F-Droid.</span>
+          </p>
+        </div>
+
+        <div class="download-grid">
+          
+          <!-- Download 1: Web App -->
+          <div class="dl-card">
+            <div>
+              <div class="dl-header">
+                <span class="dl-icon">🌐</span>
+                <div>
+                  <div class="dl-title">Web-Applikation</div>
+                  <span class="dl-sub">Browser / PWA</span>
+                </div>
+              </div>
+              <p class="dl-desc">
+                <span class="lang-de">Voll ausgestattete interaktive Wetter-Station mit Canvas-Diagrammen und Solarprognose. Direkt im Browser starten.</span>
+                <span class="lang-en" style="display:none;">Full-featured interactive weather dashboard with Canvas charts and solar PV modeling. Runs directly in any browser.</span>
+              </p>
+            </div>
+            <a href="app/" class="btn-dl highlight">
+              <span>🚀 Web-App starten</span>
+            </a>
           </div>
 
-          <div class="feature-card">
-            <div class="f-card-icon">📈</div>
-            <h3>Interaktive Canvas-Graphen</h3>
-            <p>Maßgeschneiderte HTML5-Canvas-Routinen zeichnen butterweiche Temperatur- und Regenkurven inklusive dynamischer Skalierung für Celsius, Fahrenheit und Kelvin.</p>
+          <!-- Download 2: Android APK -->
+          <div class="dl-card">
+            <div>
+              <div class="dl-header">
+                <span class="dl-icon">📱</span>
+                <div>
+                  <div class="dl-title">Android APK</div>
+                  <span class="dl-sub">v1.0 &bull; SDK 34 &bull; 74 KB</span>
+                </div>
+              </div>
+              <p class="dl-desc">
+                <span class="lang-de">Native Java-Applikation mit 4x2/4x1 Startbildschirm-Widget. Kryptografisch signiert für Android 5.0 bis 15+.</span>
+                <span class="lang-en" style="display:none;">Native Java application with 4x2/4x1 home screen widget. Cryptographically signed for Android 5.0 to 15+.</span>
+              </p>
+            </div>
+            <a href="https://benzjeremy.github.io/myfdroid/repo/wetter-v1.0.apk" class="btn-dl highlight">
+              <span>📦 wetter-v1.0.apk (74 KB)</span>
+            </a>
           </div>
 
-          <div class="feature-card">
-            <div class="f-card-icon">🌍</div>
-            <h3>Weltweites Geocoding</h3>
-            <p>Modernste Open-Meteo Geocoding-Schnittstelle findet weltweit Metropolen, Kleinstädte und Dörfer in Sekundenschnelle inklusive Koordinaten-Auflösung.</p>
+          <!-- Download 3: myfdroid Repo -->
+          <div class="dl-card">
+            <div>
+              <div class="dl-header">
+                <span class="dl-icon">📲</span>
+                <div>
+                  <div class="dl-title">myfdroid Repository</div>
+                  <span class="dl-sub">F-Droid / Droid-ify / Neo Store</span>
+                </div>
+              </div>
+              <p class="dl-desc">
+                <span class="lang-de">Automatisches Update-Management über das offizielle, signierte F-Droid Repository von Jeremy Benz.</span>
+                <span class="lang-en" style="display:none;">Automated update management through Jeremy Benz's official cryptographically signed F-Droid repository.</span>
+              </p>
+            </div>
+            <a href="https://benzjeremy.github.io/myfdroid/" class="btn-dl">
+              <span>📲 myfdroid öffnen</span>
+            </a>
           </div>
 
-          <div class="feature-card">
-            <div class="f-card-icon">🔒</div>
-            <h3>100% Privacy by Design</h3>
-            <p>Deine Geodaten werden niemals auf externen Servern gespeichert oder für Werbeprofile missbraucht. Die Standortabfrage erfolgt rein lokal im Browser (§ 25 TDDDG).</p>
+          <!-- Download 4: Source Code -->
+          <div class="dl-card">
+            <div>
+              <div class="dl-header">
+                <span class="dl-icon">💻</span>
+                <div>
+                  <div class="dl-title">Quellcode (GitHub)</div>
+                  <span class="dl-sub">GNU GPL-3.0 &bull; Open Source</span>
+                </div>
+              </div>
+              <p class="dl-desc">
+                <span class="lang-de">Vollständiger Quellcode der Android-App, Build-Skripte und CI-Workflows auf GitHub verfügbar.</span>
+                <span class="lang-en" style="display:none;">Full source code of the Android application, build scripts, and CI workflows hosted on GitHub.</span>
+              </p>
+            </div>
+            <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer" class="btn-dl">
+              <span>🐙 GitHub Repository</span>
+            </a>
           </div>
 
-          <div class="feature-card">
-            <div class="f-card-icon">📱</div>
-            <h3>Fully Responsive &amp; Touch-optimiert</h3>
-            <p>Egal ob Desktop-Monitor, Laptop, Tablet oder Smartphone: Das Layout passt sich fluid an jeden Bildschirm an und unterstützt intuitive Touch-Gesten.</p>
-          </div>
+        </div>
 
-          <div class="feature-card">
-            <div class="f-card-icon">⚖️</div>
-            <h3>Freie Software unter GPL-3.0</h3>
-            <p>Vollständig quelloffen unter der GNU General Public License v3.0. Der Code ist öffentlich einsehbar, auditierbar und frei modifizierbar.</p>
+        <!-- F-Droid URL Callout -->
+        <div class="repo-callout">
+          <div style="font-weight: 600; font-size: 0.9rem;">
+            <span class="lang-de">📲 F-Droid Repository-URL zum Hinzufügen im Client:</span>
+            <span class="lang-en" style="display:none;">📲 Add F-Droid Repository URL in your client:</span>
+          </div>
+          <div class="repo-callout-code">
+            https://benzjeremy.github.io/myfdroid/repo?fingerprint=A2AD027C856AE9E111B17A55DF5303BB423DBF8D447DC981BDB0E21346963CB7
           </div>
         </div>
+
+      </div>
+    </section>
+
+    <!-- SOLAR PV FORMULA CALLOUT -->
+    <section class="section-padding">
+      <div class="container">
+        
+        <div class="section-header">
+          <p class="section-tag">
+            <span class="lang-de">Physikalisches Fundament</span>
+            <span class="lang-en" style="display:none;">Physical Foundation</span>
+          </p>
+          <h2 class="section-title">
+            <span class="lang-de">Das Photovoltaik-Ertragsmodell</span>
+            <span class="lang-en" style="display:none;">The Photovoltaic Calculation Model</span>
+          </h2>
+          <p class="section-desc">
+            <span class="lang-de">Transparente Modellierung: Keine geschätzten Phantasiewerte, sondern nachvollziehbare Halbleiterphysik.</span>
+            <span class="lang-en" style="display:none;">Transparent modeling: Grounded in semiconductor physics rather than arbitrary heuristics.</span>
+          </p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.75rem;">
+          <div style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent-amber); padding: 1rem; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: center; margin-bottom: 1.25rem;">
+            P_pv = P_peak &times; (G_eff / 1000 W/m²) &times; [1 + &gamma; &times; (T_cell - 25°C)] &times; &eta;_inverter
+          </div>
+          
+          <div style="font-size: 0.9rem; color: var(--text-secondary); display: grid; gap: 0.75rem;">
+            <div><strong>P_peak = 5000 W (5 kWp):</strong> <span class="lang-de">Nennleistung unter Standard-Testbedingungen (1000 W/m², 25°C).</span><span class="lang-en" style="display:none;">Peak rated capacity under Standard Test Conditions (1000 W/m², 25°C).</span></div>
+            <div><strong>G_eff = G_clearsky &times; (1 - 0.75 &times; (bewölkung / 100)^3.4):</strong> <span class="lang-de">Effektive solare Einstrahlung nach Bewölkungsdämpfung.</span><span class="lang-en" style="display:none;">Effective solar irradiance after cloud attenuation.</span></div>
+            <div><strong>&gamma; = -0.0038 / °C:</strong> <span class="lang-de">Temperaturkoeffizient monokristalliner Siliziumzellen (-0,38%/°C Leistungsabfall bei Erwärmung).</span><span class="lang-en" style="display:none;">Temperature power coefficient for monocrystalline silicon (-0.38%/°C).</span></div>
+            <div><strong>&eta;_inverter = 0.96 (96%):</strong> <span class="lang-de">Wirkungsgrad moderner transformatorloser Wechselrichter.</span><span class="lang-en" style="display:none;">Conversion efficiency of modern solar string inverters.</span></div>
+          </div>
+
+          <div style="margin-top: 1.25rem; text-align: right;">
+            <a href="wiki/#solar-physics" class="eco-link">
+              <span class="lang-de">Vollständige Herleitung im Wiki lesen &rarr;</span>
+              <span class="lang-en" style="display:none;">Read Full Derivation in Wiki &rarr;</span>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- ABOUT SECTION -->
-    <section class="about-section" id="about">
-      <div class="section-container">
+    <section id="about" class="section-padding" style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle);">
+      <div class="container">
+        
         <div class="section-header">
-          <span class="section-tag">👥 Mitwirkende &amp; Credits</span>
-          <h2 class="section-title">Projekt-Informationen &amp; Team</h2>
-          <p class="section-sub">Transparente Autoren- und Lizenz-Nennung gemäß den Software-Standards.</p>
+          <p class="section-tag">
+            <span class="lang-de">Über das Projekt</span>
+            <span class="lang-en" style="display:none;">About the Project</span>
+          </p>
+          <h2 class="section-title">
+            <span class="lang-de">Jeremy Benz &bull; Open Source</span>
+            <span class="lang-en" style="display:none;">Jeremy Benz &bull; Open Source</span>
+          </h2>
+          <p class="section-desc">
+            <span class="lang-de">Freie Software für eine transparente, werbefreie und datenschutzfreundliche Zukunft.</span>
+            <span class="lang-en" style="display:none;">Free software committed to transparency, ad-free user experiences, and privacy.</span>
+          </p>
         </div>
 
-        <div class="about-grid">
-          <div class="about-card">
-            <div class="about-avatar">JB</div>
-            <div class="about-info">
-              <span class="role-badge">Lead Developer &amp; Gründer</span>
-              <h3>Jeremy Benz</h3>
-              <p>17 Jahre alter Software-Entwickler aus Nordrhein-Westfalen (NRW). Fokus auf Go, native Desktop-Entwicklung, Systemarchitektur und kompromisslose Privatsphäre.</p>
-              <div class="author-links">
-                <a href="https://github.com/benzjeremy" target="_blank" rel="noopener noreferrer">@benzjeremy (GitHub)</a> · 
-                <a href="https://benzjeremy.github.io/" target="_blank" rel="noopener noreferrer">Portfolio-Website</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="about-card">
-            <div class="about-avatar ai-avatar">🤖</div>
-            <div class="about-info">
-              <span class="role-badge ai-badge">Pair Programming &amp; AI</span>
-              <h3>Google Antigravity &amp; Claude Code</h3>
-              <p>Unterstützung bei interaktiver Canvas-Telemetrie, Geocoding-Integration, responsiver UI-Architektur und DSGVO-Audits.</p>
-              <div class="author-links">
-                <span style="color:var(--text-muted);">Agentic AI Coding Assistant</span>
-              </div>
-            </div>
-          </div>
+        <div style="max-width: 720px; margin: 0 auto; text-align: center; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;">
+          <p style="margin-bottom: 1rem;">
+            <span class="lang-de"><strong>wetter-site</strong> wurde von <strong>Jeremy Benz</strong> mit Unterstützung von <strong>Google Antigravity</strong> entwickelt. Alle Wetterdaten stammen aus den offenen Modellen von <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-sky); text-decoration: underline;">Open-Meteo</a> (CC-BY 4.0).</span>
+            <span class="lang-en" style="display:none;"><strong>wetter-site</strong> was created by <strong>Jeremy Benz</strong> with assistance from <strong>Google Antigravity</strong>. All weather data is retrieved from open models provided by <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-sky); text-decoration: underline;">Open-Meteo</a> (CC-BY 4.0).</span>
+          </p>
+          <p>
+            <span class="lang-de">Der gesamte Programmcode ist unter der <strong>GNU General Public License v3.0 (GPL-3.0)</strong> lizenziert. Du kannst den Code studieren, auditieren, modifizieren und weitergeben.</span>
+            <span class="lang-en" style="display:none;">The entire codebase is licensed under the <strong>GNU General Public License v3.0 (GPL-3.0)</strong>. You are free to inspect, audit, modify, and redistribute the software.</span>
+          </p>
         </div>
 
-        <!-- License Box -->
-        <div class="license-box">
-          <div class="license-icon">📄</div>
-          <div class="license-text">
-            <h4>Freie Software &amp; Lizenz</h4>
-            <p>Dieses Projekt ist freie Software und lizenziert unter der <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>. Quellcode, Modifikationen und Weiterverbreitung sind ausdrücklich gestattet.</p>
-          </div>
-          <a href="https://github.com/benzjeremy/wetter-site/blob/web/LICENSE" target="_blank" rel="noopener noreferrer" class="btn-card highlight" style="padding:10px 18px; font-size:13px;">
-            <span>Offizielle Lizenz (GPL-3.0)</span>
-          </a>
-        </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-left">
-        <div><strong>wetter-site</strong> · Ein Projekt von <a href="https://github.com/benzjeremy" target="_blank" rel="noopener noreferrer">Jeremy Benz (@benzjeremy)</a></div>
-        <div class="footer-sub">Open Source unter der GNU General Public License v3.0 (GPL-3.0) · © 2026</div>
+    <div class="container footer-inner">
+      <div>
+        <strong>wetter-site</strong> &bull; © 2026 Jeremy Benz &bull; GNU GPL-3.0
       </div>
       <div class="footer-links">
-        <a href="https://benzjeremy.github.io/">← benzjeremy.github.io</a>
+        <a href="https://benzjeremy.github.io/">← Portfolio</a>
+        <a href="app/">Web-App</a>
+        <a href="wiki/">Wiki</a>
+        <a href="https://benzjeremy.github.io/myfdroid/">myfdroid</a>
+        <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://benzjeremy.github.io/impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
         <a href="https://benzjeremy.github.io/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutz</a>
-        <a href="https://github.com/benzjeremy/wetter-site" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
-        <a href="mailto:benzjeremy@pm.me">Kontakt</a>
       </div>
     </div>
   </footer>
 
   <script>
     function setLang(lang) {
-      document.querySelectorAll('[data-lang]').forEach(el => {
-        if (el.getAttribute('data-lang') === lang) {
-          el.classList.add('visible');
-        } else {
-          el.classList.remove('visible');
-        }
-      });
-      document.querySelectorAll('.lang-de').forEach(el => el.style.display = lang === 'de' ? '' : 'none');
-      document.querySelectorAll('.lang-en').forEach(el => el.style.display = lang === 'en' ? '' : 'none');
-      
-      const btnDe = document.getElementById('btn-lang-de');
-      const btnEn = document.getElementById('btn-lang-en');
-      if (btnDe && btnEn) {
-        btnDe.classList.toggle('active', lang === 'de');
-        btnEn.classList.toggle('active', lang === 'en');
-      }
+      const isDe = lang === 'de';
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = isDe ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = isDe ? 'none' : '');
+      document.getElementById('btn-lang-de').classList.toggle('active', isDe);
+      document.getElementById('btn-lang-en').classList.toggle('active', !isDe);
       try { localStorage.setItem('site_lang', lang); } catch (e) {}
     }
 
-    try {
-      const saved = localStorage.getItem('site_lang');
-      if (saved === 'en' || saved === 'de') setLang(saved);
-    } catch (e) {}
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('site_theme', next); } catch (e) {}
+      document.getElementById('themeToggle').textContent = next === 'dark' ? '🌙' : '☀️';
+    }
+
+    (function() {
+      const savedLang = localStorage.getItem('site_lang') || 'de';
+      setLang(savedLang);
+      const savedTheme = localStorage.getItem('site_theme') || 'dark';
+      document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    })();
   </script>
-  <script src="app.js?v=2.4.0"></script>
 </body>
 </html>
