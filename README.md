@@ -13,7 +13,9 @@ A privacy-focused, zero-telemetry weather forecasting and solar photovoltaic (PV
 ## 🌟 Highlights
 
 - 📱 **Native Android Application (`com.benzjeremy.wetter`)**: Pure native Java implementation (zero WebView overhead), high-efficiency battery usage, and offline-first persistence.
-- 📲 **Interactive Home Screen Widget**: Resizable 4x2 / 4x1 Android App Widget displaying current temperature, weather conditions, daily min/max, solar PV output, and a one-tap refresh button.
+- ⚖️ **Native Legal & Privacy Notice**: Embedded offline in-app legal disclosure complying with German § 5 DDG (Impressum), GDPR / DSGVO & TDDDG, and contact information without external redirects.
+- ⏱️ **Configurable Auto-Refresh**: User-configurable background weather update intervals (15 min, 30 min, 1 hour, or manual only) scheduled via `AlarmManager` with device boot restoration.
+- 📲 **Interactive Home Screen Widget**: Resizable 4x2 / 4x1 Android App Widget displaying live system time (`TextClock`), current temperature, weather conditions, daily min/max, solar PV output, and a one-tap refresh button.
 - ⚡ **Direct Open-Meteo API**: Communicates directly with the public Open-Meteo weather and geocoding endpoints without any intermediary relay servers, tokens, or personal registration.
 - ☀️ **Solar PV Yield Modeling**: Real-time rooftop and balcony solar power generation estimation based on global horizontal irradiance, cloud cover, and ambient temperature (5 kWp reference model).
 - 🌍 **Global Geocoding & Unit Switching**: Instant city search across the globe with local persistence, supporting Celsius (°C), Fahrenheit (°F), and Kelvin (K).

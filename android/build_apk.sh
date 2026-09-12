@@ -45,10 +45,10 @@ echo "==> 7. Signing APK with apksigner..."
     --ks "$KEYSTORE" \
     --ks-pass "pass:$KEYPASS" \
     --key-pass "pass:$KEYPASS" \
-    --out "$DIR/wetter-v1.1.apk" \
+    --out "$DIR/wetter-v1.2.apk" \
     "$WORK/aligned.apk"
 
 echo "==> 8. Verifying APK signature..."
-"$BUILD_TOOLS/apksigner" verify --verbose "$DIR/wetter-v1.1.apk"
+"$BUILD_TOOLS/apksigner" verify --verbose "$DIR/wetter-v1.2.apk"
 
-echo "✅ SUCCESS! Native Android Wetter App APK built at: $DIR/wetter-v1.1.apk"
+echo "✅ SUCCESS! Native Android Wetter App APK built at: $DIR/wetter-v1.2.apk"

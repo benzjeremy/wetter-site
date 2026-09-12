@@ -30,4 +30,14 @@
     <string name="refresh_60m">Jede Stunde (Stündlich)</string>
     <string name="refresh_off">Aus (Nur manuell)</string>
     <string name="auto_refresh_set">Intervall eingestellt auf: </string>
+    <string name="legal_and_privacy">⚖️ Rechtliches &amp; Datenschutz</string>
+    <string name="legal_dialog_title">Rechtliche Hinweise &amp; Datenschutz</string>
+    <string name="legal_impressum_heading">1. Impressum (§ 5 DDG &amp; § 18 MStV)</string>
+    <string name="legal_impressum_content">Diensteanbieter:\nJeremy Benz (@benzjeremy)\nSoftware-Entwickler &amp; Open-Source Maintainer\nStandort: Nordrhein-Westfalen (NRW), Deutschland\nE-Mail: benzjeremy@pm.me\nWeb: https://benzjeremy.github.io\n\nRedaktionell verantwortlich nach § 18 Abs. 2 MStV:\nJeremy Benz, NRW, Deutschland\n\nHinweis: Rein private, nicht-kommerzielle Open-Source-Entwicklung ohne Gewinnerzielungsabsicht.</string>
+    <string name="legal_privacy_heading">2. Datenschutzerklärung (DSGVO &amp; § 25 TDDDG)</string>
+    <string name="legal_privacy_content">100% Datenschutz &amp; Zero Tracking:\n• Keine personenbezogenen Daten: Diese App erhebt, verarbeitet, speichert oder übermittelt keinerlei Identifikationsmerkmale, Geräte-IDs oder Werbe-IDs.\n• Keine Tracker oder SDKs: Weder Google Analytics, Firebase noch Werbe-Netzwerke sind integriert.\n• Lokale Speicherung: Gewählte Einstellungen (Standort, Einheit, Aktualisierungsintervall) verbleiben ausschließlich lokal in den privaten SharedPreferences auf Ihrem Gerät.\n• Direkte API-Verbindung: Die Abfrage von Wetterdaten erfolgt direkt via verschlüsseltem HTTPS von api.open-meteo.com ohne zwischengeschaltete Relay-Server.\n• Betroffenenrechte: Nutzer haben nach Art. 15–21 DSGVO jederzeit das Recht auf Auskunft, Berichtigung und Löschung. Durch Deinstallation oder Leeren des App-Speichers werden alle lokalen Daten restlos entfernt.</string>
+    <string name="legal_contact_heading">3. Kontakt &amp; Responsible Disclosure</string>
+    <string name="legal_contact_content">E-Mail: benzjeremy@pm.me\nKoordinierte Sicherheitsmeldungen: Wir garantieren eine Rückmeldung innerhalb von 48 Stunden.</string>
+    <string name="legal_license_heading">4. Freie Software Lizenz (GPL-3.0)</string>
+    <string name="legal_license_content">Lizenziert unter der GNU General Public License v3.0 (GNU GPL-3.0). Jeder darf diese Software studieren, verändern und weiterverbreiten.\nQuellcode: https://github.com/benzjeremy/wetter-site</string>
 </resources>

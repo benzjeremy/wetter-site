@@ -543,11 +543,24 @@
                     android:lineSpacingExtra="3dp" />
             </LinearLayout>
 
-            <!-- 7. Footer Note -->
+            <!-- 7. Legal & Privacy Card (Native Impressum & DSGVO) -->
+            <Button
+                android:id="@+id/btn_legal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/card_bg"
+                android:padding="14dp"
+                android:text="@string/legal_and_privacy"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <!-- 8. Footer Note -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:text="@string/open_source_info"

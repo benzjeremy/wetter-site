@@ -6,3 +6,4 @@ android/build/
 # OS metadata
 .DS_Store
 Thumbs.db
+*.idsig

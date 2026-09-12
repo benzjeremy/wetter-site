@@ -169,8 +169,14 @@ public class MainActivity extends Activity {
         // Manual Refresh
         btnRefresh.setOnClickListener(v -> refreshWeather());
 
-        // Auto-refresh interval settings
-        btnSettings.setOnClickListener(v -> showAutoRefreshDialog());
+        // Auto-refresh interval and legal settings
+        btnSettings.setOnClickListener(v -> showSettingsMenuDialog());
+
+        // Dedicated legal & privacy button
+        Button btnLegal = findViewById(R.id.btn_legal_info);
+        if (btnLegal != null) {
+            btnLegal.setOnClickListener(v -> showLegalDialog());
+        }
 
         // Location header click also triggers search
         findViewById(R.id.btn_location_header).setOnClickListener(v -> {
@@ -187,6 +193,25 @@ public class MainActivity extends Activity {
         if (cached != null) {
             renderWeather(cached);
         }
+    }
+
+    private void showSettingsMenuDialog() {
+        String[] menuOptions = new String[]{
+                "⏱️ " + getString(R.string.auto_refresh),
+                getString(R.string.legal_and_privacy)
+        };
+
+        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                .setTitle(R.string.settings)
+                .setItems(menuOptions, (dialog, which) -> {
+                    if (which == 0) {
+                        showAutoRefreshDialog();
+                    } else if (which == 1) {
+                        showLegalDialog();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void showAutoRefreshDialog() {
@@ -218,6 +243,44 @@ public class MainActivity extends Activity {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+    private void showLegalDialog() {
+        android.widget.ScrollView sv = new android.widget.ScrollView(this);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(dpToPx(18), dpToPx(14), dpToPx(18), dpToPx(14));
+
+        addLegalSection(layout, getString(R.string.legal_impressum_heading), getString(R.string.legal_impressum_content));
+        addLegalSection(layout, getString(R.string.legal_privacy_heading), getString(R.string.legal_privacy_content));
+        addLegalSection(layout, getString(R.string.legal_contact_heading), getString(R.string.legal_contact_content));
+        addLegalSection(layout, getString(R.string.legal_license_heading), getString(R.string.legal_license_content));
+
+        sv.addView(layout);
+
+        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                .setTitle(R.string.legal_dialog_title)
+                .setView(sv)
+                .setPositiveButton("Schließen", null)
+                .show();
+    }
+
+    private void addLegalSection(LinearLayout container, String title, String content) {
+        TextView tvTitle = new TextView(this);
+        tvTitle.setText(title);
+        tvTitle.setTextColor(getColor(R.color.brand_blue));
+        tvTitle.setTextSize(14);
+        tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
+        tvTitle.setPadding(0, dpToPx(8), 0, dpToPx(4));
+        container.addView(tvTitle);
+
+        TextView tvContent = new TextView(this);
+        tvContent.setText(content);
+        tvContent.setTextColor(getColor(R.color.text_primary));
+        tvContent.setTextSize(12);
+        tvContent.setLineSpacing(dpToPx(2), 1.15f);
+        tvContent.setPadding(0, 0, 0, dpToPx(12));
+        container.addView(tvContent);
     }
 
     private void refreshWeather() {

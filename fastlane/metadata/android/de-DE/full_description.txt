@@ -7,6 +7,7 @@ Funktionen im Überblick:
 • 24-Stunden- und 7-Tage-Vorhersage: Schnelle Übersicht über den kommenden Witterungsverlauf.
 • Interaktives Startbildschirm-Widget: Live-Systemzeit via TextClock, Wetterlage, Min/Max-Werte und Solar-PV-Status direkt auf dem Homescreen.
 • Konfigurierbare automatische Aktualisierung: Wähle in den Einstellungen zwischen 15 Minuten, 30 Minuten, 1 Stunde oder rein manueller Aktualisierung.
+• Nativer Offline-Rechtsschutz: Vollständiges Impressum (§ 5 DDG), Datenschutzerklärung (DSGVO/TDDDG) und Kontakt direkt offline in der App einsehbar.
 • Weltweite Ortssuche: Geocoding via Open-Meteo mit Speicherung des bevorzugten Standorts.
 • Einheitenauswahl: Celsius (°C), Fahrenheit (°F) und Kelvin (K).
 • Vollständig Open Source: Lizenziert unter GNU General Public License v3.0.

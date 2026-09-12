@@ -30,4 +30,14 @@
     <string name="refresh_60m">Every 1 Hour</string>
     <string name="refresh_off">Off (Manual only)</string>
     <string name="auto_refresh_set">Refresh interval set to: </string>
+    <string name="legal_and_privacy">⚖️ Legal Notice &amp; Privacy</string>
+    <string name="legal_dialog_title">Legal Notice &amp; Privacy Policy</string>
+    <string name="legal_impressum_heading">1. Legal Notice (§ 5 DDG &amp; § 18 MStV)</string>
+    <string name="legal_impressum_content">Service Provider:\nJeremy Benz (@benzjeremy)\nSoftware Developer &amp; Open-Source Maintainer\nLocation: North Rhine-Westphalia (NRW), Germany\nEmail: benzjeremy@pm.me\nWeb: https://benzjeremy.github.io\n\nEditorial Responsibility pursuant to § 18 (2) MStV:\nJeremy Benz, NRW, Germany\n\nNotice: Purely private, non-commercial open-source development without profit orientation.</string>
+    <string name="legal_privacy_heading">2. Privacy Policy (GDPR &amp; § 25 TDDDG)</string>
+    <string name="legal_privacy_content">100% Privacy &amp; Zero Tracking:\n• No personal data: This app does not collect, process, store, or transmit any identifying characteristics, device IDs, or advertising IDs.\n• No trackers or SDKs: Neither Google Analytics, Firebase, nor advertising networks are integrated.\n• Local storage: Configured preferences (location, units, auto-refresh interval) remain strictly local within private SharedPreferences on your device.\n• Direct API connection: Weather queries are fetched directly via encrypted HTTPS from api.open-meteo.com without intermediate relay servers.\n• Data subject rights: Users have rights of access, rectification, and erasure under Arts. 15–21 GDPR. Uninstalling the app or clearing its app storage completely removes all local data.</string>
+    <string name="legal_contact_heading">3. Contact &amp; Responsible Disclosure</string>
+    <string name="legal_contact_content">Email: benzjeremy@pm.me\nCoordinated Vulnerability Disclosure: We guarantee a response within 48 hours.</string>
+    <string name="legal_license_heading">4. Free Software License (GPL-3.0)</string>
+    <string name="legal_license_content">Licensed under the GNU General Public License v3.0 (GNU GPL-3.0). Anyone is free to inspect, modify, and redistribute this software.\nSource Code: https://github.com/benzjeremy/wetter-site</string>
 </resources>
