@@ -1,0 +1,43 @@
+name: Android CI Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android 34 Platform & Build-Tools
+        run: |
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Verify Build Tools
+        run: |
+          which aapt2 || find $ANDROID_HOME/build-tools/34.0.0/ -name aapt2
+
+      - name: Build Android APK
+        run: |
+          chmod +x android/build_apk.sh
+          ./android/build_apk.sh
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wetter-v1.0
+          path: android/wetter-v1.0.apk

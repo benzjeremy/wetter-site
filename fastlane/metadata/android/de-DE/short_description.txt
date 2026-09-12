@@ -1,0 +1,1 @@
+Minimalistische Wetter-App und Solar-PV-Prognose mit Startbildschirm-Widget.

@@ -1,0 +1,8 @@
+# Android build artifacts
+android/build/
+*.class
+*.dex
+
+# OS metadata
+.DS_Store
+Thumbs.db

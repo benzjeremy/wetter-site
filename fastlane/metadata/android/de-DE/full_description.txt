@@ -1,0 +1,11 @@
+Wetter ist eine minimalistische, ressourcenschonende und werbefreie Wetter-App für Android mit interaktivem Startbildschirm-Widget.
+
+Funktionen im Überblick:
+• Direkte Open-Meteo API-Anbindung: Schnelle Wetterabfrage ohne Zwischenserver, Tracking oder API-Keys.
+• Präzise Metriken: Temperatur, gefühlte Temperatur, Luftfeuchtigkeit, Windgeschwindigkeit und atmosphärischer Luftdruck.
+• Solar-PV Prognose: Physikalisch modellierte Schätzung des Solarertrags für Balkonkraftwerke und Aufdachanlagen (5 kWp Referenzmodell).
+• 24-Stunden- und 7-Tage-Vorhersage: Schnelle Übersicht über den kommenden Witterungsverlauf.
+• Interaktives Startbildschirm-Widget: Wetterlage, Min/Max-Werte und Solar-PV-Status direkt auf dem Homescreen mit manuellem Aktualisierungs-Button.
+• Weltweite Ortssuche: Geocoding via Open-Meteo mit Speicherung des bevorzugten Standorts.
+• Einheitenauswahl: Celsius (°C), Fahrenheit (°F) und Kelvin (K).
+• Vollständig Open Source: Lizenziert unter GNU General Public License v3.0.

@@ -1,0 +1,11 @@
+Weather is a minimalist, lightweight, and ad-free weather application for Android featuring a native home screen widget.
+
+Features:
+• Direct Open-Meteo API Connection: Fast weather data retrieval with zero telemetry, no tracking, and no proprietary API keys.
+• Accurate Weather Metrics: Real-time temperature, apparent temperature, relative humidity, wind speed, and atmospheric surface pressure.
+• Solar PV Forecast: Physically modeled rooftop and balcony photovoltaic output estimation (based on a 5 kWp reference system).
+• 24-Hour and 7-Day Forecast: Clean overview of upcoming hourly conditions and multi-day trends.
+• Interactive Home Screen Widget: Live weather conditions, min/max temperatures, and solar PV status on your home screen with a one-tap refresh button.
+• Global Location Search: Worldwide geocoding via Open-Meteo with local persistence.
+• Unit Switching: Support for Celsius (°C), Fahrenheit (°F), and Kelvin (K).
+• 100% Free & Open Source: Licensed under the GNU General Public License v3.0.

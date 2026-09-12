@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="widget_name">Weather &amp; Solar Widget</string>
+    <string name="search_hint">Search city (e.g. London, New York)...</string>
+    <string name="current_weather">Current Weather</string>
+    <string name="solar_pv">☀️ Solar PV Forecast</string>
+    <string name="hourly_forecast">24h Forecast</string>
+    <string name="daily_forecast">7-Day Trend</string>
+    <string name="apparent_temp">Feels like</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
+    <string name="pressure">Pressure</string>
+    <string name="cloud_cover">Cloud Cover</string>
+    <string name="pv_power">Current Output</string>
+    <string name="pv_today">Daily Yield (5 kWp)</string>
+    <string name="refresh">Refresh</string>
+    <string name="unit">Unit</string>
+    <string name="widget_tip">💡 Tip: Add the Weather Widget to your home screen for instant live forecasts!</string>
+    <string name="loading">Loading weather data...</string>
+    <string name="offline_cached">Offline (cached data)</string>
+    <string name="error_network">Could not retrieve weather data.</string>
+    <string name="search_title">Select Location</string>
+    <string name="no_results">No locations found.</string>
+    <string name="open_source_info">100% Free &amp; Open-Source Software (GPL-3.0) • No trackers, no ads, no relay servers.</string>
+</resources>

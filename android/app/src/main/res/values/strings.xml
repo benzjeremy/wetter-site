@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wetter</string>
+    <string name="widget_name">Wetter &amp; Solar Widget</string>
+    <string name="search_hint">Ort suchen (z. B. Siegen, Berlin, Köln)...</string>
+    <string name="current_weather">Aktuelles Wetter</string>
+    <string name="solar_pv">☀️ PV-Solar Prognose</string>
+    <string name="hourly_forecast">24h Vorhersage</string>
+    <string name="daily_forecast">7-Tage Trend</string>
+    <string name="apparent_temp">Gefühlt</string>
+    <string name="humidity">Luftfeuchte</string>
+    <string name="wind">Wind</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="cloud_cover">Bewölkung</string>
+    <string name="pv_power">Aktuelle Leistung</string>
+    <string name="pv_today">Tagesertrag (5 kWp)</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="unit">Einheit</string>
+    <string name="widget_tip">💡 Tipp: Füge das Wetter-Widget zu deinem Startbildschirm hinzu für Live-Wetter auf einen Blick!</string>
+    <string name="loading">Lade Wetterdaten...</string>
+    <string name="offline_cached">Offline (gespeicherte Daten)</string>
+    <string name="error_network">Wetterdaten konnten nicht abgerufen werden.</string>
+    <string name="search_title">Ort auswählen</string>
+    <string name="no_results">Keine Orte gefunden.</string>
+    <string name="open_source_info">100% Freie Open-Source Software (GPL-3.0) • Keine Tracker, keine Werbung, keine Relay-Server.</string>
+</resources>
