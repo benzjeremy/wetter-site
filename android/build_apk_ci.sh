@@ -3,11 +3,12 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK="$DIR/build"
-SDK="/home/benzj/Android/Sdk"
+SDK="${ANDROID_HOME:-$HOME/Android/Sdk}"
 BUILD_TOOLS="$SDK/build-tools/34.0.0"
 ANDROID_JAR="$SDK/platforms/android-34/android.jar"
-KEYSTORE="/home/benzj/Projekte/benzjeremy.github.io/myfdroid/myfdroid.keystore"
-KEYPASS="myfdroid_secret_key_2026"
+KEYSTORE="$DIR/../../debug.keystore"
+KEYPASS="android"
+ALIAS="androiddebugkey"
 
 rm -rf "$WORK"
 mkdir -p "$WORK/bin" "$WORK/gen" "$WORK/compiled_res"
@@ -40,15 +41,16 @@ cd "$DIR"
 echo "==> 6. Aligning APK with zipalign..."
 "$BUILD_TOOLS/zipalign" -p -f 4 "$WORK/unaligned.apk" "$WORK/aligned.apk"
 
-echo "==> 7. Signing APK with apksigner..."
+echo "==> 7. Signing APK with apksigner (debug keystore)..."
 "$BUILD_TOOLS/apksigner" sign \
     --ks "$KEYSTORE" \
     --ks-pass "pass:$KEYPASS" \
     --key-pass "pass:$KEYPASS" \
-    --out "$DIR/wetter-v1.2.apk" \
+    --ks-key-alias "$ALIAS" \
+    --out "$DIR/wetter-debug.apk" \
     "$WORK/aligned.apk"
 
 echo "==> 8. Verifying APK signature..."
-"$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$DIR/wetter-v1.2.apk"
+"$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$DIR/wetter-debug.apk"
 
-echo "✅ SUCCESS! Native Android Wetter App APK built at: $DIR/wetter-v1.2.apk"
+echo "✅ SUCCESS! Debug Android Wetter App APK built at: $DIR/wetter-debug.apk"

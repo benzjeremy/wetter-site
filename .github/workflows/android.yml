@@ -27,17 +27,17 @@ jobs:
         run: |
           sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Verify Build Tools
+      - name: Generate Debug Keystore
         run: |
-          which aapt2 || find $ANDROID_HOME/build-tools/34.0.0/ -name aapt2
+          keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Build Android APK
+      - name: Build Android APK (CI)
         run: |
-          chmod +x android/build_apk.sh
-          ./android/build_apk.sh
+          chmod +x android/build_apk_ci.sh
+          ./android/build_apk_ci.sh
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: wetter-v1.0
-          path: android/wetter-v1.0.apk
+          name: wetter-debug
+          path: android/wetter-debug.apk
