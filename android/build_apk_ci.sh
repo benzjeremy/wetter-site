@@ -10,6 +10,12 @@ KEYSTORE="$DIR/../../debug.keystore"
 KEYPASS="android"
 ALIAS="androiddebugkey"
 
+# Generate debug keystore if missing (for local runs)
+if [ ! -f "$KEYSTORE" ]; then
+    echo "==> Generating debug keystore at $KEYSTORE..."
+    keytool -genkey -v -keystore "$KEYSTORE" -storepass "$KEYPASS" -alias "$ALIAS" -keypass "$KEYPASS" -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+fi
+
 rm -rf "$WORK"
 mkdir -p "$WORK/bin" "$WORK/gen" "$WORK/compiled_res"
 
