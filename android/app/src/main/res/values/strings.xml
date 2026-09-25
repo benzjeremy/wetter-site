@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">wetter-site</string>
+    <string name="app_name">Wetter</string>
     <string name="apparent_temp">Gefühlt</string>
     <string name="auto_refresh">Automatische Aktualisierung</string>
     <string name="auto_refresh_set">Intervall eingestellt auf: </string>
