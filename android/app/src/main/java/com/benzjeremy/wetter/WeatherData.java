@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/* loaded from: classes.dex */
 public class WeatherData {
     public double apparentTemp;
     public int cloudCover;
@@ -27,7 +26,6 @@ public class WeatherData {
     public List<HourlyItem> hourly = new ArrayList<>();
     public List<DailyItem> daily = new ArrayList<>();
 
-    /* loaded from: classes.dex */
     public static class DailyItem {
         public String date;
         public double precipSum;
@@ -38,13 +36,119 @@ public class WeatherData {
         public int weatherCode;
     }
 
-    /* loaded from: classes.dex */
     public static class HourlyItem {
         public double radiation;
         public int rainProb;
         public double temp;
         public String time;
         public int weatherCode;
+    }
+
+    public static class WeatherAlert {
+        public int severity; // 0 = Calm, 1 = Warning, 2 = Severe
+        public String title;
+        public String description;
+        public String icon;
+
+        public WeatherAlert(int severity, String title, String description, String icon) {
+            this.severity = severity;
+            this.title = title;
+            this.description = description;
+            this.icon = icon;
+        }
+    }
+
+    public WeatherAlert getPrimaryAlert(boolean isGerman) {
+        if (weatherCode == 95 || weatherCode == 96 || weatherCode == 99) {
+            return new WeatherAlert(2,
+                    isGerman ? "Gewitter- & Unwetterwarnung" : "Thunderstorm Warning",
+                    isGerman ? "Blitzschlag, Starkregen und Sturmböen möglich. Schutz suchen." : "Lightning, heavy downpours and strong gusts possible.",
+                    "⛈️");
+        }
+        if (weatherCode == 56 || weatherCode == 57 || weatherCode == 66 || weatherCode == 67 ||
+                (weatherCode >= 71 && weatherCode <= 77) || (weatherCode >= 85 && weatherCode <= 86) ||
+                (!daily.isEmpty() && daily.get(0).tempMin <= 0.0)) {
+            return new WeatherAlert(1,
+                    isGerman ? "Frost- & Glättewarnung" : "Frost & Ice Advisory",
+                    isGerman ? "Temperaturen um den Gefrierpunkt. Glättegefahr auf Straßen." : "Sub-zero temperatures expected. Watch for icy road conditions.",
+                    "❄️");
+        }
+        if (windSpeed >= 40.0) {
+            return new WeatherAlert(1,
+                    isGerman ? "Sturm- & Starkwindwarnung" : "Wind & Gale Advisory",
+                    String.format(Locale.US, isGerman ? "Böen bis zu %.0f km/h gemessen. Gegenstände sichern." : "Wind gusts up to %.0f km/h recorded.", windSpeed),
+                    "💨");
+        }
+        if (precipitation >= 5.0 || (!hourly.isEmpty() && hourly.get(0).rainProb >= 75)) {
+            return new WeatherAlert(1,
+                    isGerman ? "Starkregen-Warnung" : "Heavy Rain Advisory",
+                    isGerman ? "Erhebliche Niederschläge und anhaltende Schauer aktiv." : "Substantial precipitation and persistent showers active.",
+                    "🌧️");
+        }
+        if (currentTemp >= 30.0 || (!daily.isEmpty() && daily.get(0).tempMax >= 30.0)) {
+            return new WeatherAlert(1,
+                    isGerman ? "Hitze- & UV-Warnung" : "Heat & UV Advisory",
+                    isGerman ? "Sehr hohe Temperaturen. Ausreichend trinken und Schatten suchen." : "High temperatures. Stay hydrated and avoid peak direct sunlight.",
+                    "☀️");
+        }
+        return new WeatherAlert(0,
+                isGerman ? "Ruhige Wetterlage" : "Calm Weather",
+                isGerman ? "Keine extremen Unwetterwarnungen gemeldet." : "No severe weather advisories active.",
+                "🟢");
+    }
+
+    public String getSunriseFormatted() {
+        if (!daily.isEmpty() && daily.get(0).sunrise != null && daily.get(0).sunrise.contains("T")) {
+            return daily.get(0).sunrise.substring(daily.get(0).sunrise.indexOf("T") + 1);
+        }
+        return "--:--";
+    }
+
+    public String getSunsetFormatted() {
+        if (!daily.isEmpty() && daily.get(0).sunset != null && daily.get(0).sunset.contains("T")) {
+            return daily.get(0).sunset.substring(daily.get(0).sunset.indexOf("T") + 1);
+        }
+        return "--:--";
+    }
+
+    public String getDaylightDuration() {
+        String sr = getSunriseFormatted();
+        String ss = getSunsetFormatted();
+        if (sr.contains(":") && ss.contains(":")) {
+            try {
+                String[] p1 = sr.split(":");
+                String[] p2 = ss.split(":");
+                int m1 = Integer.parseInt(p1[0]) * 60 + Integer.parseInt(p1[1]);
+                int m2 = Integer.parseInt(p2[0]) * 60 + Integer.parseInt(p2[1]);
+                int diff = m2 - m1;
+                if (diff > 0) {
+                    int h = diff / 60;
+                    int m = diff % 60;
+                    return String.format(Locale.US, "%dh %02dm", h, m);
+                }
+            } catch (Exception ignored) {}
+        }
+        return "--";
+    }
+
+    public String getPeakRadiationText(boolean isGerman) {
+        double maxRad = 0.0;
+        for (HourlyItem item : hourly) {
+            if (item.radiation > maxRad) maxRad = item.radiation;
+        }
+        if (maxRad <= 10.0) return isGerman ? "Nacht (0 W/m²)" : "Night (0 W/m²)";
+        if (maxRad < 250.0) return String.format(Locale.US, isGerman ? "Gering (%.0f W/m²)" : "Low (%.0f W/m²)", maxRad);
+        if (maxRad < 600.0) return String.format(Locale.US, isGerman ? "Mäßig (%.0f W/m²)" : "Moderate (%.0f W/m²)", maxRad);
+        return String.format(Locale.US, isGerman ? "Hoch (%.0f W/m²)" : "High (%.0f W/m²)", maxRad);
+    }
+
+    public String getWindDirectionText(boolean isGerman) {
+        String[] dirsDe = {"N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        String[] dirsEn = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        int index = (int) Math.round(((windDirection % 360) / 22.5)) % 16;
+        if (index < 0) index += 16;
+        String code = isGerman ? dirsDe[index] : dirsEn[index];
+        return String.format(Locale.US, "%s (%d°)", code, windDirection);
     }
 
     public static String getWeatherDescription(int i, boolean z) {

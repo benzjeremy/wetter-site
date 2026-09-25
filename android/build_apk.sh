@@ -8,7 +8,7 @@ BUILD_TOOLS="$SDK/build-tools/34.0.0"
 ANDROID_JAR="$SDK/platforms/android-34/android.jar"
 KEYSTORE="$DIR/keystore/myfdroid.keystore"
 KEYPASS="myfdroid_secret_key_2026"
-OUTPUT_APK="$DIR/wetter-v1.4.apk"
+OUTPUT_APK="$DIR/wetter-v1.5.apk"
 
 rm -rf "$WORK"
 mkdir -p "$WORK/bin" "$WORK/gen" "$WORK/compiled_res"

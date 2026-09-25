@@ -29,6 +29,7 @@ public class WeatherRepository {
     private static final String KEY_UNIT = "temp_unit";
     private static final String KEY_AUTO_REFRESH = "auto_refresh_interval";
     private static final String KEY_CACHE = "cached_weather";
+    private static final String KEY_FAVORITES = "fav_cities_json";
 
     private static final ExecutorService executor = Executors.newCachedThreadPool();
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -63,6 +64,18 @@ public class WeatherRepository {
         public String admin1;
     }
 
+    public static class FavoriteCity {
+        public String name;
+        public double lat;
+        public double lon;
+
+        public FavoriteCity(String name, double lat, double lon) {
+            this.name = name;
+            this.lat = lat;
+            this.lon = lon;
+        }
+    }
+
     public static LocationInfo loadLocation(Context context) {
         SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String name = sp.getString(KEY_LOC_NAME, "Siegen, NRW");
@@ -78,6 +91,85 @@ public class WeatherRepository {
                 .putLong(KEY_LOC_LAT, Double.doubleToRawLongBits(lat))
                 .putLong(KEY_LOC_LON, Double.doubleToRawLongBits(lon))
                 .apply();
+    }
+
+    public static List<FavoriteCity> getFavorites(Context context) {
+        List<FavoriteCity> list = new ArrayList<>();
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String json = sp.getString(KEY_FAVORITES, null);
+        if (json == null || json.trim().isEmpty()) {
+            list.add(new FavoriteCity("Siegen, NRW", 50.8748, 8.0243));
+            list.add(new FavoriteCity("Dortmund, NRW", 51.5136, 7.4653));
+            list.add(new FavoriteCity("Berlin", 52.5200, 13.4050));
+            saveFavorites(context, list);
+            return list;
+        }
+        try {
+            JSONArray arr = new JSONArray(json);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                list.add(new FavoriteCity(
+                        obj.optString("name", "Unbekannt"),
+                        obj.optDouble("lat", 50.8748),
+                        obj.optDouble("lon", 8.0243)
+                ));
+            }
+        } catch (Exception ignored) {
+            list.add(new FavoriteCity("Siegen, NRW", 50.8748, 8.0243));
+        }
+        return list;
+    }
+
+    public static void saveFavorites(Context context, List<FavoriteCity> list) {
+        try {
+            JSONArray arr = new JSONArray();
+            for (FavoriteCity fc : list) {
+                JSONObject obj = new JSONObject();
+                obj.put("name", fc.name);
+                obj.put("lat", fc.lat);
+                obj.put("lon", fc.lon);
+                arr.put(obj);
+            }
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putString(KEY_FAVORITES, arr.toString())
+                    .apply();
+        } catch (Exception ignored) {}
+    }
+
+    public static boolean isFavorite(Context context, String name) {
+        if (name == null) return false;
+        List<FavoriteCity> favs = getFavorites(context);
+        for (FavoriteCity fc : favs) {
+            if (name.equalsIgnoreCase(fc.name) || fc.name.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(fc.name.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void addFavorite(Context context, String name, double lat, double lon) {
+        List<FavoriteCity> favs = getFavorites(context);
+        for (FavoriteCity fc : favs) {
+            if (fc.name.equalsIgnoreCase(name)) return;
+        }
+        favs.add(new FavoriteCity(name, lat, lon));
+        saveFavorites(context, favs);
+    }
+
+    public static void removeFavorite(Context context, String name) {
+        List<FavoriteCity> favs = getFavorites(context);
+        FavoriteCity toRemove = null;
+        for (FavoriteCity fc : favs) {
+            if (fc.name.equalsIgnoreCase(name) || fc.name.toLowerCase().contains(name.toLowerCase()) || name.toLowerCase().contains(fc.name.toLowerCase())) {
+                toRemove = fc;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            favs.remove(toRemove);
+            saveFavorites(context, favs);
+        }
     }
 
     public static String getUnit(Context context) {
@@ -232,7 +324,7 @@ public class WeatherRepository {
                 conn.setRequestMethod("GET");
                 conn.setConnectTimeout(8000);
                 conn.setReadTimeout(8000);
-                conn.setRequestProperty("User-Agent", "Wetter-Android/1.3 (GPL-3.0; https://pi5.darter-basking.ts.net/wetter-site/)");
+                conn.setRequestProperty("User-Agent", "Wetter-Android/1.5 (GPL-3.0; https://pi5.darter-basking.ts.net/wetter-site/)");
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode != 200) {

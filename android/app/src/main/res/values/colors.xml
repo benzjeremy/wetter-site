@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark Mode Tokens (Verbindliches Designsystem nach Wetter-Site Plan) -->
+    <!-- Dark Mode Tokens (Verbindliches Designsystem nach Wetter-Site & Astro-Root) -->
     <color name="bg_page">#0b1220</color>
     <color name="bg_surface">#090e18</color>
     <color name="bg_card">#0d1524</color>
@@ -24,4 +24,14 @@
     <color name="card_border_glow">#338eb5ff</color>
     <color name="widget_bg">#ea0d1524</color>
     <color name="widget_border">#263750</color>
+    <color name="pill_bg">#162032</color>
+    <color name="pill_border">#23354d</color>
+    <color name="alert_calm_bg">#0e241c</color>
+    <color name="alert_calm_border">#10b981</color>
+    <color name="alert_warning_bg">#281a07</color>
+    <color name="alert_warning_border">#f59e0b</color>
+    <color name="alert_severe_bg">#2b0d11</color>
+    <color name="alert_severe_border">#ef4444</color>
+    <color name="tile_bg">#090e18</color>
+    <color name="tile_border">#1e293b</color>
 </resources>

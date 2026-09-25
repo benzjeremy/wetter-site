@@ -18,12 +18,12 @@
     <string name="legal_impressum_heading">1. Legal Notice (§ 5 DDG &amp; § 18 MStV)</string>
     <string name="legal_license_content">Licensed under the GNU General Public License v3.0 (GNU GPL-3.0). Anyone is free to inspect, modify, and redistribute this software.\nSource Code: https://github.com/benzjeremy/wetter-site</string>
     <string name="legal_license_heading">4. Free Software License (GPL-3.0)</string>
-    <string name="legal_privacy_content">100% Privacy &amp; Zero Tracking:\n• No personal data: This app does not collect, process, store, or transmit any identifying characteristics, device IDs, or advertising IDs.\n• No trackers or SDKs: Neither Google Analytics, Firebase, nor advertising networks are integrated.\n• Local storage: Configured preferences (location, units, auto-refresh interval) remain strictly local within private SharedPreferences on your device.\n• Direct API connection: Weather queries are fetched directly via encrypted HTTPS from api.open-meteo.com without intermediate relay servers.\n• Data subject rights: Users have rights of access, rectification, and erasure under Arts. 15–21 GDPR. Uninstalling the app or clearing its app storage completely removes all local data.</string>
+    <string name="legal_privacy_content">100% Privacy &amp; Zero Tracking:\n• No GPS: Absolutely no access to GPS or device location. Locations are selected purely through manual city search.\n• No personal data: This app does not collect, process, store, or transmit any identifying characteristics, device IDs, or advertising IDs.\n• No trackers or SDKs: Neither Google Analytics, Firebase, nor advertising networks are integrated.\n• Local storage: Configured preferences (favorites, location, units, auto-refresh interval) remain strictly local within private SharedPreferences on your device.\n• Direct API connection: Weather queries are fetched directly via encrypted HTTPS from api.open-meteo.com without intermediate relay servers.\n• Data subject rights: Users have rights of access, rectification, and erasure under Arts. 15–21 GDPR. Uninstalling the app or clearing its app storage completely removes all local data.</string>
     <string name="legal_privacy_heading">2. Privacy Policy (GDPR &amp; § 25 TDDDG)</string>
     <string name="loading">Loading weather data...</string>
     <string name="no_results">No locations found.</string>
     <string name="offline_cached">Status: Cache / offline</string>
-    <string name="open_source_info">100% Free &amp; Open-Source Software (GPL-3.0) • No trackers, no ads, no relay servers.</string>
+    <string name="open_source_info">100% Free &amp; Open-Source Software (GPL-3.0) • No GPS • No trackers • No ads.</string>
     <string name="pressure">Pressure</string>
     <string name="pv_power">Current PV Output</string>
     <string name="pv_today">Daily Yield (5 kWp)</string>
@@ -41,4 +41,32 @@
     <string name="widget_tip">💡 Tip: Add the Weather Widget to your home screen for instant live forecasts!</string>
     <string name="wind">Wind</string>
     <string name="source_open_meteo">Open-Meteo</string>
+
+    <!-- New: Feature 1 - Favorites Management -->
+    <string name="favorites">Favorites</string>
+    <string name="add_to_favorites">Add location to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="favorite_added">Saved to favorites</string>
+    <string name="favorite_removed">Removed from favorites</string>
+    <string name="manage_favorites">Manage favorites</string>
+    <string name="quick_cities_label">Quick select</string>
+    <string name="no_favorites_yet">No further favorites saved.</string>
+
+    <!-- New: Feature 2 - Smart Weather Alerts -->
+    <string name="weather_alerts">Weather Advisories &amp; Alerts</string>
+    <string name="calm_weather">Calm Weather</string>
+    <string name="no_alerts_desc">No severe weather advisories active.</string>
+    <string name="frost_warning">Frost &amp; Ice Advisory</string>
+    <string name="wind_warning">Wind &amp; Gale Advisory</string>
+    <string name="rain_warning">Heavy Rain Advisory</string>
+    <string name="storm_warning">Thunderstorm Warning</string>
+    <string name="heat_warning">Heat &amp; UV Advisory</string>
+
+    <!-- New: Feature 3 - Sun & Astronomy Dashboard -->
+    <string name="sun_and_astronomy">Sun &amp; Astronomy</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="daylight_duration">Daylight</string>
+    <string name="solar_radiation">Peak Solar Radiation</string>
+    <string name="precipitation_label">Precipitation</string>
 </resources>

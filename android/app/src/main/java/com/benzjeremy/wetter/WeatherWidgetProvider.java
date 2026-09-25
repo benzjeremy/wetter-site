@@ -45,29 +45,36 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
 
         if (cache != null) {
             views.setTextViewText(R.id.widget_location, cache.locationName != null ? cache.locationName : loc.name);
-            views.setTextViewText(R.id.widget_temp, WeatherData.formatTemp(cache.currentTemp, unit));
+            views.setTextViewText(R.id.widget_temp, String.format(Locale.US, "%.0f°", WeatherData.convertTemp(cache.currentTemp, unit)));
             views.setTextViewText(R.id.widget_icon, WeatherData.getWeatherIcon(cache.weatherCode));
             views.setTextViewText(R.id.widget_desc, WeatherData.getWeatherDescription(cache.weatherCode, true));
 
             if (!cache.daily.isEmpty()) {
                 WeatherData.DailyItem today = cache.daily.get(0);
-                views.setTextViewText(R.id.widget_high_low, String.format(Locale.US, "▲ %.0f°\n▼ %.0f°",
+                views.setTextViewText(R.id.widget_high_low, String.format(Locale.US, "▲ %.0f° · ▼ %.0f°",
                         WeatherData.convertTemp(today.tempMax, unit),
                         WeatherData.convertTemp(today.tempMin, unit)));
+            } else {
+                views.setTextViewText(R.id.widget_high_low, "▲ --° · ▼ --°");
             }
 
-            views.setTextViewText(R.id.widget_pv, String.format(Locale.US, "☀️ PV: %.1f kW • Heute ~%.1f kWh",
-                    cache.pvPowerKw, cache.pvEnergyKwhToday));
+            // 3 Telemetry Pills (Matching WetterStationPreview.astro)
+            views.setTextViewText(R.id.widget_pv, String.format(Locale.US, "⚡ PV: %.1f kW", cache.pvPowerKw));
+            int rainProb = (!cache.hourly.isEmpty()) ? cache.hourly.get(0).rainProb : cache.relativeHumidity;
+            views.setTextViewText(R.id.widget_rain, String.format(Locale.US, "💧 %d%%", rainProb));
+            views.setTextViewText(R.id.widget_wind, String.format(Locale.US, "💨 %.0f km/h", cache.windSpeed));
 
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
             views.setTextViewText(R.id.widget_updated, sdf.format(new Date(cache.timestamp)));
         } else {
             views.setTextViewText(R.id.widget_location, loc.name);
-            views.setTextViewText(R.id.widget_temp, "-- °C");
+            views.setTextViewText(R.id.widget_temp, "--°");
             views.setTextViewText(R.id.widget_icon, "☀️");
             views.setTextViewText(R.id.widget_desc, "Tippe zum Laden");
-            views.setTextViewText(R.id.widget_high_low, "▲ --°\n▼ --°");
-            views.setTextViewText(R.id.widget_pv, "☀️ PV-Prognose bereit");
+            views.setTextViewText(R.id.widget_high_low, "▲ --° · ▼ --°");
+            views.setTextViewText(R.id.widget_pv, "⚡ PV --");
+            views.setTextViewText(R.id.widget_rain, "💧 --%");
+            views.setTextViewText(R.id.widget_wind, "💨 -- km/h");
             views.setTextViewText(R.id.widget_updated, "");
         }
 

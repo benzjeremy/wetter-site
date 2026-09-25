@@ -18,12 +18,12 @@
     <string name="legal_impressum_heading">1. Impressum (§ 5 DDG &amp; § 18 MStV)</string>
     <string name="legal_license_content">Lizenziert unter der GNU General Public License v3.0 (GNU GPL-3.0). Jeder darf diese Software studieren, verändern und weiterverbreiten.\nQuellcode: https://github.com/benzjeremy/wetter-site</string>
     <string name="legal_license_heading">4. Freie Software Lizenz (GPL-3.0)</string>
-    <string name="legal_privacy_content">100% Datenschutz &amp; Zero Tracking:\n• Keine personenbezogenen Daten: Diese App erhebt, verarbeitet, speichert oder übermittelt keinerlei Identifikationsmerkmale, Geräte-IDs oder Werbe-IDs.\n• Keine Tracker oder SDKs: Weder Google Analytics, Firebase noch Werbe-Netzwerke sind integriert.\n• Lokale Speicherung: Gewählte Einstellungen (Standort, Einheit, Aktualisierungsintervall) verbleiben ausschließlich lokal in den privaten SharedPreferences auf Ihrem Gerät.\n• Direkte API-Verbindung: Die Abfrage von Wetterdaten erfolgt direkt via verschlüsseltem HTTPS von api.open-meteo.com ohne zwischengeschaltete Relay-Server.\n• Betroffenenrechte: Nutzer haben nach Art. 15–21 DSGVO jederzeit das Recht auf Auskunft, Berichtigung und Löschung. Durch Deinstallation oder Leeren des App-Speichers werden alle lokalen Daten restlos entfernt.</string>
+    <string name="legal_privacy_content">100% Datenschutz &amp; Zero Tracking:\n• Kein GPS: Absolut kein Zugriff auf GPS oder Gerätestandort. Standorte werden ausschließlich durch manuelle Ortssuche gewählt.\n• Keine personenbezogenen Daten: Diese App erhebt, verarbeitet, speichert oder übermittelt keinerlei Identifikationsmerkmale, Geräte-IDs oder Werbe-IDs.\n• Keine Tracker oder SDKs: Weder Google Analytics, Firebase noch Werbe-Netzwerke sind integriert.\n• Lokale Speicherung: Gewählte Einstellungen (Favoriten, Standort, Einheit, Aktualisierungsintervall) verbleiben ausschließlich lokal in den privaten SharedPreferences auf Ihrem Gerät.\n• Direkte API-Verbindung: Die Abfrage von Wetterdaten erfolgt direkt via verschlüsseltem HTTPS von api.open-meteo.com ohne zwischengeschaltete Relay-Server.\n• Betroffenenrechte: Nutzer haben nach Art. 15–21 DSGVO jederzeit das Recht auf Auskunft, Berichtigung und Löschung. Durch Deinstallation oder Leeren des App-Speichers werden alle lokalen Daten restlos entfernt.</string>
     <string name="legal_privacy_heading">2. Datenschutzerklärung (DSGVO &amp; § 25 TDDDG)</string>
     <string name="loading">Lade Wetterdaten...</string>
     <string name="no_results">Keine Orte gefunden.</string>
     <string name="offline_cached">Stand: Cache / offline</string>
-    <string name="open_source_info">100% Freie Open-Source Software (GPL-3.0) • Keine Tracker, keine Werbung, keine Relay-Server.</string>
+    <string name="open_source_info">100% Freie Open-Source Software (GPL-3.0) • Kein GPS • Keine Tracker • Keine Werbung.</string>
     <string name="pressure">Luftdruck</string>
     <string name="pv_power">Aktuelle PV-Leistung</string>
     <string name="pv_today">Tagesertrag (5 kWp)</string>
@@ -32,8 +32,8 @@
     <string name="refresh_30m">Alle 30 Minuten (Halbstündlich)</string>
     <string name="refresh_60m">Jede Stunde (Stündlich)</string>
     <string name="refresh_off">Aus (Nur manuell)</string>
-    <string name="search_hint">Ort suchen (z. B. Siegen, Berlin, Köln)...</string>
-    <string name="search_title">Ort auswählen</string>
+    <string name="search_hint">Ort suchen (z. B. Siegen, Dortmund, Berlin)...</string>
+    <string name="search_title">Ort suchen</string>
     <string name="settings">Einstellungen</string>
     <string name="solar_pv">☀️ Solar-PV Prognose</string>
     <string name="unit">Einheit</string>
@@ -41,4 +41,32 @@
     <string name="widget_tip">💡 Tipp: Füge das Wetter-Widget zu deinem Startbildschirm hinzu für Live-Wetter auf einen Blick!</string>
     <string name="wind">Wind</string>
     <string name="source_open_meteo">Open-Meteo</string>
+
+    <!-- Neu: Feature 1 - Favoriten-Verwaltung -->
+    <string name="favorites">Favoriten</string>
+    <string name="add_to_favorites">Ort als Favorit speichern</string>
+    <string name="remove_from_favorites">Aus Favoriten entfernen</string>
+    <string name="favorite_added">Als Favorit gespeichert</string>
+    <string name="favorite_removed">Aus Favoriten entfernt</string>
+    <string name="manage_favorites">Favoriten verwalten</string>
+    <string name="quick_cities_label">Schnellauswahl</string>
+    <string name="no_favorites_yet">Keine weiteren Favoriten vorhanden.</string>
+
+    <!-- Neu: Feature 2 - Intelligente Wetter-Warnungen -->
+    <string name="weather_alerts">Wetterhinweise &amp; Warnungen</string>
+    <string name="calm_weather">Ruhige Wetterlage</string>
+    <string name="no_alerts_desc">Keine extremen Unwetterwarnungen gemeldet.</string>
+    <string name="frost_warning">Frost- &amp; Glättewarnung</string>
+    <string name="wind_warning">Sturm- &amp; Starkwindwarnung</string>
+    <string name="rain_warning">Starkregen-Warnung</string>
+    <string name="storm_warning">Gewitter- &amp; Unwetterwarnung</string>
+    <string name="heat_warning">Hitze- &amp; UV-Warnung</string>
+
+    <!-- Neu: Feature 3 - Sonne & Astronomie Dashboard -->
+    <string name="sun_and_astronomy">Sonne &amp; Astronomie</string>
+    <string name="sunrise">Sonnenaufgang</string>
+    <string name="sunset">Sonnenuntergang</string>
+    <string name="daylight_duration">Tageslänge</string>
+    <string name="solar_radiation">Max. Solarstrahlung</string>
+    <string name="precipitation_label">Niederschlag</string>
 </resources>
