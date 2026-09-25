@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode Tokens (Verbindliches Designsystem nach Wetter-Site Plan) -->
+    <color name="bg_page">#0b1220</color>
+    <color name="bg_surface">#090e18</color>
+    <color name="bg_card">#0d1524</color>
+    <color name="bg_card_hover">#152035</color>
+    <color name="bg_input">#090e18</color>
+    <color name="border_strong">#334a6c</color>
+    <color name="border_subtle">#263750</color>
+    <color name="text_primary">#f5f7fb</color>
+    <color name="text_secondary">#a9b5c7</color>
+    <color name="text_muted">#6b7c93</color>
+    <color name="accent_sky">#8eb5ff</color>
+    <color name="brand_blue">#8eb5ff</color>
+    <color name="text_on_accent">#0b1220</color>
+    <color name="pv_curve">#f59e0b</color>
+    <color name="pv_accent">#fbbf24</color>
+    <color name="sun_gold">#fbbf24</color>
+    <color name="brand_amber">#f59e0b</color>
+    <color name="accent_emerald">#10b981</color>
+    <color name="brand_green">#10b981</color>
+    <color name="brand_red">#ef4444</color>
+    <color name="card_border_glow">#338eb5ff</color>
+    <color name="widget_bg">#ea0d1524</color>
+    <color name="widget_border">#263750</color>
+</resources>

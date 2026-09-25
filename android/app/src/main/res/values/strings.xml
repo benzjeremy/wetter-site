@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wetter</string>
+    <string name="apparent_temp">Gefühlt</string>
+    <string name="auto_refresh">Automatische Aktualisierung</string>
+    <string name="auto_refresh_set">Intervall eingestellt auf: </string>
+    <string name="cloud_cover">Bewölkung</string>
+    <string name="current_weather">Aktuelle Wetterlage</string>
+    <string name="daily_forecast">7-Tage-Vorhersage</string>
+    <string name="error_network">Wetterdaten konnten nicht abgerufen werden.</string>
+    <string name="hourly_forecast">24-Stunden-Verlauf</string>
+    <string name="humidity">Luftfeuchte</string>
+    <string name="legal_and_privacy">⚖️ Rechtliches &amp; Datenschutz</string>
+    <string name="legal_contact_content">E-Mail: benzjeremy@pm.me\nKoordinierte Sicherheitsmeldungen: Wir garantieren eine Rückmeldung innerhalb von 48 Stunden.</string>
+    <string name="legal_contact_heading">3. Kontakt &amp; Responsible Disclosure</string>
+    <string name="legal_dialog_title">Rechtliche Hinweise &amp; Datenschutz</string>
+    <string name="legal_impressum_content">Diensteanbieter:\nJeremy Benz (@benzjeremy)\nSoftware-Entwickler &amp; Open-Source Maintainer\nStandort: Nordrhein-Westfalen (NRW), Deutschland\nE-Mail: benzjeremy@pm.me\nWeb: https://pi5.darter-basking.ts.net/\n\nRedaktionell verantwortlich nach § 18 Abs. 2 MStV:\nJeremy Benz, NRW, Deutschland\n\nHinweis: Rein private, nicht-kommerzielle Open-Source-Entwicklung ohne Gewinnerzielungsabsicht.</string>
+    <string name="legal_impressum_heading">1. Impressum (§ 5 DDG &amp; § 18 MStV)</string>
+    <string name="legal_license_content">Lizenziert unter der GNU General Public License v3.0 (GNU GPL-3.0). Jeder darf diese Software studieren, verändern und weiterverbreiten.\nQuellcode: https://github.com/benzjeremy/wetter-site</string>
+    <string name="legal_license_heading">4. Freie Software Lizenz (GPL-3.0)</string>
+    <string name="legal_privacy_content">100% Datenschutz &amp; Zero Tracking:\n• Keine personenbezogenen Daten: Diese App erhebt, verarbeitet, speichert oder übermittelt keinerlei Identifikationsmerkmale, Geräte-IDs oder Werbe-IDs.\n• Keine Tracker oder SDKs: Weder Google Analytics, Firebase noch Werbe-Netzwerke sind integriert.\n• Lokale Speicherung: Gewählte Einstellungen (Standort, Einheit, Aktualisierungsintervall) verbleiben ausschließlich lokal in den privaten SharedPreferences auf Ihrem Gerät.\n• Direkte API-Verbindung: Die Abfrage von Wetterdaten erfolgt direkt via verschlüsseltem HTTPS von api.open-meteo.com ohne zwischengeschaltete Relay-Server.\n• Betroffenenrechte: Nutzer haben nach Art. 15–21 DSGVO jederzeit das Recht auf Auskunft, Berichtigung und Löschung. Durch Deinstallation oder Leeren des App-Speichers werden alle lokalen Daten restlos entfernt.</string>
+    <string name="legal_privacy_heading">2. Datenschutzerklärung (DSGVO &amp; § 25 TDDDG)</string>
+    <string name="loading">Lade Wetterdaten...</string>
+    <string name="no_results">Keine Orte gefunden.</string>
+    <string name="offline_cached">Stand: Cache / offline</string>
+    <string name="open_source_info">100% Freie Open-Source Software (GPL-3.0) • Keine Tracker, keine Werbung, keine Relay-Server.</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="pv_power">Aktuelle PV-Leistung</string>
+    <string name="pv_today">Tagesertrag (5 kWp)</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="refresh_15m">Alle 15 Minuten (Viertelstündlich)</string>
+    <string name="refresh_30m">Alle 30 Minuten (Halbstündlich)</string>
+    <string name="refresh_60m">Jede Stunde (Stündlich)</string>
+    <string name="refresh_off">Aus (Nur manuell)</string>
+    <string name="search_hint">Ort suchen (z. B. Siegen, Berlin, Köln)...</string>
+    <string name="search_title">Ort auswählen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="solar_pv">☀️ Solar-PV Prognose</string>
+    <string name="unit">Einheit</string>
+    <string name="widget_name">Wetter &amp; Solar Widget</string>
+    <string name="widget_tip">💡 Tipp: Füge das Wetter-Widget zu deinem Startbildschirm hinzu für Live-Wetter auf einen Blick!</string>
+    <string name="wind">Wind</string>
+    <string name="source_open_meteo">Open-Meteo</string>
+</resources>
