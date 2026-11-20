@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -75,7 +76,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
     private TextView tvAstroRadiation;
 
     // Forecast Containers
-    private LinearLayout hourlyForecastContainer;
+    private HourlyChart hourChart;
+    private TextView selectedHour;
+    private List<WeatherData.HourlyItem> shownHours;
     private LinearLayout dailyForecastContainer;
     private TextView tvFooterLicense;
 
@@ -149,7 +152,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
         tvAstroDaylight = findViewById(R.id.tv_astro_daylight);
         tvAstroRadiation = findViewById(R.id.tv_astro_radiation);
 
-        hourlyForecastContainer = findViewById(R.id.hourly_forecast_container);
+        hourChart = findViewById(R.id.hour_chart);
+        selectedHour = findViewById(R.id.selected_hour);
+        hourChart.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(android.widget.SeekBar bar, int index, boolean user) { showHour(index); }
+            public void onStartTrackingTouch(android.widget.SeekBar bar) {}
+            public void onStopTrackingTouch(android.widget.SeekBar bar) {}
+        });
+        android.widget.RadioGroup tabs = findViewById(R.id.forecast_tabs);
+        tabs.setOnCheckedChangeListener((group, id) -> {
+            findViewById(R.id.panel_today).setVisibility(id == R.id.tab_today ? View.VISIBLE : View.GONE);
+            findViewById(R.id.panel_week).setVisibility(id == R.id.tab_week ? View.VISIBLE : View.GONE);
+            findViewById(R.id.panel_sun).setVisibility(id == R.id.tab_sun ? View.VISIBLE : View.GONE);
+        });
         dailyForecastContainer = findViewById(R.id.daily_forecast_container);
         tvFooterLicense = findViewById(R.id.tv_footer_license);
 
@@ -275,10 +290,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
         boolean isFav = WeatherRepository.isFavorite(this, currentLocation.name);
         if (isFav) {
             btnFavoriteToggle.setText("★");
-            btnFavoriteToggle.setTextColor(getColor(R.color.sun_gold));
+            btnFavoriteToggle.setTextColor(getResources().getColor(R.color.sun_gold));
         } else {
             btnFavoriteToggle.setText("☆");
-            btnFavoriteToggle.setTextColor(getColor(R.color.text_secondary));
+            btnFavoriteToggle.setTextColor(getResources().getColor(R.color.text_secondary));
         }
     }
 
@@ -287,6 +302,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
         favoritesChipsContainer.removeAllViews();
 
         List<WeatherRepository.FavoriteCity> favs = WeatherRepository.getFavorites(this);
+        favoritesBarLayout.setVisibility(favs.isEmpty() ? View.GONE : View.VISIBLE);
         for (WeatherRepository.FavoriteCity fc : favs) {
             TextView chip = new TextView(this);
             chip.setText("★ " + fc.name);
@@ -300,11 +316,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
             if (isActive) {
                 chip.setBackgroundResource(R.drawable.chip_bg_active);
-                chip.setTextColor(getColor(R.color.brand_blue));
+                chip.setTextColor(getResources().getColor(R.color.brand_blue));
                 chip.setTypeface(null, Typeface.BOLD);
             } else {
                 chip.setBackgroundResource(R.drawable.chip_bg);
-                chip.setTextColor(getColor(R.color.text_secondary));
+                chip.setTextColor(getResources().getColor(R.color.text_secondary));
             }
 
             chip.setPadding(dpToPx(10), dpToPx(5), dpToPx(10), dpToPx(5));
@@ -354,7 +370,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
     }
 
     public void showRemoveFavoriteDialog(final WeatherRepository.FavoriteCity fc) {
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+        new AlertDialog.Builder(this)
                 .setTitle(fc.name)
                 .setMessage(getString(R.string.remove_from_favorites) + "?")
                 .setPositiveButton("Entfernen", new RemoveFavoriteConfirmListener(this, fc))
@@ -434,7 +450,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
                 "⏱️ " + getString(R.string.auto_refresh),
                 getString(R.string.legal_and_privacy)
         };
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.settings)
                 .setItems(options, new SettingsMenuClickListener(this))
                 .setNegativeButton(android.R.string.cancel, null)
@@ -476,7 +492,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
             }
         }
 
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.auto_refresh)
                 .setSingleChoiceItems(labels, selectedIndex, new AutoRefreshIntervalClickListener(this, intervals, labels))
                 .setNegativeButton(android.R.string.cancel, null)
@@ -517,17 +533,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         scrollView.addView(content);
 
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.legal_dialog_title)
                 .setView(scrollView)
-                .setPositiveButton("Schließen", null)
+                .setPositiveButton(android.R.string.ok, null)
                 .show();
     }
 
     private void addLegalSection(LinearLayout container, String title, String body) {
         TextView tvTitle = new TextView(this);
         tvTitle.setText(title);
-        tvTitle.setTextColor(getColor(R.color.brand_blue));
+        tvTitle.setTextColor(getResources().getColor(R.color.brand_blue));
         tvTitle.setTextSize(14f);
         tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
         tvTitle.setPadding(0, dpToPx(8), 0, dpToPx(4));
@@ -535,8 +551,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         TextView tvBody = new TextView(this);
         tvBody.setText(body);
-        tvBody.setTextColor(getColor(R.color.text_primary));
-        tvBody.setTextSize(12f);
+        tvBody.setTextColor(getResources().getColor(R.color.text_primary));
+        tvBody.setTextSize(16f);
+        android.text.util.Linkify.addLinks(tvBody, android.text.util.Linkify.WEB_URLS | android.text.util.Linkify.EMAIL_ADDRESSES);
         tvBody.setLineSpacing(dpToPx(2), 1.15f);
         tvBody.setPadding(0, 0, 0, dpToPx(12));
         container.addView(tvBody);
@@ -556,6 +573,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         @Override
         public void onSuccess(WeatherData data) {
+            if (act.isFinishing() || act.isDestroyed()) return;
             act.showLoading(false);
             act.renderWeather(data);
             act.syncWidget();
@@ -563,6 +581,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         @Override
         public void onError(Exception e) {
+            if (act.isFinishing() || act.isDestroyed()) return;
             act.showLoading(false);
             act.tvStatusBanner.setVisibility(View.VISIBLE);
             act.tvStatusBanner.setText(act.getString(R.string.error_network));
@@ -620,15 +639,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
         if (alert.severity == 2) {
             alertCardLayout.setBackgroundResource(R.drawable.card_bg_alert_severe);
             tvAlertBadge.setText(isGerman ? "Warnung" : "Warning");
-            tvAlertBadge.setTextColor(getColor(R.color.brand_red));
+            tvAlertBadge.setTextColor(getResources().getColor(R.color.brand_red));
         } else if (alert.severity == 1) {
             alertCardLayout.setBackgroundResource(R.drawable.card_bg_alert_warning);
             tvAlertBadge.setText(isGerman ? "Hinweis" : "Advisory");
-            tvAlertBadge.setTextColor(getColor(R.color.brand_amber));
+            tvAlertBadge.setTextColor(getResources().getColor(R.color.brand_amber));
         } else {
             alertCardLayout.setBackgroundResource(R.drawable.card_bg_alert_calm);
             tvAlertBadge.setText(isGerman ? "Normal" : "Calm");
-            tvAlertBadge.setTextColor(getColor(R.color.accent_emerald));
+            tvAlertBadge.setTextColor(getResources().getColor(R.color.accent_emerald));
         }
 
         // Feature 3: Astronomy & Sun Dashboard
@@ -643,59 +662,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
     }
 
     private void renderHourly(List<WeatherData.HourlyItem> hourly) {
-        hourlyForecastContainer.removeAllViews();
-        if (hourly == null) return;
+        shownHours = hourly;
+        hourChart.showHours(hourly);
+        showHour(hourChart.getProgress());
+    }
 
-        for (WeatherData.HourlyItem item : hourly) {
-            LinearLayout card = new LinearLayout(this);
-            card.setOrientation(LinearLayout.VERTICAL);
-            card.setGravity(Gravity.CENTER);
-            card.setPadding(dpToPx(10), dpToPx(10), dpToPx(10), dpToPx(10));
-            card.setBackgroundResource(R.drawable.hourly_card_bg);
-
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    dpToPx(76),
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            lp.setMargins(0, 0, dpToPx(8), 0);
-            card.setLayoutParams(lp);
-
-            TextView tvTime = new TextView(this);
-            tvTime.setText(item.time);
-            tvTime.setTextSize(11f);
-            tvTime.setTextColor(getColor(R.color.text_muted));
-            card.addView(tvTime);
-
-            TextView tvIcon = new TextView(this);
-            tvIcon.setText(WeatherData.getWeatherIcon(item.weatherCode));
-            tvIcon.setTextSize(22f);
-            tvIcon.setPadding(0, dpToPx(4), 0, dpToPx(4));
-            card.addView(tvIcon);
-
-            TextView tvTemp = new TextView(this);
-            tvTemp.setText(String.format(Locale.US, "%.0f°", WeatherData.convertTemp(item.temp, currentUnit)));
-            tvTemp.setTextSize(14f);
-            tvTemp.setTypeface(null, Typeface.BOLD);
-            tvTemp.setTextColor(getColor(R.color.text_primary));
-            card.addView(tvTemp);
-
-            TextView tvRain = new TextView(this);
-            tvRain.setText(String.format(Locale.US, "💧 %d%%", item.rainProb));
-            tvRain.setTextSize(10f);
-            tvRain.setTextColor(getColor(R.color.accent_sky));
-            card.addView(tvRain);
-
-            if (item.radiation > 15.0) {
-                double kw = WeatherData.calcPvPower(item.radiation, item.temp);
-                TextView tvPv = new TextView(this);
-                tvPv.setText(String.format(Locale.US, "⚡%.1f", kw));
-                tvPv.setTextSize(9f);
-                tvPv.setTextColor(getColor(R.color.pv_accent));
-                card.addView(tvPv);
-            }
-
-            hourlyForecastContainer.addView(card);
+    private void showHour(int index) {
+        if (shownHours == null || index < 0 || index >= shownHours.size()) {
+            selectedHour.setText("—");
+            return;
         }
+        WeatherData.HourlyItem hour = shownHours.get(index);
+        String value = hour.time + "   " + WeatherData.formatTemp(hour.temp, currentUnit)
+                + "   ·   " + getString(R.string.precipitation_label) + " " + hour.rainProb + " %";
+        selectedHour.setText(value);
+        hourChart.setContentDescription(getString(R.string.hourly_forecast) + ", " + value);
+        hourChart.invalidate();
     }
 
     private void renderDaily(List<WeatherData.DailyItem> daily) {
@@ -718,7 +700,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
             tvDate.setText(dateLabel);
             tvDate.setTextSize(13f);
             tvDate.setTypeface(null, Typeface.BOLD);
-            tvDate.setTextColor(getColor(R.color.text_primary));
+            tvDate.setTextColor(getResources().getColor(R.color.text_primary));
             row.addView(tvDate);
 
             TextView tvIcon = new TextView(this);
@@ -731,14 +713,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
             tvDesc.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
             tvDesc.setText(WeatherData.getWeatherDescription(item.weatherCode, isGerman));
             tvDesc.setTextSize(12f);
-            tvDesc.setTextColor(getColor(R.color.text_secondary));
+            tvDesc.setTextColor(getResources().getColor(R.color.text_secondary));
             row.addView(tvDesc);
 
             TextView tvPrecip = new TextView(this);
             tvPrecip.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(55), LinearLayout.LayoutParams.WRAP_CONTENT));
             tvPrecip.setText(String.format(Locale.US, "💧 %.1f", item.precipSum));
             tvPrecip.setTextSize(11f);
-            tvPrecip.setTextColor(getColor(R.color.accent_sky));
+            tvPrecip.setTextColor(getResources().getColor(R.color.accent_sky));
             row.addView(tvPrecip);
 
             TextView tvTemp = new TextView(this);
@@ -747,7 +729,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
                     WeatherData.convertTemp(item.tempMin, currentUnit)));
             tvTemp.setTextSize(12f);
             tvTemp.setTypeface(null, Typeface.BOLD);
-            tvTemp.setTextColor(getColor(R.color.text_primary));
+            tvTemp.setTextColor(getResources().getColor(R.color.text_primary));
             row.addView(tvTemp);
 
             dailyForecastContainer.addView(row);
@@ -756,7 +738,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
                 View divider = new View(this);
                 divider.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(1)));
-                divider.setBackgroundColor(getColor(R.color.border_subtle));
+                divider.setBackgroundColor(getResources().getColor(R.color.border_subtle));
                 dailyForecastContainer.addView(divider);
             }
         }
@@ -769,7 +751,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
         searchResultsContainer.removeAllViews();
         TextView searching = new TextView(this);
         searching.setText("Suche läuft...");
-        searching.setTextColor(getColor(R.color.text_muted));
+        searching.setTextColor(getResources().getColor(R.color.text_muted));
         searching.setTextSize(12f);
         searchResultsContainer.addView(searching);
 
@@ -785,11 +767,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         @Override
         public void onSuccess(final List<WeatherRepository.CityResult> results) {
+            if (act.isFinishing() || act.isDestroyed()) return;
             act.searchResultsContainer.removeAllViews();
             if (results.isEmpty()) {
                 TextView noResults = new TextView(act);
                 noResults.setText(R.string.no_results);
-                noResults.setTextColor(act.getColor(R.color.text_muted));
+                noResults.setTextColor(act.getResources().getColor(R.color.text_muted));
                 noResults.setTextSize(13f);
                 act.searchResultsContainer.addView(noResults);
                 return;
@@ -813,7 +796,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
                 String label = city.name + (city.admin1 != null && !city.admin1.isEmpty() ? ", " + city.admin1 : "") +
                         (city.country != null && !city.country.isEmpty() ? " (" + city.country + ")" : "");
                 tvName.setText(label);
-                tvName.setTextColor(act.getColor(R.color.text_primary));
+                tvName.setTextColor(act.getResources().getColor(R.color.text_primary));
                 tvName.setTextSize(13f);
                 item.addView(tvName);
 
@@ -824,10 +807,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
 
         @Override
         public void onError(Exception e) {
+            if (act.isFinishing() || act.isDestroyed()) return;
             act.searchResultsContainer.removeAllViews();
             TextView errorView = new TextView(act);
             errorView.setText("Fehler bei der Ortssuche.");
-            errorView.setTextColor(act.getColor(R.color.brand_red));
+            errorView.setTextColor(act.getResources().getColor(R.color.brand_red));
             errorView.setTextSize(13f);
             act.searchResultsContainer.addView(errorView);
         }
@@ -850,9 +834,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Text
     }
 
     private void syncWidget() {
-        Intent intent = new Intent(this, WeatherWidgetProvider.class);
-        intent.setAction(WeatherWidgetProvider.ACTION_REFRESH);
-        sendBroadcast(intent);
+        AppWidgetManager manager = AppWidgetManager.getInstance(this);
+        ComponentName provider = new ComponentName(this, WeatherWidgetProvider.class);
+        for (int id : manager.getAppWidgetIds(provider)) {
+            WeatherWidgetProvider.updateAppWidget(this, manager, id);
+        }
     }
 
     private void showKeyboard() {

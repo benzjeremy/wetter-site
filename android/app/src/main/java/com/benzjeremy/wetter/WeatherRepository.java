@@ -79,9 +79,16 @@ public class WeatherRepository {
     public static LocationInfo loadLocation(Context context) {
         SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String name = sp.getString(KEY_LOC_NAME, "Siegen, NRW");
-        double lat = Double.longBitsToDouble(sp.getLong(KEY_LOC_LAT, Double.doubleToLongBits(50.8748)));
-        double lon = Double.longBitsToDouble(sp.getLong(KEY_LOC_LON, Double.doubleToLongBits(8.0243)));
+        double lat = readCoordinate(sp, KEY_LOC_LAT, 50.8748);
+        double lon = readCoordinate(sp, KEY_LOC_LON, 8.0243);
         return new LocationInfo(name, lat, lon);
+    }
+
+    private static double readCoordinate(SharedPreferences prefs, String key, double fallback) {
+        Object value = prefs.getAll().get(key);
+        if (value instanceof Long) return Double.longBitsToDouble((Long) value);
+        if (value instanceof Number) return ((Number) value).doubleValue();
+        return fallback;
     }
 
     public static void saveLocation(Context context, String name, double lat, double lon) {
@@ -324,7 +331,7 @@ public class WeatherRepository {
                 conn.setRequestMethod("GET");
                 conn.setConnectTimeout(8000);
                 conn.setReadTimeout(8000);
-                conn.setRequestProperty("User-Agent", "Wetter-Android/1.5 (GPL-3.0; https://pi5.darter-basking.ts.net/wetter-site/)");
+                conn.setRequestProperty("User-Agent", "Wetter-Android/1.6.1 (GPL-3.0; https://wetter.benzjeremy.pp.ua/)");
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode != 200) {

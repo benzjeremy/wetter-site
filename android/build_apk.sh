@@ -8,7 +8,7 @@ BUILD_TOOLS="$SDK/build-tools/34.0.0"
 ANDROID_JAR="$SDK/platforms/android-34/android.jar"
 KEYSTORE="${WETTER_KEYSTORE:?Pfad zum privaten APK-Signierschlüssel angeben}"
 : "${WETTER_KEY_PASSWORD:?Passwort für die Signatur fehlt}"
-OUTPUT_APK="$DIR/wetter-v1.6.apk"
+OUTPUT_APK="$DIR/wetter-v1.6.1.apk"
 
 rm -rf "$WORK"
 mkdir -p "$WORK/bin" "$WORK/gen" "$WORK/compiled_res"

@@ -11,15 +11,15 @@
     <string name="hourly_forecast">24-Stunden-Verlauf</string>
     <string name="humidity">Luftfeuchte</string>
     <string name="legal_and_privacy">⚖️ Rechtliches &amp; Datenschutz</string>
-    <string name="legal_contact_content">E-Mail: benzjeremy@pm.me\nKoordinierte Sicherheitsmeldungen: Wir garantieren eine Rückmeldung innerhalb von 48 Stunden.</string>
-    <string name="legal_contact_heading">3. Kontakt &amp; Responsible Disclosure</string>
+    <string name="legal_contact_content">Für Fragen zur App und zum Datenschutz: info@benzjeremy.pp.ua. Weitere Informationen: https://benzjeremy.pp.ua/datenschutz/</string>
+    <string name="legal_contact_heading">Kontakt</string>
     <string name="legal_dialog_title">Rechtliche Hinweise &amp; Datenschutz</string>
-    <string name="legal_impressum_content">Diensteanbieter:\nJeremy Benz (@benzjeremy)\nSoftware-Entwickler &amp; Open-Source Maintainer\nStandort: Nordrhein-Westfalen (NRW), Deutschland\nE-Mail: benzjeremy@pm.me\nWeb: https://pi5.darter-basking.ts.net/\n\nRedaktionell verantwortlich nach § 18 Abs. 2 MStV:\nJeremy Benz, NRW, Deutschland\n\nHinweis: Rein private, nicht-kommerzielle Open-Source-Entwicklung ohne Gewinnerzielungsabsicht.</string>
-    <string name="legal_impressum_heading">1. Impressum (§ 5 DDG &amp; § 18 MStV)</string>
+    <string name="legal_impressum_content">Jeremy Benz, Rimbergstr. 57, 57258 Freudenberg, Deutschland. Aktuelles Impressum: https://benzjeremy.pp.ua/impressum/</string>
+    <string name="legal_impressum_heading">Anbieter</string>
     <string name="legal_license_content">Lizenziert unter der GNU General Public License v3.0 (GNU GPL-3.0). Jeder darf diese Software studieren, verändern und weiterverbreiten.\nQuellcode: https://github.com/benzjeremy/wetter-site</string>
     <string name="legal_license_heading">4. Freie Software Lizenz (GPL-3.0)</string>
-    <string name="legal_privacy_content">100% Datenschutz &amp; Zero Tracking:\n• Kein GPS: Absolut kein Zugriff auf GPS oder Gerätestandort. Standorte werden ausschließlich durch manuelle Ortssuche gewählt.\n• Keine personenbezogenen Daten: Diese App erhebt, verarbeitet, speichert oder übermittelt keinerlei Identifikationsmerkmale, Geräte-IDs oder Werbe-IDs.\n• Keine Tracker oder SDKs: Weder Google Analytics, Firebase noch Werbe-Netzwerke sind integriert.\n• Lokale Speicherung: Gewählte Einstellungen (Favoriten, Standort, Einheit, Aktualisierungsintervall) verbleiben ausschließlich lokal in den privaten SharedPreferences auf Ihrem Gerät.\n• Direkte API-Verbindung: Die Abfrage von Wetterdaten erfolgt direkt via verschlüsseltem HTTPS von api.open-meteo.com ohne zwischengeschaltete Relay-Server.\n• Betroffenenrechte: Nutzer haben nach Art. 15–21 DSGVO jederzeit das Recht auf Auskunft, Berichtigung und Löschung. Durch Deinstallation oder Leeren des App-Speichers werden alle lokalen Daten restlos entfernt.</string>
-    <string name="legal_privacy_heading">2. Datenschutzerklärung (DSGVO &amp; § 25 TDDDG)</string>
+    <string name="legal_privacy_content">Bei der Ortssuche erhält Open-Meteo den Suchbegriff. Für Vorhersagen sendet die App die Koordinaten des gewählten Orts. Dabei erhält Open-Meteo die IP-Adresse des Anschlusses. Auch das Widget kann Daten im eingestellten Intervall abrufen. Die App verwendet kein GPS. Favoriten, Ort, Einstellungen und die letzte Vorhersage speichert sie auf dem Gerät. Entferne diese Daten über die Android-App-Einstellungen. Hinweise des Anbieters: https://open-meteo.com/en/terms</string>
+    <string name="legal_privacy_heading">Datenverarbeitung</string>
     <string name="loading">Lade Wetterdaten...</string>
     <string name="no_results">Keine Orte gefunden.</string>
     <string name="offline_cached">Stand: Cache / offline</string>
@@ -69,4 +69,7 @@
     <string name="daylight_duration">Tageslänge</string>
     <string name="solar_radiation">Max. Solarstrahlung</string>
     <string name="precipitation_label">Niederschlag</string>
+    <string name="tab_today">Heute</string>
+    <string name="tab_week">Woche</string>
+    <string name="tab_sun">Sonne</string>
 </resources>

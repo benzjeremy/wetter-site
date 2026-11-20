@@ -1,1072 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_page"
-    android:orientation="vertical">
-
-    <!-- Top App Bar (Station Frame Header) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:background="@color/bg_surface"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="10dp">
-
-        <LinearLayout
-            android:id="@+id/btn_location_header"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:text="●"
-                    android:textColor="@color/accent_emerald"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/tv_app_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/badge_bg"
-                    android:paddingStart="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="6dp"
-                    android:paddingBottom="2dp"
-                    android:text="Open-Meteo"
-                    android:textColor="@color/brand_blue"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_location_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Siegen, NRW"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+<?xml version='1.0' encoding='UTF-8'?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/bg_page">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/app_name" android:textSize="22sp" android:textColor="@color/text_primary" android:layout_weight="1" android:fontFamily="serif"/>
+            <ImageButton android:id="@+id/btn_search" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginEnd="6dp" android:background="@drawable/btn_bg" android:contentDescription="@string/search_title" android:src="@android:drawable/ic_menu_search" android:tint="@color/text_primary"/>
+            <ImageButton android:id="@+id/btn_refresh" android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/btn_bg" android:contentDescription="@string/refresh" android:src="@android:drawable/ic_popup_sync" android:tint="@color/text_primary"/>
+            <ImageButton android:id="@+id/btn_settings" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginEnd="6dp" android:background="@drawable/btn_bg" android:contentDescription="@string/settings" android:src="@android:drawable/ic_menu_preferences" android:tint="@color/text_primary"/>
         </LinearLayout>
-
-        <!-- Feature 1: Star Toggle Button for Favorites -->
-        <Button
-            android:id="@+id/btn_favorite_toggle"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/btn_bg"
-            android:contentDescription="@string/favorites"
-            android:text="☆"
-            android:textColor="@color/sun_gold"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/btn_unit_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/btn_bg"
-            android:minWidth="44dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="°C"
-            android:textColor="@color/brand_blue"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/btn_bg"
-            android:contentDescription="@string/search_title"
-            android:src="@android:drawable/ic_menu_search" />
-
-        <ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/btn_bg"
-            android:contentDescription="@string/settings"
-            android:src="@android:drawable/ic_menu_preferences" />
-
-        <ImageButton
-            android:id="@+id/btn_refresh"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/btn_bg"
-            android:contentDescription="@string/refresh"
-            android:src="@android:drawable/ic_popup_sync" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/border_subtle" />
-
-    <!-- Feature 1: Horizontal Favorites Bar -->
-    <LinearLayout
-        android:id="@+id/favorites_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_surface"
-        android:orientation="horizontal"
-        android:paddingStart="12dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="6dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:text="★"
-            android:textColor="@color/sun_gold"
-            android:textSize="13sp" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/favorites_chips_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/border_subtle" />
-
-    <!-- Search Bar (Expandable with Quick City Chips) -->
-    <LinearLayout
-        android:id="@+id/search_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_surface"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/et_search_query"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg"
-                android:hint="@string/search_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_muted"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/btn_search_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/btn_bg"
-                android:text="Suchen"
-                android:textColor="@color/brand_blue"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Quick City Selector Chips (Matching Web App) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:text="@string/quick_cities_label"
-                android:textColor="@color/text_muted"
-                android:textSize="11sp" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/quick_chips_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/chip_dortmund"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Dortmund"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/chip_siegen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Siegen"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/chip_berlin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Berlin"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/chip_muenchen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="München"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/chip_hamburg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Hamburg"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/chip_koeln"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/chip_bg"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Köln"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </HorizontalScrollView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/search_results_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical" />
-    </LinearLayout>
-
-    <!-- Status Banner for Loading / Error -->
-    <TextView
-        android:id="@+id/tv_status_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_card_hover"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/loading"
-        android:textColor="@color/brand_blue"
-        android:textSize="12sp"
-        android:visibility="gone" />
-
-    <!-- Main Content Scroll Area -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Feature 2: Smart Weather Alerts & Advisories Card -->
-            <LinearLayout
-                android:id="@+id/alert_card_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:background="@drawable/card_bg_alert_calm"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="14dp">
-
-                <TextView
-                    android:id="@+id/tv_alert_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text="🟢"
-                    android:textSize="24sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_alert_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/calm_weather"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_alert_desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/no_alerts_desc"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_alert_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/badge_bg"
-                    android:paddingStart="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="6dp"
-                    android:paddingBottom="2dp"
-                    android:text="Normal"
-                    android:textColor="@color/accent_emerald"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
+        <LinearLayout android:id="@+id/search_bar_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/bg_surface" android:orientation="vertical" android:padding="12dp" android:visibility="gone">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/et_search_query" android:layout_width="0dp" android:layout_height="42dp" android:layout_weight="1" android:background="@drawable/btn_bg" android:hint="@string/search_hint" android:imeOptions="actionSearch" android:inputType="text" android:paddingStart="12dp" android:paddingEnd="12dp" android:textColor="@color/text_primary" android:textColorHint="@color/text_muted" android:textSize="13sp"/>
+                <Button android:id="@+id/btn_search_submit" android:layout_width="wrap_content" android:layout_height="42dp" android:layout_marginStart="8dp" android:background="@drawable/btn_bg" android:text="@string/search_title" android:textColor="@color/brand_blue" android:textSize="13sp" android:textStyle="bold"/>
             </LinearLayout>
-
-            <!-- 1. Wetterkarte (Aktuelle Wetterlage) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/current_weather"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_card_timestamp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="6dp"
-                        android:paddingBottom="2dp"
-                        android:text="Live"
-                        android:textColor="@color/accent_emerald"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <!-- Main Temp & Icon Display -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_hero_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="14dp"
-                        android:text="☀️"
-                        android:textSize="48sp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_hero_temp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-- °C"
-                            android:textColor="@color/text_primary"
-                            android:textSize="42sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_hero_condition"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Wetter wird geladen..."
-                            android:textColor="@color/text_secondary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center_vertical" android:orientation="horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:text="@string/quick_cities_label" android:textColor="@color/text_muted" android:textSize="11sp"/>
+                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:scrollbars="none">
+                    <LinearLayout android:id="@+id/quick_chips_container" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <TextView android:id="@+id/chip_dortmund" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="Dortmund" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        <TextView android:id="@+id/chip_siegen" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="Siegen" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        <TextView android:id="@+id/chip_berlin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="Berlin" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        <TextView android:id="@+id/chip_muenchen" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="München" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        <TextView android:id="@+id/chip_hamburg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="Hamburg" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        <TextView android:id="@+id/chip_koeln" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/chip_bg" android:paddingStart="10dp" android:paddingTop="5dp" android:paddingEnd="10dp" android:paddingBottom="5dp" android:text="Köln" android:textColor="@color/text_secondary" android:textSize="12sp"/>
                     </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="14dp"
-                    android:background="@color/border_subtle" />
-
-                <!-- Sub-metrics: Feels like, Min/Max & Precip -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_hero_apparent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Gefühlt: -- °C"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_hero_precip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="💧 0.0 mm"
-                        android:textColor="@color/accent_sky"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_hero_minmax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="▲ --°  ▼ --°"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@color/border_subtle" />
-
-                <!-- 2x2 Telemetry Metrics Grid with Modern Tile Containers -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💧 Luftfeuchte"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_metric_humidity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="-- %"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💨 Wind"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_metric_wind"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="-- km/h"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⏱️ Luftdruck"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_metric_pressure"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="-- hPa"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="☁️ Bewölkung"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_metric_cloud"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="-- %"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 2. Solar-PV Prognose Karte (5 kWp Referenz - Signature Feature) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/card_bg_accent"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/solar_pv"
-                        android:textAllCaps="true"
-                        android:textColor="@color/pv_accent"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="6dp"
-                        android:paddingBottom="2dp"
-                        android:text="5 kWp Referenz"
-                        android:textColor="@color/pv_accent"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pv_power"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_pv_current"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="-- kW"
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pv_today"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_pv_energy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="-- kWh"
-                            android:textColor="@color/pv_accent"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Berechnung basiert auf Solarstrahlung &amp; Modultemperatur."
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Feature 3: Sonne & Astronomie Dashboard -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/sun_and_astronomy"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="6dp"
-                        android:paddingBottom="2dp"
-                        android:text="Tagesverlauf"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🌅 Sonnenaufgang"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_astro_sunrise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="--:--"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🌇 Sonnenuntergang"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_astro_sunset"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="--:--"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⏳ Tageslänge"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_astro_daylight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="--h --m"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/telemetry_tile_bg"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="☀️ Max. Strahlung"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/tv_astro_radiation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="-- W/m²"
-                            android:textColor="@color/pv_accent"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 3. 24-Stunden-Verlauf -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/hourly_forecast"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="6dp"
-                        android:paddingBottom="2dp"
-                        android:text="24 Stunden"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/hourly_forecast_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
                 </HorizontalScrollView>
             </LinearLayout>
-
-            <!-- 4. 7-Tage-Vorhersage -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/daily_forecast"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="6dp"
-                        android:paddingBottom="2dp"
-                        android:text="7 Tage"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/daily_forecast_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical" />
-            </LinearLayout>
-
-            <!-- 5. Widget-Tipp & Info -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical"
-                android:padding="14dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3dp"
-                    android:text="@string/widget_tip"
-                    android:textColor="@color/accent_sky"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- 6. Footer Information & Legal -->
-            <TextView
-                android:id="@+id/tv_footer_license"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/open_source_info"
-                android:textColor="@color/text_muted"
-                android:textSize="11sp" />
+            <LinearLayout android:id="@+id/search_results_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="vertical"/>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="16dp" android:id="@+id/btn_location_header">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="32sp" android:textColor="@color/text_primary" android:layout_weight="1" android:fontFamily="serif" android:id="@+id/tv_location_name"/>
+            <Button android:id="@+id/btn_favorite_toggle" android:layout_width="38dp" android:layout_height="38dp" android:layout_marginEnd="6dp" android:background="@drawable/btn_bg" android:contentDescription="@string/favorites" android:text="☆" android:textColor="@color/sun_gold" android:textSize="18sp"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/favorites_bar_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/bg_surface" android:orientation="horizontal" android:paddingStart="12dp" android:paddingTop="6dp" android:paddingEnd="12dp" android:paddingBottom="6dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:layout_marginEnd="8dp" android:text="★" android:textColor="@color/sun_gold" android:textSize="13sp"/>
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:scrollbars="none">
+                <LinearLayout android:id="@+id/favorites_chips_container" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal"/>
+            </HorizontalScrollView>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/loading" android:textSize="14sp" android:textColor="@color/text_primary" android:id="@+id/tv_status_banner"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="13sp" android:textColor="@color/text_primary" android:id="@+id/tv_card_timestamp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="64sp" android:textColor="@color/text_primary" android:layout_weight="1" android:fontFamily="sans-serif-light" android:id="@+id/tv_hero_temp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="34sp" android:textColor="@color/text_primary" android:id="@+id/tv_hero_icon"/>
+            <Button android:id="@+id/btn_unit_toggle" android:layout_width="wrap_content" android:layout_height="38dp" android:layout_marginEnd="6dp" android:background="@drawable/btn_bg" android:minWidth="44dp" android:paddingStart="10dp" android:paddingEnd="10dp" android:text="°C" android:textColor="@color/brand_blue" android:textSize="13sp" android:textStyle="bold"/>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="24sp" android:textColor="@color/text_primary" android:id="@+id/tv_hero_condition"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:id="@+id/tv_hero_apparent"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1" android:paddingTop="8dp" android:id="@+id/tv_hero_minmax"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1" android:paddingTop="8dp" android:id="@+id/tv_hero_precip"/>
+        </LinearLayout>
+        <RadioGroup android:id="@+id/forecast_tabs" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="12dp" android:paddingBottom="8dp">
+            <RadioButton android:id="@+id/tab_today" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:button="@null" android:background="@drawable/forecast_tab" android:textColor="@color/forecast_tab_text" android:gravity="center" android:text="@string/tab_today" android:checked="true"/>
+            <RadioButton android:id="@+id/tab_week" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:button="@null" android:background="@drawable/forecast_tab" android:textColor="@color/forecast_tab_text" android:gravity="center" android:text="@string/tab_week" android:checked="false"/>
+            <RadioButton android:id="@+id/tab_sun" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:button="@null" android:background="@drawable/forecast_tab" android:textColor="@color/forecast_tab_text" android:gravity="center" android:text="@string/tab_sun" android:checked="false"/>
+        </RadioGroup>
+        <LinearLayout android:id="@+id/panel_today" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="visible">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/hourly_forecast" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <TextView android:id="@+id/selected_hour" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/text_primary" android:minHeight="32dp"/>
+            <com.benzjeremy.wetter.HourlyChart android:id="@+id/hour_chart" android:layout_width="match_parent" android:layout_height="126dp" android:contentDescription="@string/hourly_forecast"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_strong" android:layout_marginTop="24dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/weather_alerts" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp" android:id="@+id/alert_card_layout">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:id="@+id/tv_alert_icon"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="18sp" android:textColor="@color/text_primary" android:layout_weight="1" android:id="@+id/tv_alert_title"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="13sp" android:textColor="@color/text_primary" android:id="@+id/tv_alert_badge"/>
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:id="@+id/tv_alert_desc"/>
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_strong" android:layout_marginTop="24dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/current_weather" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/humidity" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_metric_humidity"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/wind" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_metric_wind"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/pressure" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_metric_pressure"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/cloud_cover" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_metric_cloud"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/panel_week" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/daily_forecast" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/daily_forecast_container"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/panel_sun" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/sun_and_astronomy" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/sunrise" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_astro_sunrise"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/sunset" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_astro_sunset"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/daylight_duration" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_astro_daylight"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/solar_radiation" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_astro_radiation"/>
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_strong" android:layout_marginTop="24dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/solar_pv" android:textSize="28sp" android:textColor="@color/text_primary" android:fontFamily="serif" android:paddingTop="12dp" android:paddingBottom="10dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/pv_power" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_pv_current"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="6dp" android:paddingBottom="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/pv_today" android:textSize="16sp" android:textColor="@color/text_primary" android:layout_weight="1"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="@color/text_primary" android:textStyle="bold" android:id="@+id/tv_pv_energy"/>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/legal_and_privacy" android:textSize="16sp" android:textColor="@color/text_primary" android:paddingTop="22dp" android:paddingBottom="18dp" android:id="@+id/tv_footer_license"/>
+    </LinearLayout>
+</ScrollView>
