@@ -368,11 +368,14 @@ public class WeatherRepository {
                     JSONArray radiations = hourly.optJSONArray("shortwave_radiation_instant");
 
                     if (times != null) {
-                        int count = Math.min(24, times.length());
+                        String localTime = current.getString("time");
+                        int first = 0;
+                        while (first + 1 < times.length() && times.getString(first + 1).compareTo(localTime) <= 0) first++;
+                        int count = Math.min(first + 24, times.length());
                         double totalPvEnergy = 0.0;
                         double currentRad = 0.0;
 
-                        for (int i = 0; i < count; i++) {
+                        for (int i = first; i < count; i++) {
                             WeatherData.HourlyItem item = new WeatherData.HourlyItem();
                             String rawTime = times.optString(i, "");
                             if (rawTime.contains("T")) {
@@ -386,7 +389,7 @@ public class WeatherRepository {
                             item.radiation = radiations != null ? radiations.optDouble(i, 0.0) : 0.0;
                             data.hourly.add(item);
 
-                            if (i == 0) {
+                            if (i == first) {
                                 currentRad = item.radiation;
                             }
                             totalPvEnergy += WeatherData.calcPvPower(item.radiation, item.temp) * 1.0;

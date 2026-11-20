@@ -1,5 +1,8 @@
 # ☀️ Wetter – Native Android Weather & Solar Station
 
+**Projekt eingestellt.** v1.6 ist die letzte offizielle Version. Forks und Weiterentwicklung sind unter der beiliegenden GPLv3 willkommen. [Downloadarchiv](https://downloads.benzjeremy.pp.ua/wetter/).
+
+
 A lightweight, zero-bloat, privacy-respecting native Android application and interactive home screen widget that provides real-time weather forecasts and photovoltaic (PV) solar yield estimations.
 
 Directly powered by the open [Open-Meteo](https://open-meteo.com/) API — completely independent, zero trackers, and no intermediate relay servers.

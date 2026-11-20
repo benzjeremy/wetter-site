@@ -3,12 +3,12 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK="$DIR/build"
-SDK="/home/benzj/Android/Sdk"
+SDK="${ANDROID_HOME:-$HOME/Android/Sdk}"
 BUILD_TOOLS="$SDK/build-tools/34.0.0"
 ANDROID_JAR="$SDK/platforms/android-34/android.jar"
-KEYSTORE="$DIR/keystore/myfdroid.keystore"
-KEYPASS="myfdroid_secret_key_2026"
-OUTPUT_APK="$DIR/wetter-v1.5.apk"
+KEYSTORE="${WETTER_KEYSTORE:?Pfad zum privaten APK-Signierschlüssel angeben}"
+: "${WETTER_KEY_PASSWORD:?Passwort für die Signatur fehlt}"
+OUTPUT_APK="$DIR/wetter-v1.6.apk"
 
 rm -rf "$WORK"
 mkdir -p "$WORK/bin" "$WORK/gen" "$WORK/compiled_res"
@@ -44,8 +44,8 @@ echo "==> 6. Aligning APK with zipalign..."
 echo "==> 7. Signing APK with apksigner..."
 "$BUILD_TOOLS/apksigner" sign \
     --ks "$KEYSTORE" \
-    --ks-pass "pass:$KEYPASS" \
-    --key-pass "pass:$KEYPASS" \
+    --ks-pass env:WETTER_KEY_PASSWORD \
+    --key-pass env:WETTER_KEY_PASSWORD \
     --out "$OUTPUT_APK" \
     "$WORK/aligned.apk"
 
